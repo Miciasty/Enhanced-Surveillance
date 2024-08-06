@@ -1,0 +1,27 @@
+
+# Enhanced Surveillance - Configuration File
+
+EnhancedSurveillance:
+
+    # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+    #   Database connection arguments
+    #
+    #   Those options are fully customizable. If you are not using MariaDB, look on internet
+    #   for other engines with these keywords -> "hibernate", "dialect","(your database engine)"
+    # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+
+    # Database connection
+
+    database:
+        dialect:        MySQL8Dialect
+        address:        localhost
+        port:           3306
+        database:       enhanced_surveillance
+
+        username:       root
+        password:       ""
+
+    hibernate:
+        show_sql:       false
+        format_sql:     true
+        sql_comments:   true
