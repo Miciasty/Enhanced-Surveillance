@@ -1,0 +1,7 @@
+name: EnhancedSurveillance
+version: '${project.version}'
+main: nsk.enhanced.EnhancedSurveillance
+api-version: '1.20'
+
+author: .n.u
+prefix: Enhanced Surveillance
