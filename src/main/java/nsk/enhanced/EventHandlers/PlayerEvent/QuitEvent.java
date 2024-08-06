@@ -6,14 +6,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class JoinEvent implements Listener {
+public class QuitEvent implements Listener {
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
+    public void onPlayerQuit(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
 
@@ -23,9 +24,9 @@ public class JoinEvent implements Listener {
         eventData.put("location", String.format("{x: %d, y: %d, z: %d}", player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ()));
 
         try {
-            MonitorManager.saveEvent(player, "PlayerEvents/join", eventData);
+            MonitorManager.saveEvent(player, "PlayerEvents/quit", eventData);
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/join - " + e.getMessage());
+            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/quit - " + e.getMessage());
         }
     }
 

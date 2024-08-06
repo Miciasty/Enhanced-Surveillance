@@ -1,6 +1,8 @@
 package nsk.enhanced;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.InteractEvent;
 import nsk.enhanced.EventHandlers.PlayerEvent.JoinEvent;
+import nsk.enhanced.EventHandlers.PlayerEvent.QuitEvent;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -36,7 +38,7 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
         //configureHibernate();
 
-        loadListeners();
+        loadPlayerEventListeners();
 
     }
 
@@ -47,12 +49,19 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
-    private void loadListeners() {
+    private void loadPlayerEventListeners() {
         enhancedLogger.warning("Preparing to load event listeners...");
 
         try {getServer().getPluginManager().registerEvents(new JoinEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("JoinEvent listener is not loaded!");
         }
+        try {getServer().getPluginManager().registerEvents(new QuitEvent(), this);} catch (Exception e) {
+            enhancedLogger.severe("QuitEvent listener is not loaded!");
+        }
+        try {getServer().getPluginManager().registerEvents(new InteractEvent(), this);} catch (Exception e) {
+            enhancedLogger.severe("InteractEvent listener is not loaded!");
+        }
+
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //

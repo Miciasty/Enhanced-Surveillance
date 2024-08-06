@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -43,13 +44,10 @@ public class MonitorManager {
         try {
 
             if (eventFile.length() < 1) {
-                plugin.getEnhancedLogger().info("Event file is empty");
                 FileWriter writer = new FileWriter(eventFile);
 
                 String eventName = type.split("/")[1];
                 eventName = eventName.substring(0, 1).toUpperCase() + eventName.substring(1);
-
-                plugin.getEnhancedLogger().info("Starting to write basic data.");
 
                 writer.write("#\n");
                 writer.write("# Enhanced Surveillance - " + eventName + " Event File\n");
@@ -61,7 +59,6 @@ public class MonitorManager {
                 writer.write("events: []\n");
 
                 writer.close();
-                plugin.getEnhancedLogger().info("Finished writing event file.");
             }
 
         } catch (Exception e) {
@@ -83,10 +80,32 @@ public class MonitorManager {
         config.set("events", events);
         try {
             config.save(eventFile);
+
+            addNewLineBetweenEvents(eventFile);
         } catch (Exception e) {
             plugin.getEnhancedLogger().severe(e.getMessage());
         }
 
+    }
+
+    private static void addNewLineBetweenEvents(File eventfile) {
+        try {
+            List<String> lines = Files.readAllLines(eventfile.toPath());
+            List<String> modifiedLines = new ArrayList<>();
+            boolean previousLineWasEmpty = false;
+
+            for (String line : lines) {
+                if (line.startsWith("- ") && !previousLineWasEmpty) {
+                    modifiedLines.add("");
+                }
+                modifiedLines.add(line);
+                previousLineWasEmpty = line.isEmpty();
+            }
+            Files.write(eventfile.toPath(), modifiedLines);
+
+        } catch (Exception e) {
+            plugin.getEnhancedLogger().severe(e.getMessage());
+        }
     }
 
 }
