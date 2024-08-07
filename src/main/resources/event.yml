@@ -1,0 +1,20 @@
+
+
+events:
+    - ip: 192.168.0.1
+      event_world: WORLD
+      event_location: {X: 0, Y: 0, Z: 0}
+
+      timestamp: 2024-08-07 - 16:38:51
+      player_world: WORLD
+      player_location: {X: 0, Y: 0, Z: 0}
+
+    # -- # -- # -- # -- # -- # -- # -- # -- # -- # -- #
+
+    -   ip: 192.168.0.1
+        event_world: WORLD
+        event_location: { X: 0, Y: 0, Z: 0 }
+
+        timestamp: 2024-08-07 - 16:38:51
+        player_world: WORLD
+        player_location: { X: 0, Y: 0, Z: 0 }

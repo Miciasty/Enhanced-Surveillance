@@ -74,19 +74,44 @@ public class MonitorManager {
         }
 
         String formattedTimestamp = LocalDateTime.now().format(formatter);
+
         data.put("timestamp", formattedTimestamp);
+        data.put("player_world",       player.getWorld().getName().toUpperCase() );
+        data.put("player_location",    String.format("{x: %d, y: %d, z: %d}", player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ()).toUpperCase());
         events.add(data);
 
         config.set("events", events);
         try {
             config.save(eventFile);
-
             addNewLineBetweenEvents(eventFile);
+
         } catch (Exception e) {
             plugin.getEnhancedLogger().severe(e.getMessage());
         }
 
     }
+
+    public static Map<String, Object> getEvent(Player player, String type) {
+
+        String uuid = player.getUniqueId().toString();
+        File eventFile = new File(plugin.getDataFolder(), "Surveillance Data/" + uuid + "/" + type + ".yml");
+
+        if (!eventFile.exists()) {
+            return null;
+        }
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(eventFile);
+        List<Map<String, Object>> events = (List<Map<String, Object>>) config.getList("events");
+
+        if (events == null || events.isEmpty()) {
+            return null;
+        }
+
+        return events.get(events.size() - 1);
+
+    }
+
+    // --- --- --- --- //
 
     private static void addNewLineBetweenEvents(File eventfile) {
         try {
@@ -97,7 +122,14 @@ public class MonitorManager {
             for (String line : lines) {
                 if (line.startsWith("- ") && !previousLineWasEmpty) {
                     modifiedLines.add("");
+                    modifiedLines.add("# -- # -- # -- # -- # -- # -- # -- # -- # -- # -- #");
+                    modifiedLines.add("");
                 }
+
+                if (line.startsWith("  timestamp: ") && !previousLineWasEmpty) {
+                    modifiedLines.add("");
+                }
+
                 modifiedLines.add(line);
                 previousLineWasEmpty = line.isEmpty();
             }

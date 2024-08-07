@@ -5,6 +5,7 @@ import nsk.enhanced.System.ES;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -27,33 +28,51 @@ public class InteractEvent implements Listener {
 
         Map<String, Object> eventData = new LinkedHashMap<>();
 
-        switch (event.getAction()) {
-            case LEFT_CLICK_BLOCK:
-                eventData.put("action",     action.name().toUpperCase() );
-                break;
-            case RIGHT_CLICK_BLOCK:
-                if ( event.getHand() == EquipmentSlot.HAND )  {
-                    eventData.put("action", action.name().toUpperCase() );
-                }
-                break;
+        if ( event.getHand() == EquipmentSlot.HAND ) {
+            eventData.put("action",     action.name().toUpperCase() );
+        } else {
+            return;
         }
-
-        eventData.put("hand",               event.getHand().toString().toUpperCase() );
 
         if (event.getItem() == null || event.getItem().getType().equals(Material.AIR)) {
-            eventData.put("item",           "AIR" );
+            eventData.put("item",            "AIR" );
         } else {
-            eventData.put("item",           event.getItem().toString() );
+            eventData.put("item",            event.getItem().toString() );
         }
 
-        eventData.put("event_block",        block.getType().toString().toUpperCase() );
-        eventData.put("event_world",        block.getLocation().getWorld().getName().toUpperCase() );
-        eventData.put("event_location",     String.format("{x: %d, y: %d, z: %d}", location.getBlockX(), location.getBlockY(), location.getBlockZ() ));
+        if (block == null) {
+            eventData.put("event_block",     "NULL or ENTITY" );
+        } else {
+            eventData.put("event_block",     block.getType().toString().toUpperCase() );
+        }
 
-        eventData.put("player_world",       player.getWorld().getName() );
-        eventData.put("player_location",    String.format("{x: %d, y: %d, z: %d}", player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ()));
+        if (block != null) {
+            eventData.put("event_world",     block.getWorld().getName().toUpperCase() );
+            eventData.put("event_location",  String.format("{x: %d, y: %d, z: %d}", block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ() ).toUpperCase() );
+
+        } else if (location == null) {
+            eventData.put("event_world",     "NULL" );
+            eventData.put("event_location",  "NULL" );
+
+        } else {
+            eventData.put("event_world",     location.getWorld().getName().toUpperCase() );
+            eventData.put("event_location",  String.format("{x: %d, y: %d, z: %d}", location.getBlockX(), location.getBlockY(), location.getBlockZ() ).toUpperCase() );
+
+        }
+
 
         try {
+
+            Map<String, Object> lastEvent = MonitorManager.getEvent(player, "PlayerEvents/interact");
+
+            if (lastEvent != null && "LEFT_CLICK_BLOCK".equals(lastEvent.get("action")) && "LEFT_CLICK_AIR".equals(action.name()) ) {
+                return;
+            }
+
+            if (lastEvent != null && "RIGHT_CLICK_BLOCK".equals(lastEvent.get("action")) && "RIGHT_CLICK_AIR".equals(action.name()) ) {
+                return;
+            }
+
             MonitorManager.saveEvent(player, "PlayerEvents/interact", eventData);
         } catch (Exception e) {
             ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/interact - " + e.getMessage());
