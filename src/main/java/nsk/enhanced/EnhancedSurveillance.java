@@ -1,8 +1,9 @@
 package nsk.enhanced;
 
-import nsk.enhanced.EventHandlers.PlayerEvent.InteractEvent;
-import nsk.enhanced.EventHandlers.PlayerEvent.JoinEvent;
-import nsk.enhanced.EventHandlers.PlayerEvent.QuitEvent;
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.ChatEvent;
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.InteractEvent;
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.JoinEvent;
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.QuitEvent;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -38,7 +39,7 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
         //configureHibernate();
 
-        loadPlayerEventListeners();
+        loadBukkitPlayerEventListeners();
 
     }
 
@@ -49,14 +50,17 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
-    private void loadPlayerEventListeners() {
-        enhancedLogger.warning("Preparing to load event listeners...");
+    private void loadBukkitPlayerEventListeners() {
+        enhancedLogger.warning("Preparing to load Bukkit PlayerEvent listeners...");
 
         try {getServer().getPluginManager().registerEvents(new JoinEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("JoinEvent listener is not loaded!");
         }
         try {getServer().getPluginManager().registerEvents(new QuitEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("QuitEvent listener is not loaded!");
+        }
+        try {getServer().getPluginManager().registerEvents(new ChatEvent(), this);} catch (Exception e) {
+            enhancedLogger.severe("ChatEvent listener is not loaded!");
         }
         try {getServer().getPluginManager().registerEvents(new InteractEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("InteractEvent listener is not loaded!");

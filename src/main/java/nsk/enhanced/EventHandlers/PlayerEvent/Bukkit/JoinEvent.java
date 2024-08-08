@@ -1,4 +1,4 @@
-package nsk.enhanced.EventHandlers.PlayerEvent;
+package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.ES;

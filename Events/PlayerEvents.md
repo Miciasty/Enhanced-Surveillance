@@ -3,7 +3,7 @@
 - [x] PlayerJoinEvent
 - [x] PlayerQuitEvent
 - [ ] PlayerMoveEvent
-- [ ] PlayerChatEvent
+- [x] PlayerChatEvent
 - [ ] PlayerCommandPreprocessEvent
 - [x] PlayerInteractEvent
 - [ ] PlayerInteractEntityEvent
