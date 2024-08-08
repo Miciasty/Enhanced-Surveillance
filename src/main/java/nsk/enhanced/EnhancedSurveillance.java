@@ -1,9 +1,6 @@
 package nsk.enhanced;
 
-import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.ChatEvent;
-import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.InteractEvent;
-import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.JoinEvent;
-import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.QuitEvent;
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.*;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -59,6 +56,9 @@ public final class EnhancedSurveillance extends JavaPlugin {
         try {getServer().getPluginManager().registerEvents(new QuitEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("QuitEvent listener is not loaded!");
         }
+        // try {getServer().getPluginManager().registerEvents(new MoveEvent(), this);} catch (Exception e) {
+        //     enhancedLogger.severe("MoveEvent listener is not loaded!");
+        // }
         try {getServer().getPluginManager().registerEvents(new ChatEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("ChatEvent listener is not loaded!");
         }
