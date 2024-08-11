@@ -2,7 +2,7 @@
 
 - [x] PlayerJoinEvent
 - [x] PlayerQuitEvent
-- [ ] PlayerMoveEvent
+- ~~PlayerMoveEvent~~
 - [x] PlayerChatEvent
 - [ ] PlayerCommandPreprocessEvent
 - [x] PlayerInteractEvent

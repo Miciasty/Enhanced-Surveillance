@@ -3,6 +3,7 @@ package nsk.enhanced;
 import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.*;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
+import nsk.enhanced.System.MemoryService;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,6 +12,8 @@ import org.hibernate.cfg.Configuration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
 public final class EnhancedSurveillance extends JavaPlugin {
@@ -30,6 +33,8 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
         ES.setInstance(this);
         enhancedLogger = new EnhancedLogger(this);
+
+        MemoryService.initializeServices(1, 2);
 
         //loadConfiguration();
         //loadTranslations();
