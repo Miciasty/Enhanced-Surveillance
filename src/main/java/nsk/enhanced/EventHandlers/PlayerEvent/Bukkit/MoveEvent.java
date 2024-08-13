@@ -13,6 +13,8 @@ import java.util.Map;
 
 public class MoveEvent implements Listener {
 
+    private static final double MIN_DISTANCE = 10;
+
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
 
@@ -22,25 +24,16 @@ public class MoveEvent implements Listener {
         Location startingLocation = event.getFrom();
         Location endingLocation = event.getTo();
 
-        if (isTheSameLocation(startingLocation, endingLocation)) {
+        if (startingLocation.distance(endingLocation) < MIN_DISTANCE) {
             return;
         }
 
         Map<String, Object> eventData = new LinkedHashMap<>();
 
-        String actual_location = String.format("{x: %d, y: %d, z: %d}", location.getBlockX(), location.getBlockY(), location.getBlockZ()).toUpperCase();
-
-        eventData.put("event_start", String.format("{x: %f, y: %f, z: %f, pitch: %f, yaw: %f", startingLocation.getX(), startingLocation.getY(), startingLocation.getZ(), startingLocation.getPitch(), startingLocation.getYaw() ) );
-        eventData.put("event_end",   String.format("{x: %f, y: %f, z: %f, pitch: %f, yaw: %f", endingLocation.getX(), endingLocation.getY(), endingLocation.getZ(), endingLocation.getPitch(), endingLocation.getYaw() ) );
+        eventData.put("event_start", String.format("{x: %f.2, y: %f.2, z: %f.2, pitch: %f.3, yaw: %f.3}", startingLocation.getX(), startingLocation.getY(), startingLocation.getZ(), startingLocation.getPitch(), startingLocation.getYaw() ) );
+        eventData.put("event_end",   String.format("{x: %f.2, y: %f.2, z: %f.2, pitch: %f.3, yaw: %f.3}", endingLocation.getX(), endingLocation.getY(), endingLocation.getZ(), endingLocation.getPitch(), endingLocation.getYaw() ) );
 
         try {
-
-            //Map<String, Object> lastEvent = MonitorManager.getEvent(player, "PlayerEvents/move");
-
-            //if ( lastEvent != null && actual_location.equalsIgnoreCase(lastEvent.get("player_location").toString()) )  {
-            //    return;
-            //}
-
             MonitorManager.saveEvent(player, "PlayerEvents/move", eventData);
         } catch (Exception e) {
             ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/move - " + e.getMessage());
@@ -48,13 +41,4 @@ public class MoveEvent implements Listener {
 
     }
 
-    private boolean isTheSameLocation(Location start, Location end) {
-
-        double s_X = start.getBlockX();     double e_X = end.getBlockX();
-        double s_Y = start.getBlockY();     double e_Y = end.getBlockY();
-        double s_Z = start.getBlockZ();     double e_Z = end.getBlockZ();
-
-        return s_X == e_X && s_Y == e_Y && s_Z == e_Z;
-
-    }
 }

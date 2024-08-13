@@ -15,12 +15,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MonitorManager {
 
     private static final EnhancedSurveillance plugin = ES.getInstance();
-
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd - HH:mm:ss");
+    private static final ConcurrentHashMap<String, ReentrantLock> fileLocks = new ConcurrentHashMap<>();
 
     public static void saveEvent(Player player, String type, Map<String, Object> data) {
 
@@ -30,68 +32,82 @@ public class MonitorManager {
                 String uuid = player.getUniqueId().toString();
                 String name = player.getName();
 
-                File eventFile = new File(plugin.getDataFolder(), "Surveillance Data/" + uuid + "/" + type + ".yml");
-
-                if (!eventFile.getParentFile().exists()) {
-                    eventFile.getParentFile().mkdirs();
+                for (Map.Entry<String, Object> entry : data.entrySet()) {
+                    if (entry.getValue() instanceof String) {
+                        data.put(entry.getKey(), sanitizeString( (String) entry.getValue() ));
+                    }
                 }
 
-                if (!eventFile.exists()) {
+                File eventFile = new File(plugin.getDataFolder(), "Surveillance Data/" + uuid + "/" + type + ".yml");
+                String filePath = eventFile.getAbsolutePath();
+
+                ReentrantLock lock = fileLocks.computeIfAbsent(filePath, k -> new ReentrantLock());
+                lock.lock();
+                try {
+                    if (!eventFile.getParentFile().exists()) {
+                        eventFile.getParentFile().mkdirs();
+                    }
+
+                    if (!eventFile.exists()) {
+                        try {
+                            eventFile.createNewFile();
+                        } catch (IOException e) {
+                            plugin.getEnhancedLogger().severe(e.getMessage());
+                            return;
+                        }
+                    }
+
                     try {
-                        eventFile.createNewFile();
-                    } catch (IOException e) {
+
+                        if (eventFile.length() < 1) {
+                            FileWriter writer = new FileWriter(eventFile);
+
+                            String eventName = type.split("/")[1];
+                            eventName = eventName.substring(0, 1).toUpperCase() + eventName.substring(1);
+
+                            writer.write("#\n");
+                            writer.write("# Enhanced Surveillance - " + eventName + " Event File\n");
+                            writer.write("#\n\n");
+
+                            writer.write("uuid: "    + uuid + "\n");
+                            writer.write("player: "  + name + "\n\n");
+
+                            writer.write("events: []\n");
+
+                            writer.close();
+                        }
+
+                    } catch (Exception e) {
                         plugin.getEnhancedLogger().severe(e.getMessage());
                         return;
                     }
-                }
 
-                try {
+                    YamlConfiguration config = YamlConfiguration.loadConfiguration(eventFile);
 
-                    if (eventFile.length() < 1) {
-                        FileWriter writer = new FileWriter(eventFile);
-
-                        String eventName = type.split("/")[1];
-                        eventName = eventName.substring(0, 1).toUpperCase() + eventName.substring(1);
-
-                        writer.write("#\n");
-                        writer.write("# Enhanced Surveillance - " + eventName + " Event File\n");
-                        writer.write("#\n\n");
-
-                        writer.write("uuid: "    + uuid + "\n");
-                        writer.write("player: "  + name + "\n\n");
-
-                        writer.write("events: []\n");
-
-                        writer.close();
+                    List<Map<String, Object>> events = (List<Map<String, Object>>) config.getList("events");
+                    if (events == null) {
+                        events = new ArrayList<>();
                     }
 
-                } catch (Exception e) {
-                    plugin.getEnhancedLogger().severe(e.getMessage());
-                    return;
+                    String formattedTimestamp = LocalDateTime.now().format(formatter);
+
+                    data.put("timestamp", formattedTimestamp);
+                    data.put("player_world",       player.getWorld().getName().toUpperCase() );
+                    data.put("player_location",    String.format("{x: %d, y: %d, z: %d}", player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ()).toUpperCase());
+                    events.add(data);
+
+                    config.set("events", events);
+                    try {
+                        config.save(eventFile);
+                        addNewLineBetweenEvents(eventFile);
+
+                    } catch (Exception e) {
+                        plugin.getEnhancedLogger().severe(e.getMessage());
+                    }
+                } finally {
+                    lock.unlock();
                 }
 
-                YamlConfiguration config = YamlConfiguration.loadConfiguration(eventFile);
-
-                List<Map<String, Object>> events = (List<Map<String, Object>>) config.getList("events");
-                if (events == null) {
-                    events = new ArrayList<>();
-                }
-
-                String formattedTimestamp = LocalDateTime.now().format(formatter);
-
-                data.put("timestamp", formattedTimestamp);
-                data.put("player_world",       player.getWorld().getName().toUpperCase() );
-                data.put("player_location",    String.format("{x: %d, y: %d, z: %d}", player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ()).toUpperCase());
-                events.add(data);
-
-                config.set("events", events);
-                try {
-                    config.save(eventFile);
-                    addNewLineBetweenEvents(eventFile);
-
-                } catch (Exception e) {
-                    plugin.getEnhancedLogger().severe(e.getMessage());
-                }
             });
 
         } catch (Exception e) {
@@ -121,6 +137,13 @@ public class MonitorManager {
     }
 
     // --- --- --- --- //
+
+    private static String sanitizeString(String input) {
+        if (input != null) {
+            return input.replaceAll("[\r\n]", "").replaceAll("[^\\x20-\\x7E]", "");
+        }
+        return "";
+    }
 
     private static void addNewLineBetweenEvents(File eventfile) {
         try {

@@ -34,7 +34,7 @@ public final class EnhancedSurveillance extends JavaPlugin {
         ES.setInstance(this);
         enhancedLogger = new EnhancedLogger(this);
 
-        MemoryService.initializeServices(1, 2);
+        MemoryService.initializeServices(2, 2);
 
         //loadConfiguration();
         //loadTranslations();
@@ -47,7 +47,9 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+
+
+        MemoryService.shutdownAllServices();
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
@@ -61,9 +63,8 @@ public final class EnhancedSurveillance extends JavaPlugin {
         try {getServer().getPluginManager().registerEvents(new QuitEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("QuitEvent listener is not loaded!");
         }
-        // try {getServer().getPluginManager().registerEvents(new MoveEvent(), this);} catch (Exception e) {
-        //     enhancedLogger.severe("MoveEvent listener is not loaded!");
-        // }
+        try {getServer().getPluginManager().registerEvents(new MoveEvent(), this);} catch (Exception e) {enhancedLogger.severe("MoveEvent listener is not loaded!");
+        }
         try {getServer().getPluginManager().registerEvents(new ChatEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("ChatEvent listener is not loaded!");
         }
