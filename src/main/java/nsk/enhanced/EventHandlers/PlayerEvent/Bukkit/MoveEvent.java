@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class MoveEvent implements Listener {
 
-    private static final double MIN_DISTANCE = 10;
+    private static final double MIN_DISTANCE = 5;
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {

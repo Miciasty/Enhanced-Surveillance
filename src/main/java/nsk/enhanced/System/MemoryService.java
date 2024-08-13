@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class MemoryService {
 
     private final static EnhancedSurveillance plugin = ES.getInstance();
-    private static final List<MemoryService> services = new ArrayList<MemoryService>();
+    private static final List<MemoryService> services = new ArrayList<>();
     private static int serviceCounter = 0;
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
@@ -40,6 +40,10 @@ public class MemoryService {
             getServiceUtilization();
             eventCounter = 0;
         }
+    }
+
+    public int getServiceID() {
+        return id;
     }
 
     public int getQueueSize() {

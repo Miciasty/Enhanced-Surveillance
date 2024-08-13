@@ -34,7 +34,7 @@ public final class EnhancedSurveillance extends JavaPlugin {
         ES.setInstance(this);
         enhancedLogger = new EnhancedLogger(this);
 
-        MemoryService.initializeServices(2, 2);
+        MemoryService.initializeServices(5, 3);
 
         //loadConfiguration();
         //loadTranslations();
