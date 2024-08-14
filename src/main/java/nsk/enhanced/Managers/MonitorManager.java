@@ -2,16 +2,13 @@ package nsk.enhanced.Managers;
 
 import nsk.enhanced.EnhancedSurveillance;
 import nsk.enhanced.System.ES;
-import nsk.enhanced.System.Hibernate.EventEntity;
+import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -20,7 +17,7 @@ public class MonitorManager {
     private static final EnhancedSurveillance plugin = ES.getInstance();
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd - HH:mm:ss");
 
-    public static void saveEvent(EventEntity event) {
+    public static void saveEvent(Event event) {
 
         try {
 

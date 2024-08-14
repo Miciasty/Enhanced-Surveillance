@@ -2,7 +2,7 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.ES;
-import nsk.enhanced.System.Hibernate.EventEntity;
+import nsk.enhanced.System.Hibernate.Event;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,7 +42,7 @@ public class ChatEvent implements Listener {
         eventData.put("event_name_recipients", String.format("{%s}", formattedRecipientsAsName) );
         eventData.put("event_uuid_recipients", String.format("{%s}", formattedRecipientsAsUUID) );
 
-        EventEntity e = new EventEntity("chat", player.getUniqueId().toString(), player.getWorld().getName(), eventData);
+        Event e = new Event("chat", player.getUniqueId().toString(), player.getWorld().getName(), eventData);
 
         try {
 

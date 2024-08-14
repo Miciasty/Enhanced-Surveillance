@@ -2,7 +2,7 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.ES;
-import nsk.enhanced.System.Hibernate.EventEntity;
+import nsk.enhanced.System.Hibernate.Event;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -73,7 +73,7 @@ public class InteractEvent implements Listener {
                 return;
             }
 
-            EventEntity e = new EventEntity("interact", player.getUniqueId().toString(), player.getWorld().getName(), eventData);
+            Event e = new Event("interact", player.getUniqueId().toString(), player.getWorld().getName(), eventData);
 
             MonitorManager.saveEvent(e);
         } catch (Exception e) {

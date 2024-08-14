@@ -2,8 +2,7 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.ES;
-import nsk.enhanced.System.Hibernate.Character;
-import nsk.enhanced.System.Hibernate.EventEntity;
+import nsk.enhanced.System.Hibernate.Event;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +21,7 @@ public class JoinEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
         eventData.put("ip", event.getPlayer().getAddress().getAddress().getHostAddress());
 
-        EventEntity e = new EventEntity("join", player.getUniqueId().toString(), player.getWorld().getName(), eventData);
+        Event e = new Event("join", player.getUniqueId().toString(), player.getWorld().getName(), eventData);
 
         try {
             MonitorManager.saveEvent(e);

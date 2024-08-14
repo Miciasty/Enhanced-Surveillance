@@ -3,28 +3,19 @@ package nsk.enhanced;
 import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.*;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
-import nsk.enhanced.System.Hibernate.Character;
-import nsk.enhanced.System.Hibernate.EventEntity;
-import nsk.enhanced.System.Hibernate.WorldEntity;
+import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 
 public final class EnhancedSurveillance extends JavaPlugin {
@@ -178,7 +169,7 @@ public final class EnhancedSurveillance extends JavaPlugin {
                     .setProperty("hibernate.format_sql", format_sql)
                     .setProperty("hibernate.use_sql_comments", sql_comments);
 
-            cfg.addAnnotatedClass(EventEntity.class);
+            cfg.addAnnotatedClass(Event.class);
 
             if (cfg.buildSessionFactory() != null) {
                 sessionFactory = cfg.buildSessionFactory();
@@ -201,14 +192,14 @@ public final class EnhancedSurveillance extends JavaPlugin {
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
     public <T> void saveEntity(T entity) {
-        enhancedLogger.warning("Preparing to save entity: " + entity.getClass().getSimpleName());
+        //enhancedLogger.warning("Preparing to save entity: " + entity.getClass().getSimpleName());
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            enhancedLogger.info("Saving entity: " + entity.getClass().getSimpleName());
+            //enhancedLogger.info("Saving entity: " + entity.getClass().getSimpleName());
             session.saveOrUpdate(entity);
             session.getTransaction().commit();
-            enhancedLogger.fine("Saved entity: " + entity.getClass().getSimpleName());
+            //enhancedLogger.fine("Saved entity: " + entity.getClass().getSimpleName());
         } catch (Exception e) {
             enhancedLogger.severe("Saving entity failed - " + e.getMessage());
         }
