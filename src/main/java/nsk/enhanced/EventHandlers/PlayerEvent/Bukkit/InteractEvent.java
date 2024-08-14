@@ -2,6 +2,7 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.Hibernate.EventEntity;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,7 +26,7 @@ public class InteractEvent implements Listener {
         Action action = event.getAction();
         Location location = event.getInteractionPoint();
 
-        Map<String, Object> eventData = new LinkedHashMap<>();
+        Map<String, String> eventData = new LinkedHashMap<>();
 
         if ( event.getHand() == EquipmentSlot.HAND ) {
             eventData.put("action",     action.name().toUpperCase() );
@@ -72,7 +73,9 @@ public class InteractEvent implements Listener {
                 return;
             }
 
-            MonitorManager.saveEvent(player, "PlayerEvents/interact", eventData);
+            EventEntity e = new EventEntity("interact", player.getUniqueId().toString(), player.getWorld().getName(), eventData);
+
+            MonitorManager.saveEvent(e);
         } catch (Exception e) {
             ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/interact - " + e.getMessage());
         }
