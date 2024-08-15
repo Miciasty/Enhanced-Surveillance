@@ -36,7 +36,7 @@ public class MemoryService {
         service.submit(task);
         eventCounter++;
 
-        if (eventCounter >= 50) {
+        if (eventCounter >= 20) {
             getServiceUtilization();
             eventCounter = 0;
         }
@@ -62,7 +62,7 @@ public class MemoryService {
     private double getQueueUtilization() {
         int queueSize = getQueueSize();
         int queueCapacity = threadPoolExecutor.getQueue().remainingCapacity() + queueSize;
-        return ((double) queueSize) / ((double) queueCapacity) * 100;
+        return (queueCapacity > 0) ? ((double) queueSize) / ((double) queueCapacity) * 100 : 0.0;
     }
 
     public void getServiceUtilization() {
@@ -79,7 +79,10 @@ public class MemoryService {
             plugin.getEnhancedLogger().warning("Queue " + id + " utilization is higher than <green>25%");
         }
 
-        plugin.getEnhancedLogger().info(String.format("Service: <gold>(%s)</gold>, Thread utilization: <aqua>%.2f%%</aqua>, Queue utilization: <aqua>%.2f%%</aqua>", id, threadUtilization, queueUtilization));
+        if (threadUtilization > 50) {
+            plugin.getEnhancedLogger().info(String.format("Service: <gold>(%s)</gold>, Thread utilization: <aqua>%.2f%%</aqua>, Queue utilization: <aqua>%.2f%%</aqua>", id, threadUtilization, queueUtilization));
+        }
+
     }
 
     // --- --- --- --- --- --- STATIC METHODS --- --- --- --- --- --- //

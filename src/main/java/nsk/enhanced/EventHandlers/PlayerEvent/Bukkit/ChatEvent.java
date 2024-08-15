@@ -42,7 +42,7 @@ public class ChatEvent implements Listener {
         eventData.put("event_name_recipients", String.format("{%s}", formattedRecipientsAsName) );
         eventData.put("event_uuid_recipients", String.format("{%s}", formattedRecipientsAsUUID) );
 
-        Event e = new Event("chat", player.getUniqueId().toString(), player.getWorld().getName(), eventData);
+        Event e = new Event("chat", player, eventData);
 
         try {
 

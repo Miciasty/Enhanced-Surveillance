@@ -2,6 +2,8 @@ package nsk.enhanced.System.Hibernate;
 
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.Utils.Compression;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,10 +30,16 @@ public class Event {
     @Column(nullable = false)
     private String world;
 
+    @Column(nullable = false)
+    private int x, y, z;
+
+    @Column(nullable = false)
+    private float yaw, pitch;
+
     @ElementCollection
     @CollectionTable(name = "surveillance_details", joinColumns = @JoinColumn(name = "event_id"))
     @MapKeyColumn(name = "event_key")
-    @Column(name = "event_value", columnDefinition = "LONGBLOB")
+    @Column(name = "event_value", columnDefinition = "TINYBLOB")
     private Map<String, byte[]> eventData = new HashMap<>();
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- //
@@ -41,8 +49,7 @@ public class Event {
     public Event(
 
             String  type,
-            String  uuid,
-            String  world,
+            Player player,
 
             Map<String, String> eventData
 
@@ -50,10 +57,41 @@ public class Event {
 
         this.type = type;
         this.timestamp = LocalDateTime.now();
-        this.uuid = uuid;
-        this.world = world;
+        this.uuid = player.getUniqueId().toString();
+        this.world = player.getWorld().getName();
 
         setEventData(eventData);
+
+        this.x = player.getLocation().getBlockX();
+        this.y = player.getLocation().getBlockY();
+        this.z = player.getLocation().getBlockZ();
+        setYaw(player.getLocation().getYaw());
+        setPitch(player.getLocation().getPitch());
+
+    }
+
+    public Event(
+
+            String  type,
+            Player player,
+            Location location,
+
+            Map<String, String> eventData
+
+            ) {
+
+        this.type = type;
+        this.timestamp = LocalDateTime.now();
+        this.uuid = player.getUniqueId().toString();
+        this.world = player.getWorld().getName();
+
+        setEventData(eventData);
+
+        this.x = location.getBlockX();
+        this.y = location.getBlockY();
+        this.z = location.getBlockZ();
+        setYaw(location.getYaw());
+        setPitch(location.getPitch());
 
     }
 
@@ -69,7 +107,18 @@ public class Event {
 
     public Map<String, byte[]> getEventData() { return eventData; }
 
-    // --- --- --- --- --- --- --- --- --- --- --- --- --- //
+    public float getYaw() { return yaw; }
+    public float getPitch() { return pitch; }
+
+    private void setYaw(float yaw) {
+        this.yaw = Math.round(yaw * 1000) / 1000f;
+    }
+
+    private void setPitch(float pitch) {
+        this.pitch = Math.round(pitch * 1000) / 1000f;
+    }
+
+    // --- --- --- --- --- --- Compression --- --- --- --- --- --- //
 
     private void setEventData(Map<String, String> eventData) {
         this.eventData = new HashMap<>();

@@ -73,7 +73,7 @@ public class InteractEvent implements Listener {
                 return;
             }
 
-            Event e = new Event("interact", player.getUniqueId().toString(), player.getWorld().getName(), eventData);
+            Event e = new Event("interact", player, eventData);
 
             MonitorManager.saveEvent(e);
         } catch (Exception e) {

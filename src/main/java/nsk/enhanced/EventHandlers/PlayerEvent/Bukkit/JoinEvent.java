@@ -21,7 +21,7 @@ public class JoinEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
         eventData.put("ip", event.getPlayer().getAddress().getAddress().getHostAddress());
 
-        Event e = new Event("join", player.getUniqueId().toString(), player.getWorld().getName(), eventData);
+        Event e = new Event("join", player, eventData);
 
         try {
             MonitorManager.saveEvent(e);

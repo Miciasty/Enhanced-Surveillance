@@ -16,21 +16,40 @@ public class MoveEvent implements Listener {
 
     private static final double MIN_DISTANCE = 5;
 
+    private final Map<Player, Location> lastPositions = new LinkedHashMap<>();
+
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
 
         Player player = event.getPlayer();
         Location location = player.getLocation();
 
-        Location startingLocation = event.getFrom();
-        Location endingLocation = event.getTo();
+        Location from = event.getFrom();
+        Location to = event.getTo();
+
+        if (from.getX() == to.getX() && from.getY() == to.getY() && from.getZ() == to.getZ()) {
+            return;
+        }
+
+        Location lastPosition = lastPositions.get(player);
+
+        if (lastPosition != null) {
+            if (lastPosition.distance(to) < MIN_DISTANCE) {
+                return;
+            } else {
+                lastPositions.put(player, to);
+            }
+        } else {
+            lastPositions.put(player, location);
+            lastPosition = lastPositions.get(player);
+        }
 
         Map<String, String> eventData = new LinkedHashMap<>();
 
-        eventData.put("event_start", String.format("{x: %f.2, y: %f.2, z: %f.2, pitch: %f.3, yaw: %f.3}", startingLocation.getX(), startingLocation.getY(), startingLocation.getZ(), startingLocation.getPitch(), startingLocation.getYaw() ) );
-        eventData.put("event_end",   String.format("{x: %f.2, y: %f.2, z: %f.2, pitch: %f.3, yaw: %f.3}", endingLocation.getX(), endingLocation.getY(), endingLocation.getZ(), endingLocation.getPitch(), endingLocation.getYaw() ) );
+        eventData.put("e_axis",     String.format("{x:%s,y:%s,z:%s}", to.getBlockX(), to.getBlockY(), to.getBlockZ()) );
+        eventData.put("e_orient",   String.format("{pitch:%.0f,yaw:%.0f}", to.getPitch(), to.getYaw()) );
 
-        Event e = new Event("move", player.getUniqueId().toString(), player.getWorld().getName(), eventData);
+        Event e = new Event("move", player, lastPosition, eventData);
 
         try {
             MonitorManager.saveEvent(e);

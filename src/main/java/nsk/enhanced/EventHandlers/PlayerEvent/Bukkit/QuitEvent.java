@@ -21,7 +21,7 @@ public class QuitEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
         eventData.put("ip", event.getPlayer().getAddress().getAddress().getHostAddress());
 
-        Event e = new Event("quit", player.getUniqueId().toString(), player.getWorld().getName(), eventData);
+        Event e = new Event("quit", player, eventData);
 
         try {
             MonitorManager.saveEvent(e);
