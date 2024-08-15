@@ -22,9 +22,8 @@ public class ChatEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         String message = event.getMessage();
-        String format  = event.getFormat();
 
-        eventData.put("event_message", message);
+        eventData.put("e_message", message);
 
         Set<Player> recipients = event.getRecipients();
         int amount = recipients.size();
@@ -32,17 +31,16 @@ public class ChatEvent implements Listener {
         StringBuilder formattedRecipientsAsName = new StringBuilder();
         StringBuilder formattedRecipientsAsUUID = new StringBuilder();
         for (Player recipient : recipients) {
-            formattedRecipientsAsName.append( recipient.getName()     ).append(", ");
-            formattedRecipientsAsUUID.append( recipient.getUniqueId() ).append(", ");
+            formattedRecipientsAsName.append( recipient.getName()     ).append(",");
+            formattedRecipientsAsUUID.append( recipient.getUniqueId() ).append(",");
         }
-        formattedRecipientsAsName.setLength(formattedRecipientsAsName.length()-2);
-        formattedRecipientsAsUUID.setLength(formattedRecipientsAsUUID.length()-2);
+        formattedRecipientsAsName.setLength(formattedRecipientsAsName.length()-1);
+        formattedRecipientsAsUUID.setLength(formattedRecipientsAsUUID.length()-1);
 
-        eventData.put("event_size_recipients", String.valueOf(amount));
-        eventData.put("event_name_recipients", String.format("{%s}", formattedRecipientsAsName) );
-        eventData.put("event_uuid_recipients", String.format("{%s}", formattedRecipientsAsUUID) );
+        eventData.put("e_size_recipients", String.valueOf(amount));
+        eventData.put("e_uuid_recipients", String.format("{%s}", formattedRecipientsAsUUID) );
 
-        Event e = new Event("chat", player, eventData);
+        Event e = new Event("chat", player, player.getLocation(), eventData);
 
         try {
 

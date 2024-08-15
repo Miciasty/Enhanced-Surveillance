@@ -24,42 +24,34 @@ public class InteractEvent implements Listener {
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
         Action action = event.getAction();
-        Location location = event.getInteractionPoint();
+
+        Location location;
 
         Map<String, String> eventData = new LinkedHashMap<>();
 
         if ( event.getHand() == EquipmentSlot.HAND ) {
-            eventData.put("action",     action.name().toUpperCase() );
+            eventData.put("action",         action.name().toUpperCase() );
         } else {
             return;
         }
 
         if (event.getItem() == null || event.getItem().getType().equals(Material.AIR)) {
-            eventData.put("item",            "AIR" );
+            eventData.put("item",            null );
         } else {
             eventData.put("item",            event.getItem().toString() );
         }
 
         if (block == null) {
-            eventData.put("event_block",     "NULL or ENTITY" );
+            eventData.put("event_block",     null );
         } else {
             eventData.put("event_block",     block.getType().toString().toUpperCase() );
         }
 
         if (block != null) {
-            eventData.put("event_world",     block.getWorld().getName().toUpperCase() );
-            eventData.put("event_location",  String.format("{x: %d, y: %d, z: %d}", block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ() ).toUpperCase() );
-
-        } else if (location == null) {
-            eventData.put("event_world",     "NULL" );
-            eventData.put("event_location",  "NULL" );
-
+            location = block.getLocation();
         } else {
-            eventData.put("event_world",     location.getWorld().getName().toUpperCase() );
-            eventData.put("event_location",  String.format("{x: %d, y: %d, z: %d}", location.getBlockX(), location.getBlockY(), location.getBlockZ() ).toUpperCase() );
-
+            location = null;
         }
-
 
         try {
 
@@ -73,7 +65,13 @@ public class InteractEvent implements Listener {
                 return;
             }
 
-            Event e = new Event("interact", player, eventData);
+            Event e;
+
+            if (location != null) {
+                e = new Event("interact", player, location, eventData);
+            } else {
+                e = new Event("interact", player, eventData);
+            }
 
             MonitorManager.saveEvent(e);
         } catch (Exception e) {

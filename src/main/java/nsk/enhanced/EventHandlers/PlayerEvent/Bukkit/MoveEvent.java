@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class MoveEvent implements Listener {
 
-    private static final double MIN_DISTANCE = 5;
+    private static final double MIN_DISTANCE = 15;
 
     private final Map<Player, Location> lastPositions = new LinkedHashMap<>();
 
@@ -35,6 +35,7 @@ public class MoveEvent implements Listener {
 
         if (lastPosition != null) {
             if (lastPosition.distance(to) < MIN_DISTANCE) {
+                ES.getInstance().getEnhancedLogger().info("Not registered");
                 return;
             } else {
                 lastPositions.put(player, to);
@@ -46,8 +47,10 @@ public class MoveEvent implements Listener {
 
         Map<String, String> eventData = new LinkedHashMap<>();
 
-        eventData.put("e_axis",     String.format("{x:%s,y:%s,z:%s}", to.getBlockX(), to.getBlockY(), to.getBlockZ()) );
-        eventData.put("e_orient",   String.format("{pitch:%.0f,yaw:%.0f}", to.getPitch(), to.getYaw()) );
+        eventData.put("position",     String.valueOf( event.hasChangedPosition() ));
+
+        //eventData.put("e_axis",     String.format("{x:%s,y:%s,z:%s}", to.getBlockX(), to.getBlockY(), to.getBlockZ()) );
+        //eventData.put("e_orient",   String.format("{p:%.0f,y:%.0f}", to.getPitch(), to.getYaw()) );
 
         Event e = new Event("move", player, lastPosition, eventData);
 

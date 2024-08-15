@@ -39,8 +39,15 @@ public class Event {
     @ElementCollection
     @CollectionTable(name = "surveillance_details", joinColumns = @JoinColumn(name = "event_id"))
     @MapKeyColumn(name = "event_key")
-    @Column(name = "event_value", columnDefinition = "TINYBLOB")
-    private Map<String, byte[]> eventData = new HashMap<>();
+    @AttributeOverrides({
+            @AttributeOverride(name = "eventValue", column = @Column(name = "event_value")),
+            @AttributeOverride(name = "pitch",      column = @Column(name = "pitch")),
+            @AttributeOverride(name = "x",          column = @Column(name = "x")),
+            @AttributeOverride(name = "y",          column = @Column(name = "y")),
+            @AttributeOverride(name = "yaw",        column = @Column(name = "yaw")),
+            @AttributeOverride(name = "z",          column = @Column(name = "z"))
+    })
+    private Map<String, EventDetails> eventData = new HashMap<>();
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
@@ -60,7 +67,7 @@ public class Event {
         this.uuid = player.getUniqueId().toString();
         this.world = player.getWorld().getName();
 
-        setEventData(eventData);
+        setEventData(eventData, new Location(player.getWorld(), 0, 0, 0, 0, 0));
 
         this.x = player.getLocation().getBlockX();
         this.y = player.getLocation().getBlockY();
@@ -85,7 +92,7 @@ public class Event {
         this.uuid = player.getUniqueId().toString();
         this.world = player.getWorld().getName();
 
-        setEventData(eventData);
+        setEventData(eventData, location);
 
         this.x = location.getBlockX();
         this.y = location.getBlockY();
@@ -105,7 +112,7 @@ public class Event {
     public String getUuid() { return uuid; }
     public String getWorld() { return world; }
 
-    public Map<String, byte[]> getEventData() { return eventData; }
+    public Map<String, EventDetails> getEventData() { return eventData; }
 
     public float getYaw() { return yaw; }
     public float getPitch() { return pitch; }
@@ -120,11 +127,13 @@ public class Event {
 
     // --- --- --- --- --- --- Compression --- --- --- --- --- --- //
 
-    private void setEventData(Map<String, String> eventData) {
+    private void setEventData(Map<String, String> eventData, Location location) {
         this.eventData = new HashMap<>();
         for (Map.Entry<String, String> entry : eventData.entrySet()) {
             try {
-                this.eventData.put(entry.getKey(), Compression.compress(entry.getValue()));
+                EventDetails details = new EventDetails( Compression.compress(entry.getValue()) , location);
+
+                this.eventData.put(entry.getKey(), details);
             } catch (Exception e) {
                 ES.getInstance().getEnhancedLogger().severe(e.getMessage());
             }
@@ -133,9 +142,9 @@ public class Event {
 
     private Map<String, String> getDecompressedEventData() {
         Map<String, String> decompressedData = new HashMap<>();
-        for (Map.Entry<String, byte[]> entry : eventData.entrySet()) {
+        for (Map.Entry<String, EventDetails> entry : eventData.entrySet()) {
             try {
-                decompressedData.put(entry.getKey(), Compression.decompress(entry.getValue()));
+                decompressedData.put(entry.getKey(), Compression.decompress(entry.getValue().getEventValue()));
             } catch (Exception e) {
                 ES.getInstance().getEnhancedLogger().severe(e.getMessage());
             }
