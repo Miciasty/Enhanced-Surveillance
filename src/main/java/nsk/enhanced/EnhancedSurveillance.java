@@ -3,7 +3,9 @@ package nsk.enhanced;
 import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.*;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
+import nsk.enhanced.System.Hibernate.Character;
 import nsk.enhanced.System.Hibernate.Event;
+import nsk.enhanced.System.Hibernate.WorldEntity;
 import nsk.enhanced.System.MemoryService;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,8 +14,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
@@ -30,9 +35,6 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
     private SessionFactory sessionFactory;
 
-    // private List<Character> characters = new ArrayList<>();
-    // private List<WorldEntity> worlds = new ArrayList<>();
-
     @Override
     public void onEnable() {
 
@@ -46,8 +48,8 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
         configureHibernate();
 
-        // loadCharactersFromDatabase();
-        // loadWorldsFromDatabase();
+        loadEntityFromDatabase(Character.class, Character.getCharacters());
+        loadEntityFromDatabase(WorldEntity.class, WorldEntity.getWorlds());
 
         loadBukkitPlayerEventListeners();
 
@@ -170,6 +172,8 @@ public final class EnhancedSurveillance extends JavaPlugin {
                     .setProperty("hibernate.use_sql_comments", sql_comments);
 
             cfg.addAnnotatedClass(Event.class);
+            cfg.addAnnotatedClass(Character.class);
+            cfg.addAnnotatedClass(WorldEntity.class);
 
             if (cfg.buildSessionFactory() != null) {
                 sessionFactory = cfg.buildSessionFactory();
@@ -311,53 +315,22 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
-    /*private void loadCharactersFromDatabase() {
+    private <T> void loadEntityFromDatabase(Class<T> entity, List<T> list) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Character> query = builder.createQuery(Character.class);
-            query.from(Character.class);
+            CriteriaQuery<T> query = builder.createQuery( entity );
+            query.from( entity );
 
-            List<Character> result = session.createQuery(query).getResultList();
-            characters.addAll(result);
-
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            enhancedLogger.severe("Loading characters failed - " + e.getMessage());
-        }
-    }
-    private void loadWorldsFromDatabase() {
-        try (Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<WorldEntity> query = builder.createQuery(WorldEntity.class);
-            query.from(WorldEntity.class);
-
-            List<WorldEntity> result = session.createQuery(query).getResultList();
-            worlds.addAll(result);
+            List<T> result = session.createQuery(query).getResultList();
+            list.addAll(result);
 
             session.getTransaction().commit();
         } catch (Exception e) {
-            enhancedLogger.severe("Loading worlds failed - " + e.getMessage());
+            enhancedLogger.severe("Loading " + entity.getSimpleName() + " failed - " + e.getMessage());
         }
     }
 
-    public List<Character> getCharacters() {
-        return characters;
-    }
-
-    public void addCharacter(Character character) {
-        characters.add(character);
-    }
-
-    public List<WorldEntity> getWorlds() {
-        return worlds;
-    }
-
-    public void addWorld(WorldEntity worldEntity) {
-        worlds.add(worldEntity);
-    }*/
 
 }

@@ -35,7 +35,6 @@ public class MoveEvent implements Listener {
 
         if (lastPosition != null) {
             if (lastPosition.distance(to) < MIN_DISTANCE) {
-                ES.getInstance().getEnhancedLogger().info("Not registered");
                 return;
             } else {
                 lastPositions.put(player, to);

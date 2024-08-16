@@ -3,6 +3,8 @@ package nsk.enhanced.System.Hibernate;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.Utils.Compression;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import javax.persistence.*;
@@ -18,17 +20,19 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID;
 
+    @ManyToOne
+    @JoinColumn(name = "character_id", nullable = false)
+    private Character character;
+
     @Column(nullable = true)
     private String type;
 
     @Column(nullable = true)
     private LocalDateTime timestamp;
 
-    @Column(nullable = false)
-    private String uuid;
-
-    @Column(nullable = false)
-    private String world;
+    @ManyToOne
+    @JoinColumn(name = "world_id", nullable = false)
+    private WorldEntity world;
 
     @Column(nullable = false)
     private int x, y, z;
@@ -62,10 +66,10 @@ public class Event {
 
             ) {
 
-        this.type = type;
-        this.timestamp = LocalDateTime.now();
-        this.uuid = player.getUniqueId().toString();
-        this.world = player.getWorld().getName();
+        this.type       = type;
+        this.timestamp  = LocalDateTime.now();
+        this.character  = Character.getCharacter(player);
+        this.world      = WorldEntity.getWorld(player.getWorld());
 
         setEventData(eventData, new Location(player.getWorld(), 0, 0, 0, 0, 0));
 
@@ -87,10 +91,10 @@ public class Event {
 
             ) {
 
-        this.type = type;
-        this.timestamp = LocalDateTime.now();
-        this.uuid = player.getUniqueId().toString();
-        this.world = player.getWorld().getName();
+        this.type       = type;
+        this.timestamp  = LocalDateTime.now();
+        this.character  = Character.getCharacter(player);
+        this.world      = WorldEntity.getWorld(player.getWorld());
 
         setEventData(eventData, location);
 
@@ -109,8 +113,15 @@ public class Event {
 
     public LocalDateTime getTimestamp() { return timestamp; }
 
-    public String getUuid() { return uuid; }
-    public String getWorld() { return world; }
+    public Character getCharacter() { return character; }
+    public WorldEntity getWorldEntity() { return world; }
+
+    public OfflinePlayer getPlayer() {
+        return ES.getInstance().getServer().getOfflinePlayer( character.getUuid() );
+    }
+    public World getWorld() {
+        return ES.getInstance().getServer().getWorld(world.getWorld());
+    }
 
     public Map<String, EventDetails> getEventData() { return eventData; }
 
