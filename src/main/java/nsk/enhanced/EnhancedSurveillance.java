@@ -1,6 +1,7 @@
 package nsk.enhanced;
 
 import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.*;
+import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Character;
@@ -9,6 +10,7 @@ import nsk.enhanced.System.Hibernate.WorldEntity;
 import nsk.enhanced.System.MemoryService;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,7 +21,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
@@ -58,6 +62,20 @@ public final class EnhancedSurveillance extends JavaPlugin {
     @Override
     public void onDisable() {
 
+        for (Player player : getServer().getOnlinePlayers()) {
+
+            Map<String, String> eventData = new LinkedHashMap<>();
+            eventData.put("ip", player.getAddress().getAddress().getHostAddress());
+
+            Event e = new Event("quit", player, player.getLocation(), eventData);
+
+            try {
+                MonitorManager.saveEvent(e);
+            } catch (Exception ex) {
+                ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/quit - " + ex.getMessage());
+            }
+
+        }
 
         MemoryService.shutdownAllServices();
     }
@@ -191,6 +209,10 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
     public EnhancedLogger getEnhancedLogger() {
         return enhancedLogger;
+    }
+
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //

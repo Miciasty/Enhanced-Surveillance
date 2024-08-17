@@ -14,6 +14,8 @@ import java.util.Set;
 
 public class ChatEvent implements Listener {
 
+    private static final int MAX_RECIPIENTS = 10;
+
     @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
 
@@ -28,17 +30,22 @@ public class ChatEvent implements Listener {
         Set<Player> recipients = event.getRecipients();
         int amount = recipients.size();
 
-        StringBuilder formattedRecipientsAsName = new StringBuilder();
+        //StringBuilder formattedRecipientsAsName = new StringBuilder();
         StringBuilder formattedRecipientsAsUUID = new StringBuilder();
         for (Player recipient : recipients) {
-            formattedRecipientsAsName.append( recipient.getName()     ).append(",");
+            //formattedRecipientsAsName.append( recipient.getName()     ).append(",");
             formattedRecipientsAsUUID.append( recipient.getUniqueId() ).append(",");
         }
-        formattedRecipientsAsName.setLength(formattedRecipientsAsName.length()-1);
+        //formattedRecipientsAsName.setLength(formattedRecipientsAsName.length()-1);
         formattedRecipientsAsUUID.setLength(formattedRecipientsAsUUID.length()-1);
 
         eventData.put("e_size_recipients", String.valueOf(amount));
-        eventData.put("e_uuid_recipients", String.format("{%s}", formattedRecipientsAsUUID) );
+
+        if (amount < MAX_RECIPIENTS) {
+            eventData.put("e_uuid_recipients", String.format("{%s}", formattedRecipientsAsUUID) );
+        } else {
+            eventData.put("e_uuid_recipients", null );
+        }
 
         Event e = new Event("chat", player, player.getLocation(), eventData);
 

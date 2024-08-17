@@ -46,7 +46,7 @@ public class MoveEvent implements Listener {
 
         Map<String, String> eventData = new LinkedHashMap<>();
 
-        eventData.put("position",     String.valueOf( event.hasChangedPosition() ));
+        //eventData.put("position",     String.valueOf( event.hasChangedPosition() ));
 
         //eventData.put("e_axis",     String.format("{x:%s,y:%s,z:%s}", to.getBlockX(), to.getBlockY(), to.getBlockZ()) );
         //eventData.put("e_orient",   String.format("{p:%.0f,y:%.0f}", to.getPitch(), to.getYaw()) );

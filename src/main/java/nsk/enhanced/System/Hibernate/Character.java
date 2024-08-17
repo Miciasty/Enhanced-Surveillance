@@ -25,6 +25,12 @@ public class Character {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = true)
+    private Long eventsAmount;
+
+    @Column(nullable = true)
+    private Long averageSessionTime;
+
     // --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
     public Character() {}
@@ -46,7 +52,33 @@ public class Character {
         return name;
     }
 
+    public Long getEventsAmount() {
+        return eventsAmount;
+    }
 
+    public Long getAverageSessionTime() {
+        return averageSessionTime;
+    }
+
+    // --- --- --- --- --- //
+
+    public void updateStatistics() {
+        long totalEvents = Event.getEventsSizeForCharacter(this);
+        long totalJoinEvents = Event.getEventsSizeForCharacter(this, "join");
+        long totalQuitEvents = Event.getEventsSizeForCharacter(this, "quit");
+
+        if (totalJoinEvents > 0 && totalQuitEvents > 0) {
+            long totalSessions = Math.min(totalJoinEvents, totalQuitEvents);
+            long totalSessionTime = Event.getTotalSessionTimeForCharacter(this);
+            this.averageSessionTime = totalSessionTime / totalSessions;
+        } else {
+            this.averageSessionTime = 0L;
+        }
+
+        this.eventsAmount = totalEvents;
+
+        ES.getInstance().saveEntity(this);
+    }
 
     // --- --- --- --- --- --- STATIC METHODS --- --- --- --- --- --- //
 
@@ -108,4 +140,5 @@ public class Character {
             ES.getInstance().getEnhancedLogger().severe(e.getMessage());
         }
     }
+
 }
