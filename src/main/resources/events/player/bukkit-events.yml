@@ -1,0 +1,71 @@
+
+# Enhanced Surveillance - Bukkit Events Configuration File
+
+events:
+
+    # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+    #
+    #   Monitoring settings
+    #
+    #   enabled: true / false
+    #   level: (0 - 3)
+    #
+    #   Level 0 -> No additional data related to this event will be collected and recorded.
+    #
+    #   Level 1 -> Only basic information related to this event will be collected and recorded.
+    #       Example:
+    #           - action:   "RIGHT_CLICK_BLOCK"
+    #
+    #   Level 2 -> More detailed information related to this event will be collected and recorded.
+    #       Example:
+    #           - action:   "RIGHT_CLICK_BLOCK"
+    #           - item:     "DIAMOND_SWORD"
+    #           - block:    "STONE"
+    #
+    #   Level 3 -> All additional information related to this event will be collected and recorded.
+    #       Example:
+    #           - action:   "RIGHT_CLICK_BLOCK"
+    #           - hand:     "MAIN_HAND"
+    #           - item:     "DIAMOND_SWORD"
+    #           - block:    "STONE"
+    #           - face:     "UP"
+    #
+    # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+    #
+    #   EXPERIMENTAL FEATURE!
+    #
+    #   Level 4 -> All possible information related to this event, items, blocks will be collected and recorded.
+    #       Example:
+    #           - Well I hope nobody will ever need to use it... but Level 4 may weight from 300 Bytes to 500 Mb per event.
+    #           - This level of monitoring records literally all possible information you could find in event that includes:
+    #               - All possible information about item player used.
+    #               - All possible information about interacted block.
+    #               - All possible information about Biome event happened.
+    #               - All possible information about Chunk event happened.
+    #               - There are about 18 more details I don't event want to write here
+    #               - In some events It may be even possible that recorded data may reach 1 GB of weight
+    #           - It's highly not recommended to ever use this level.
+    #
+    # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+
+    PlayerQuitJoinEvent:
+        enabled:                    true
+        level:                      0           # Levels:   0 / 1 / 2
+
+    #   WARNING!
+    #   If PlayerMoveEvent listener is enabled 90% of all events are Move events. It's not recommended to enable this listener.
+    #   However, you can minimize amount of records by changing setting of this listener.
+    #   - "distance" is a minimal distance between last and new position of player to record event.
+
+    PlayerMoveEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1 / 2 / 3
+        distance:                   15          # Not-Recommended lower numbers than 15
+
+    PlayerChatEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1 / 2 / 3
+
+    PlayerInteractEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1 / 2 / 3

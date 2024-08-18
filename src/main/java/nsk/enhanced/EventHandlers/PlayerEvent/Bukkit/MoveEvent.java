@@ -14,49 +14,52 @@ import java.util.Map;
 
 public class MoveEvent implements Listener {
 
-    private static final double MIN_DISTANCE = 15;
+    private static final double MIN_DISTANCE = ES.getInstance().getBukkitEventsFile().getInt("events.PlayerMoveEvent.distance", 15);
 
     private final Map<Player, Location> lastPositions = new LinkedHashMap<>();
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
 
-        Player player = event.getPlayer();
-        Location location = player.getLocation();
+        if (ES.getInstance().getBukkitEventsFile().getBoolean("events.PlayerMoveEvent.enabled", false)) {
 
-        Location from = event.getFrom();
-        Location to = event.getTo();
+            Player player = event.getPlayer();
+            Location location = player.getLocation();
 
-        if (from.getX() == to.getX() && from.getY() == to.getY() && from.getZ() == to.getZ()) {
-            return;
-        }
+            Location from = event.getFrom();
+            Location to = event.getTo();
 
-        Location lastPosition = lastPositions.get(player);
-
-        if (lastPosition != null) {
-            if (lastPosition.distance(to) < MIN_DISTANCE) {
+            if (from.getX() == to.getX() && from.getY() == to.getY() && from.getZ() == to.getZ()) {
                 return;
-            } else {
-                lastPositions.put(player, to);
             }
-        } else {
-            lastPositions.put(player, location);
-            lastPosition = lastPositions.get(player);
-        }
 
-        Map<String, String> eventData = new LinkedHashMap<>();
+            Location lastPosition = lastPositions.get(player);
 
-        //eventData.put("position",     String.valueOf( event.hasChangedPosition() ));
+            if (lastPosition != null) {
+                if (lastPosition.distance(to) < MIN_DISTANCE) {
+                    return;
+                } else {
+                    lastPositions.put(player, to);
+                }
+            } else {
+                lastPositions.put(player, location);
+                lastPosition = lastPositions.get(player);
+            }
 
-        //eventData.put("e_axis",     String.format("{x:%s,y:%s,z:%s}", to.getBlockX(), to.getBlockY(), to.getBlockZ()) );
-        //eventData.put("e_orient",   String.format("{p:%.0f,y:%.0f}", to.getPitch(), to.getYaw()) );
+            Map<String, String> eventData = new LinkedHashMap<>();
 
-        Event e = new Event("move", player, lastPosition, eventData);
+            //eventData.put("position",     String.valueOf( event.hasChangedPosition() ));
 
-        try {
-            MonitorManager.saveEvent(e);
-        } catch (Exception ex) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/move - " + ex.getMessage());
+            //eventData.put("e_axis",     String.format("{x:%s,y:%s,z:%s}", to.getBlockX(), to.getBlockY(), to.getBlockZ()) );
+            //eventData.put("e_orient",   String.format("{p:%.0f,y:%.0f}", to.getPitch(), to.getYaw()) );
+
+            Event e = new Event("move", player, lastPosition, eventData);
+
+            try {
+                MonitorManager.saveEvent(e);
+            } catch (Exception ex) {
+                ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/move - " + ex.getMessage());
+            }
         }
 
     }

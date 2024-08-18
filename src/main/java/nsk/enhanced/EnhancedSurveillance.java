@@ -37,6 +37,12 @@ public final class EnhancedSurveillance extends JavaPlugin {
     private File translationsFile;
     private FileConfiguration translations;
 
+    private File bukkitEventsFile;
+    private FileConfiguration bukkitEvents;
+
+    private File paperEventsFile;
+    private FileConfiguration paperEvents;
+
     private SessionFactory sessionFactory;
 
     @Override
@@ -49,6 +55,8 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
         loadConfiguration();
         //loadTranslations();
+        loadBukkitEvents();
+        loadPaperEvents();
 
         configureHibernate();
 
@@ -117,7 +125,7 @@ public final class EnhancedSurveillance extends JavaPlugin {
         //boolean isEnabled = config.getBoolean("EnhancedOres.settings.enabled");
         //enhancedLogger.info("Config enabled: " + isEnabled);
     }
-    private FileConfiguration getConfigFile() {
+    public FileConfiguration getConfigFile() {
         return config;
     }
     private void saveConfigFile() {
@@ -126,6 +134,34 @@ public final class EnhancedSurveillance extends JavaPlugin {
         } catch (IOException e) {
             enhancedLogger.log(Level.SEVERE, "Failed to save config file", e);
         }
+    }
+
+    private void loadBukkitEvents() {
+        enhancedLogger.warning("Loading bukkit events...");
+        bukkitEventsFile = new File(getDataFolder(), "events/player/bukkit-events.yml");
+        if (!bukkitEventsFile.exists()) {
+            bukkitEventsFile.getParentFile().mkdirs();
+            saveResource("events/player/bukkit-events.yml", false);
+        }
+
+        bukkitEvents = YamlConfiguration.loadConfiguration(bukkitEventsFile);
+    }
+    public FileConfiguration getBukkitEventsFile() {
+        return bukkitEvents;
+    }
+
+    private void loadPaperEvents() {
+        enhancedLogger.warning("Loading bukkit events...");
+        paperEventsFile = new File(getDataFolder(), "events/player/paper-events.yml");
+        if (!paperEventsFile.exists()) {
+            paperEventsFile.getParentFile().mkdirs();
+            saveResource("events/player/paper-events.yml", false);
+        }
+
+        paperEvents = YamlConfiguration.loadConfiguration(paperEventsFile);
+    }
+    public FileConfiguration getPaperEventsFile() {
+        return paperEvents;
     }
 
     private void loadTranslations() {
@@ -149,8 +185,10 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
     private void reloadConfiguration() {
         try {
-            loadTranslations();
+            //loadTranslations();
             loadConfiguration();
+            loadBukkitEvents();
+            loadPaperEvents();
             enhancedLogger.fine("Reloaded configuration");
 
         } catch (Exception e) {
