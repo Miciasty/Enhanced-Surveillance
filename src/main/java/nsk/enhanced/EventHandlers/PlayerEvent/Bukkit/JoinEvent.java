@@ -16,17 +16,21 @@ public class JoinEvent implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
 
-        Player player = event.getPlayer();
+        if (ES.getInstance().getBukkitEventsFile().getBoolean("events.PlayerJoinQuitEvent.enabled", false)) {
 
-        Map<String, String> eventData = new LinkedHashMap<>();
-        eventData.put("ip", event.getPlayer().getAddress().getAddress().getHostAddress());
+            Player player = event.getPlayer();
 
-        Event e = new Event("join", player, player.getLocation(), eventData);
+            Map<String, String> eventData = new LinkedHashMap<>();
+            eventData.put("ip", event.getPlayer().getAddress().getAddress().getHostAddress());
 
-        try {
-            MonitorManager.saveEvent(e);
-        } catch (Exception ex) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/join - " + ex.getMessage());
+            Event e = new Event("join", player, player.getLocation(), eventData);
+
+            try {
+                MonitorManager.saveEvent(e);
+            } catch (Exception ex) {
+                ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/join - " + ex.getMessage());
+            }
+
         }
     }
 

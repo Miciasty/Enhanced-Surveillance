@@ -5,6 +5,8 @@ import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Character;
+import nsk.enhanced.System.Hibernate.ChatEvent.Message;
+import nsk.enhanced.System.Hibernate.ChatEvent.Original;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.Hibernate.WorldEntity;
 import nsk.enhanced.System.MemoryService;
@@ -20,7 +22,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -230,6 +231,9 @@ public final class EnhancedSurveillance extends JavaPlugin {
             cfg.addAnnotatedClass(Event.class);
             cfg.addAnnotatedClass(Character.class);
             cfg.addAnnotatedClass(WorldEntity.class);
+
+            cfg.addAnnotatedClass(Original.class);
+            cfg.addAnnotatedClass(Message.class);
 
             if (cfg.buildSessionFactory() != null) {
                 sessionFactory = cfg.buildSessionFactory();

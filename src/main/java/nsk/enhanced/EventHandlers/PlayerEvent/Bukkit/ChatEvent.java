@@ -2,6 +2,7 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.Hibernate.ChatEvent.Message;
 import nsk.enhanced.System.Hibernate.Event;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,47 +15,30 @@ import java.util.Set;
 
 public class ChatEvent implements Listener {
 
-    private static final int MAX_RECIPIENTS = 10;
-
     @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
 
-        Player player  = event.getPlayer();
+        if (ES.getInstance().getBukkitEventsFile().getBoolean("events.PlayerChatEvent.enabled", false)) {
 
-        Map<String, String> eventData = new LinkedHashMap<>();
+            Player player  = event.getPlayer();
 
-        String message = event.getMessage();
+            Map<String, String> eventData = new LinkedHashMap<>();
 
-        eventData.put("e_message", message);
+            String message = event.getMessage();
 
-        Set<Player> recipients = event.getRecipients();
-        int amount = recipients.size();
 
-        //StringBuilder formattedRecipientsAsName = new StringBuilder();
-        StringBuilder formattedRecipientsAsUUID = new StringBuilder();
-        for (Player recipient : recipients) {
-            //formattedRecipientsAsName.append( recipient.getName()     ).append(",");
-            formattedRecipientsAsUUID.append( recipient.getUniqueId() ).append(",");
-        }
-        //formattedRecipientsAsName.setLength(formattedRecipientsAsName.length()-1);
-        formattedRecipientsAsUUID.setLength(formattedRecipientsAsUUID.length()-1);
+            try {
 
-        eventData.put("e_size_recipients", String.valueOf(amount));
+                ES.getInstance().saveEntity( new Message(player, message, event.getRecipients().size()) );
 
-        if (amount < MAX_RECIPIENTS) {
-            eventData.put("e_uuid_recipients", String.format("{%s}", formattedRecipientsAsUUID) );
-        } else {
-            eventData.put("e_uuid_recipients", null );
-        }
+                Event e = new Event("chat", player, player.getLocation(), eventData);
 
-        Event e = new Event("chat", player, player.getLocation(), eventData);
+                MonitorManager.saveEvent(e);
 
-        try {
+            } catch (Exception ex) {
+                ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/chat - " + ex.getMessage());
+            }
 
-            MonitorManager.saveEvent(e);
-
-        } catch (Exception ex) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/chat - " + ex.getMessage());
         }
 
     }

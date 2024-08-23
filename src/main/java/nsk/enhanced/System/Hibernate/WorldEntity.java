@@ -17,7 +17,7 @@ public class WorldEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name",nullable = false)
+    @Column(name = "name", nullable = false)
     private String world;
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- //
@@ -65,7 +65,7 @@ public class WorldEntity {
 
     public static WorldEntity getWorld(World world) {
         for (WorldEntity worldEntity : worlds) {
-            if (worldEntity.getWorld().equals(world.getName())) {
+            if (worldEntity.getWorld().equalsIgnoreCase(world.getName())) {
                 return worldEntity;
             }
         }

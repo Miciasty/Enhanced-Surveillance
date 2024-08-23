@@ -48,8 +48,8 @@ events:
     #
     # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
 
-    PlayerQuitJoinEvent:
-        enabled:                    true
+    PlayerJoinQuitEvent:
+        enabled:                    false
         level:                      0           # Levels:   0 / 1 / 2
 
     #   WARNING!

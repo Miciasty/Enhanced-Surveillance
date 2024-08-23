@@ -21,61 +21,65 @@ public class InteractEvent implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
 
-        Player player = event.getPlayer();
-        Block block = event.getClickedBlock();
-        Action action = event.getAction();
+        if (ES.getInstance().getBukkitEventsFile().getBoolean("events.PlayerInteractEvent.enabled", false)) {
 
-        Location location;
+            Player player = event.getPlayer();
+            Block block = event.getClickedBlock();
+            Action action = event.getAction();
 
-        Map<String, String> eventData = new LinkedHashMap<>();
+            Location location;
 
-        if ( event.getHand() == EquipmentSlot.HAND ) {
-            eventData.put("action",         action.name().toUpperCase() );
-        } else {
-            return;
-        }
+            Map<String, String> eventData = new LinkedHashMap<>();
 
-        if (event.getItem() == null || event.getItem().getType().equals(Material.AIR)) {
-            eventData.put("item",            null );
-        } else {
-            eventData.put("item",            event.getItem().toString() );
-        }
-
-        if (block == null) {
-            eventData.put("event_block",     null );
-        } else {
-            eventData.put("event_block",     block.getType().toString().toUpperCase() );
-        }
-
-        if (block != null) {
-            location = block.getLocation();
-        } else {
-            location = null;
-        }
-
-        try {
-
-            Map<String, Object> lastEvent = MonitorManager.getEvent(player, "PlayerEvents/interact");
-
-            if (lastEvent != null && "LEFT_CLICK_BLOCK".equals(lastEvent.get("action")) && "LEFT_CLICK_AIR".equals(action.name()) ) {
-                return;
-            }
-
-            if (lastEvent != null && "RIGHT_CLICK_BLOCK".equals(lastEvent.get("action")) && "RIGHT_CLICK_AIR".equals(action.name()) ) {
-                return;
-            }
-
-            Event e;
-
-            if (location != null) {
-                e = new Event("interact", player, location, eventData);
+            if ( event.getHand() == EquipmentSlot.HAND ) {
+                eventData.put("action",         action.name().toUpperCase() );
             } else {
-                e = new Event("interact", player, eventData);
+                return;
             }
 
-            MonitorManager.saveEvent(e);
-        } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/interact - " + e.getMessage());
+            if (event.getItem() == null || event.getItem().getType().equals(Material.AIR)) {
+                eventData.put("item",            null );
+            } else {
+                eventData.put("item",            event.getItem().toString() );
+            }
+
+            if (block == null) {
+                eventData.put("event_block",     null );
+            } else {
+                eventData.put("event_block",     block.getType().toString().toUpperCase() );
+            }
+
+            if (block != null) {
+                location = block.getLocation();
+            } else {
+                location = null;
+            }
+
+            try {
+
+                Map<String, Object> lastEvent = MonitorManager.getEvent(player, "PlayerEvents/interact");
+
+                if (lastEvent != null && "LEFT_CLICK_BLOCK".equals(lastEvent.get("action")) && "LEFT_CLICK_AIR".equals(action.name()) ) {
+                    return;
+                }
+
+                if (lastEvent != null && "RIGHT_CLICK_BLOCK".equals(lastEvent.get("action")) && "RIGHT_CLICK_AIR".equals(action.name()) ) {
+                    return;
+                }
+
+                Event e;
+
+                if (location != null) {
+                    e = new Event("interact", player, location, eventData);
+                } else {
+                    e = new Event("interact", player, eventData);
+                }
+
+                MonitorManager.saveEvent(e);
+            } catch (Exception e) {
+                ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/interact - " + e.getMessage());
+            }
+
         }
 
     }
