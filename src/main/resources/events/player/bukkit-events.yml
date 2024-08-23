@@ -62,9 +62,9 @@ events:
         level:                      0           # Levels:   0 / 1 / 2 / 3
         distance:                   15          # Not-Recommended lower numbers than 15
 
-    PlayerChatEvent:
+    AsyncPlayerChatEvent:
         enabled:                    false
-        level:                      0           # Levels:   0 / 1 / 2 / 3
+        level:                      0           # Levels:   0 / 1 / 2
 
     PlayerInteractEvent:
         enabled:                    false
