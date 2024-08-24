@@ -46,7 +46,6 @@ public class JoinEvent implements Listener {
 
             }
 
-
             Event e = new Event("join", player, player.getLocation(), eventData);
 
             try {
