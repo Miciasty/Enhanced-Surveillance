@@ -50,7 +50,7 @@ events:
 
     PlayerJoinQuitEvent:
         enabled:                    false
-        level:                      0           # Levels:   0 / 1 / 2
+        level:                      0           # Levels:   0 / 1 / 2 / 3
 
     #   WARNING!
     #   If PlayerMoveEvent listener is enabled 90% of all events are Move events. It's not recommended to enable this listener.
