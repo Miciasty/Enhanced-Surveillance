@@ -2,10 +2,13 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.Hibernate.Character;
 import nsk.enhanced.System.Hibernate.Event;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,10 +21,12 @@ import java.util.Map;
 
 public class InteractEvent implements Listener {
 
+    private static final FileConfiguration config = ES.getInstance().getBukkitEventsFile();
+
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
 
-        if (ES.getInstance().getBukkitEventsFile().getBoolean("events.PlayerInteractEvent.enabled", false)) {
+        if (config.getBoolean("events.PlayerInteractEvent.enabled", false)) {
 
             Player player = event.getPlayer();
             Block block = event.getClickedBlock();
@@ -31,22 +36,51 @@ public class InteractEvent implements Listener {
 
             Map<String, String> eventData = new LinkedHashMap<>();
 
-            if ( event.getHand() == EquipmentSlot.HAND ) {
-                eventData.put("action",         action.name().toUpperCase() );
-            } else {
-                return;
-            }
+            int level = config.getInt("events.PlayerInteractEvent.level", 0);
+            if ( level > 0 && level < 4) {
 
-            if (event.getItem() == null || event.getItem().getType().equals(Material.AIR)) {
-                eventData.put("item",            null );
-            } else {
-                eventData.put("item",            event.getItem().toString() );
-            }
+                if ( event.getHand() == EquipmentSlot.HAND ) {
+                    eventData.put("action",             action.name().toUpperCase() );
+                } else {
+                    return;
+                }
 
-            if (block == null) {
-                eventData.put("event_block",     null );
-            } else {
-                eventData.put("event_block",     block.getType().toString().toUpperCase() );
+                if (level > 1) {
+                    if (event.getItem() != null || !event.getItem().getType().equals(Material.AIR)) {
+                        eventData.put("item",            event.getItem().toString().toUpperCase() );
+                    }
+
+                    if (block != null) {
+                        eventData.put("event_block",     block.getType().toString().toUpperCase() );
+                    }
+                }
+
+                if (level > 2) {
+                    if (block != null) {
+
+                        eventData.put("event_face",     event.getBlockFace().toString().toUpperCase() );
+
+                        boolean rdst_nrb = false;
+
+                        for (int dx = -2; dx <= 2; dx++) {
+                            for (int dz = -2; dz <= 2; dz++) {
+                                Block relativeBlock = block.getRelative(dx, 0, dz);
+                                Material type = relativeBlock.getType();
+
+                                if (type == Material.REDSTONE_WIRE || type == Material.REPEATER || type == Material.REDSTONE_TORCH || type == Material.REDSTONE_BLOCK) {
+                                    rdst_nrb = true;
+                                    break;
+                                }
+                            }
+                            if (rdst_nrb) break;
+                        }
+
+                        eventData.put("rdst_nrb",       String.valueOf(rdst_nrb).toUpperCase());
+                    }
+                }
+
+            } else if (level < 0 || level > 3) {
+                ES.getInstance().getEnhancedLogger().warning("<green>'events.PlayerChatEvent.level'</green> can only be set to a maximum of 2. The provided value is invalid, so the event will default to level 0.");
             }
 
             if (block != null) {
@@ -57,13 +91,14 @@ public class InteractEvent implements Listener {
 
             try {
 
-                Map<String, Object> lastEvent = MonitorManager.getEvent(player, "PlayerEvents/interact");
+                Event lastEvent = Event.getLastEventByType(Character.getCharacter(player), "interact");
+                Map<String, String> lastEventData = lastEvent.getDecompressedEventData();
 
-                if (lastEvent != null && "LEFT_CLICK_BLOCK".equals(lastEvent.get("action")) && "LEFT_CLICK_AIR".equals(action.name()) ) {
+                if (lastEventData != null && "LEFT_CLICK_BLOCK".equals(lastEventData.get("action")) && "LEFT_CLICK_AIR".equals(action.name()) ) {
                     return;
                 }
 
-                if (lastEvent != null && "RIGHT_CLICK_BLOCK".equals(lastEvent.get("action")) && "RIGHT_CLICK_AIR".equals(action.name()) ) {
+                if (lastEventData != null && "RIGHT_CLICK_BLOCK".equals(lastEventData.get("action")) && "RIGHT_CLICK_AIR".equals(action.name()) ) {
                     return;
                 }
 

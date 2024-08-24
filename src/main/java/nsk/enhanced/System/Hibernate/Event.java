@@ -1,6 +1,7 @@
 package nsk.enhanced.System.Hibernate;
 
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.MemoryService;
 import nsk.enhanced.System.Utils.Compression;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -168,7 +169,7 @@ public class Event {
         }
     }
 
-    private Map<String, String> getDecompressedEventData() {
+    public Map<String, String> getDecompressedEventData() {
         Map<String, String> decompressedData = new HashMap<>();
         for (Map.Entry<String, EventDetails> entry : eventData.entrySet()) {
             try {
@@ -414,5 +415,43 @@ public class Event {
         return totalSessionTime;
     }
 
+    public static Event getLastEventByType(Character character, String type) {
+
+        Event lastEvent = null;
+
+        try (Session session = ES.getInstance().getSessionFactory().openSession()) {
+            session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Event> query = builder.createQuery(Event.class);
+            Root<Event> root = query.from(Event.class);
+
+            query.select(root)
+                    .where(
+                            builder.and(
+                                    builder.equal(root.get("character"), character),
+                                    builder.equal(root.get("type"), type)
+                            )
+                    )
+                    .orderBy(builder.asc(root.get("timestamp")));
+
+            List<Event> events = session.createQuery(query)
+                    .setMaxResults(1)
+                    .getResultList();
+
+            if (!events.isEmpty()) {
+                lastEvent = events.get(0);
+            }
+
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            ES.getInstance().getEnhancedLogger().severe("Failed to load last event for "
+                    + ((character != null) ? character.getUuid() : "unknown")
+                    + " with type " + type + ": " + e.getMessage());
+        }
+
+        return lastEvent;
+
+    }
 
 }
