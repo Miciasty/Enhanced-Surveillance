@@ -66,6 +66,14 @@ events:
         enabled:                    false
         level:                      0           # Levels:   0 / 1 / 2
 
+    PlayerCommandPreprocessEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1
+
     PlayerInteractEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1 / 2 / 3
+
+    PlayerInteractEntityEvent:
         enabled:                    false
         level:                      0           # Levels:   0 / 1 / 2 / 3

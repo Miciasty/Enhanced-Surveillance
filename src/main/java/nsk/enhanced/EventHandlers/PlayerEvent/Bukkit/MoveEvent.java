@@ -1,6 +1,6 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
-import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Extended.ExtMoveEvent;
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Extended.ExtMove;
 import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.Hibernate.Event;
@@ -20,7 +20,7 @@ public class MoveEvent implements Listener {
     private static final FileConfiguration config = ES.getInstance().getBukkitEventsFile();
     private static final double MIN_DISTANCE = config.getInt("events.PlayerMoveEvent.distance", 15);
 
-    private final Map<Player, ExtMoveEvent> lastPositions = new LinkedHashMap<>();
+    private final Map<Player, ExtMove> lastPositions = new LinkedHashMap<>();
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -35,16 +35,16 @@ public class MoveEvent implements Listener {
             if (from.getX() == to.getX() && from.getY() == to.getY() && from.getZ() == to.getZ()) {
                 return;
             }
-            ExtMoveEvent lastPosition = lastPositions.get(player);
+            ExtMove lastPosition = lastPositions.get(player);
 
             if (lastPosition != null) {
                 if (lastPosition.getTo().distance(to) < MIN_DISTANCE) {
                     return;
                 } else {
-                    lastPositions.put(player, new ExtMoveEvent(player, from, to));
+                    lastPositions.put(player, new ExtMove(player, from, to));
                 }
             } else {
-                lastPositions.put(player, new ExtMoveEvent(player, from, to));
+                lastPositions.put(player, new ExtMove(player, from, to));
                 lastPosition = lastPositions.get(player);
             }
 

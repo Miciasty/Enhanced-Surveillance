@@ -6,11 +6,11 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ExtMoveEvent extends PlayerMoveEvent {
+public class ExtMove extends PlayerMoveEvent {
 
     private final long timestamp = System.currentTimeMillis();
 
-    public ExtMoveEvent(@NotNull Player player, @NotNull Location from, @Nullable Location to) {
+    public ExtMove(@NotNull Player player, @NotNull Location from, @Nullable Location to) {
         super(player, from, to);
     }
 

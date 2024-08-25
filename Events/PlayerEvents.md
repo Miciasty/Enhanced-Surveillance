@@ -4,7 +4,7 @@
 - [x] PlayerQuitEvent
 - [x] PlayerMoveEvent
 - [x] PlayerChatEvent
-- [ ] PlayerCommandPreprocessEvent
+- [x] PlayerCommandPreprocessEvent
 - [x] PlayerInteractEvent
 - [ ] PlayerInteractEntityEvent
 - [ ] PlayerToggleSneakEvent

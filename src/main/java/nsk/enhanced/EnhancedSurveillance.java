@@ -5,6 +5,7 @@ import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Character;
+import nsk.enhanced.System.Hibernate.ChatEvent.Command;
 import nsk.enhanced.System.Hibernate.ChatEvent.Message;
 import nsk.enhanced.System.Hibernate.ChatEvent.Original;
 import nsk.enhanced.System.Hibernate.Event;
@@ -104,6 +105,9 @@ public final class EnhancedSurveillance extends JavaPlugin {
         }
         try {getServer().getPluginManager().registerEvents(new ChatEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("ChatEvent listener is not loaded!");
+        }
+        try {getServer().getPluginManager().registerEvents(new CommandPreprocessEvent(), this);} catch (Exception e) {
+            enhancedLogger.severe("CommandPreprocessEvent listener is not loaded!");
         }
         try {getServer().getPluginManager().registerEvents(new InteractEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("InteractEvent listener is not loaded!");
@@ -234,6 +238,7 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
             cfg.addAnnotatedClass(Original.class);
             cfg.addAnnotatedClass(Message.class);
+            cfg.addAnnotatedClass(Command.class);
 
             if (cfg.buildSessionFactory() != null) {
                 sessionFactory = cfg.buildSessionFactory();
