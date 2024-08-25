@@ -112,6 +112,9 @@ public final class EnhancedSurveillance extends JavaPlugin {
         try {getServer().getPluginManager().registerEvents(new InteractEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("InteractEvent listener is not loaded!");
         }
+        try {getServer().getPluginManager().registerEvents(new InteractEntityEvent(), this);} catch (Exception e) {
+            enhancedLogger.severe("InteractEntityEvent listener is not loaded!");
+        }
 
     }
 
