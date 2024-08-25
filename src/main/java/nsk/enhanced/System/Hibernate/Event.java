@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
 import javax.persistence.*;
@@ -441,6 +442,8 @@ public class Event {
 
             if (!events.isEmpty()) {
                 lastEvent = events.get(0);
+
+                Hibernate.initialize(lastEvent.getEventData());
             }
 
             session.getTransaction().commit();

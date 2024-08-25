@@ -41,17 +41,37 @@ public class InteractEvent implements Listener {
 
                 if ( event.getHand() == EquipmentSlot.HAND ) {
                     eventData.put("action",             action.name().toUpperCase() );
+                    if (ES.debugMode()) ES.log().info("Action: <gold>" + action.name().toUpperCase());
+
+                    if (level > 1) {
+                        if (event.getItem() != null && !event.getItem().getType().equals(Material.AIR)) {
+                            eventData.put("item",            event.getItem().toString().toUpperCase() );
+
+                            if (ES.debugMode()) ES.log().info("Item: <gold>" + event.getItem().toString().toUpperCase());
+                        }
+                    }
+
+                } else if ( event.getHand() == EquipmentSlot.OFF_HAND ) {
+                    eventData.put("action",             action.name().toUpperCase() );
+                    if (ES.debugMode()) ES.log().info("Offhand Action: <gold>" + action.name().toUpperCase());
+
+                    if (level > 1) {
+                        if (event.getItem() != null && !event.getItem().getType().equals(Material.AIR)) {
+                            eventData.put("item",            event.getItem().toString().toUpperCase() );
+
+                            if (ES.debugMode()) ES.log().info("Item: <gold>" + event.getItem().toString().toUpperCase());
+                        }
+                    }
                 } else {
                     return;
                 }
 
                 if (level > 1) {
-                    if (event.getItem() != null || !event.getItem().getType().equals(Material.AIR)) {
-                        eventData.put("item",            event.getItem().toString().toUpperCase() );
-                    }
 
                     if (block != null) {
                         eventData.put("event_block",     block.getType().toString().toUpperCase() );
+
+                        if (ES.debugMode()) ES.log().info("Block: <gold>" + block.getType().toString().toUpperCase());
                     }
                 }
 
@@ -59,6 +79,8 @@ public class InteractEvent implements Listener {
                     if (block != null) {
 
                         eventData.put("event_face",     event.getBlockFace().toString().toUpperCase() );
+
+                        if (ES.debugMode()) ES.log().info("BlockFace: <gold>" + event.getBlockFace().toString().toUpperCase());
 
                         boolean rdst_nrb = false;
 
@@ -76,6 +98,8 @@ public class InteractEvent implements Listener {
                         }
 
                         eventData.put("rdst_nrb",       String.valueOf(rdst_nrb).toUpperCase());
+
+                        if (ES.debugMode()) ES.log().info("Redstone nearby: <gold>" + rdst_nrb);
                     }
                 }
 
@@ -92,14 +116,18 @@ public class InteractEvent implements Listener {
             try {
 
                 Event lastEvent = Event.getLastEventByType(Character.getCharacter(player), "interact");
-                Map<String, String> lastEventData = lastEvent.getDecompressedEventData();
 
-                if (lastEventData != null && "LEFT_CLICK_BLOCK".equals(lastEventData.get("action")) && "LEFT_CLICK_AIR".equals(action.name()) ) {
-                    return;
-                }
+                if (lastEvent != null) {
 
-                if (lastEventData != null && "RIGHT_CLICK_BLOCK".equals(lastEventData.get("action")) && "RIGHT_CLICK_AIR".equals(action.name()) ) {
-                    return;
+                    Map<String, String> lastEventData = lastEvent.getDecompressedEventData();
+
+                    if (lastEventData != null && "LEFT_CLICK_BLOCK".equals(lastEventData.get("action")) && "LEFT_CLICK_AIR".equals(action.name()) ) {
+                        return;
+                    }
+
+                    if (lastEventData != null && "RIGHT_CLICK_BLOCK".equals(lastEventData.get("action")) && "RIGHT_CLICK_AIR".equals(action.name()) ) {
+                        return;
+                    }
                 }
 
                 Event e;
