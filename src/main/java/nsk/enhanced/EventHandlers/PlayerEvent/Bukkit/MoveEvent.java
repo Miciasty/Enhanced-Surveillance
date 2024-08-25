@@ -1,22 +1,26 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Extended.ExtMoveEvent;
 import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.Hibernate.Event;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.util.Vector;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MoveEvent implements Listener {
 
-    private static final double MIN_DISTANCE = ES.getInstance().getBukkitEventsFile().getInt("events.PlayerMoveEvent.distance", 15);
+    private static final FileConfiguration config = ES.getInstance().getBukkitEventsFile();
+    private static final double MIN_DISTANCE = config.getInt("events.PlayerMoveEvent.distance", 15);
 
-    private final Map<Player, Location> lastPositions = new LinkedHashMap<>();
+    private final Map<Player, ExtMoveEvent> lastPositions = new LinkedHashMap<>();
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -24,7 +28,6 @@ public class MoveEvent implements Listener {
         if (ES.getInstance().getBukkitEventsFile().getBoolean("events.PlayerMoveEvent.enabled", false)) {
 
             Player player = event.getPlayer();
-            Location location = player.getLocation();
 
             Location from = event.getFrom();
             Location to = event.getTo();
@@ -32,28 +35,47 @@ public class MoveEvent implements Listener {
             if (from.getX() == to.getX() && from.getY() == to.getY() && from.getZ() == to.getZ()) {
                 return;
             }
-
-            Location lastPosition = lastPositions.get(player);
+            ExtMoveEvent lastPosition = lastPositions.get(player);
 
             if (lastPosition != null) {
-                if (lastPosition.distance(to) < MIN_DISTANCE) {
+                if (lastPosition.getTo().distance(to) < MIN_DISTANCE) {
                     return;
                 } else {
-                    lastPositions.put(player, to);
+                    lastPositions.put(player, new ExtMoveEvent(player, from, to));
                 }
             } else {
-                lastPositions.put(player, location);
+                lastPositions.put(player, new ExtMoveEvent(player, from, to));
                 lastPosition = lastPositions.get(player);
             }
 
             Map<String, String> eventData = new LinkedHashMap<>();
 
-            //eventData.put("position",     String.valueOf( event.hasChangedPosition() ));
+            int level = config.getInt("events.PlayerMoveEvent.level", 0);
+            if (level > 0 && level < 4) {
 
-            //eventData.put("e_axis",     String.format("{x:%s,y:%s,z:%s}", to.getBlockX(), to.getBlockY(), to.getBlockZ()) );
-            //eventData.put("e_orient",   String.format("{p:%.0f,y:%.0f}", to.getPitch(), to.getYaw()) );
+                if (!lastPosition.getTo().equals(player.getLocation())) {
+                    eventData.put("distance",           String.valueOf(lastPosition.getTo().distance(to)));
+                }
 
-            Event e = new Event("move", player, lastPosition, eventData);
+                if (level > 1) {
+                    if (lastPosition.getTo().distance(to) > MIN_DISTANCE) {
+                        eventData.put("teleported",     "TRUE");
+                    }
+
+                    Vector direction = to.toVector().subtract(lastPosition.getTo().toVector()).normalize();
+                    eventData.put("direction",          direction.toString().toUpperCase());
+                }
+
+                if (level > 2) {
+                    long timeElapsed = System.currentTimeMillis() - lastPosition.getTimestamp();
+                    double speed = lastPosition.getTo().distance(to) / (timeElapsed / 1000.0);
+
+                    eventData.put("speed",              String.valueOf(speed));
+                }
+
+            }
+
+            Event e = new Event("move", player, lastPosition.getTo(), eventData);
 
             try {
                 MonitorManager.saveEvent(e);
