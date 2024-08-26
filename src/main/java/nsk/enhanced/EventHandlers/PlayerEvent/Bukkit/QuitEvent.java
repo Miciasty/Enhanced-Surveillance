@@ -19,40 +19,40 @@ public class QuitEvent implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
 
-        if (config.getBoolean("events.PlayerJoinQuitEvent.enabled", false)) {
+        if (!config.getBoolean("events.PlayerJoinQuitEvent.enabled", false)) {
+            return;
+        }
 
-            Player player = event.getPlayer();
+        Player player = event.getPlayer();
 
-            Map<String, String> eventData = new LinkedHashMap<>();
+        Map<String, String> eventData = new LinkedHashMap<>();
 
-            int level = config.getInt("events.PlayerJoinQuitEvent.level", 0);
-            if (level > 0 && level < 4) {
+        int level = config.getInt("events.PlayerJoinQuitEvent.level", 0);
+        if (level > 0 && level < 4) {
 
-                eventData.put("health",     String.valueOf(player.getHealth())      .toUpperCase());
-                eventData.put("hunger",     String.valueOf(player.getFoodLevel())   .toUpperCase());
+            eventData.put("health",     String.valueOf(player.getHealth())      .toUpperCase());
+            eventData.put("hunger",     String.valueOf(player.getFoodLevel())   .toUpperCase());
 
-                if (level > 1) {
-                    eventData.put("exp",    String.valueOf(player.getExp())         .toUpperCase());
-                    eventData.put("mode",   String.valueOf(player.getGameMode())    .toUpperCase());
-                    eventData.put("op",     String.valueOf(player.isOp())           .toUpperCase());
-                }
-
-                if (level > 2) {
-                    eventData.put("ip",     player.getAddress().getAddress().getHostAddress()     );
-                    eventData.put("port",   String.valueOf(player.getAddress().getPort())         );
-                    eventData.put("host",   player.getAddress().getHostName()       .toUpperCase());
-                }
-
+            if (level > 1) {
+                eventData.put("exp",    String.valueOf(player.getExp())         .toUpperCase());
+                eventData.put("mode",   String.valueOf(player.getGameMode())    .toUpperCase());
+                eventData.put("op",     String.valueOf(player.isOp())           .toUpperCase());
             }
 
-            Event e = new Event("quit", player, player.getLocation(), eventData);
-
-            try {
-                MonitorManager.saveEvent(e);
-            } catch (Exception ex) {
-                ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/quit - " + ex.getMessage());
+            if (level > 2) {
+                eventData.put("ip",     player.getAddress().getAddress().getHostAddress()     );
+                eventData.put("port",   String.valueOf(player.getAddress().getPort())         );
+                eventData.put("host",   player.getAddress().getHostName()       .toUpperCase());
             }
 
+        }
+
+        Event e = new Event("quit", player, player.getLocation(), eventData);
+
+        try {
+            MonitorManager.saveEvent(e);
+        } catch (Exception ex) {
+            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/quit - " + ex.getMessage());
         }
     }
 

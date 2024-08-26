@@ -26,7 +26,7 @@ public class InteractEvent implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
 
-        if (config.getBoolean("events.PlayerInteractEvent.enabled", false)) {
+        if (!config.getBoolean("events.PlayerInteractEvent.enabled", false)) {
             return;
         }
 

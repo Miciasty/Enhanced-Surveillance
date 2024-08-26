@@ -20,57 +20,57 @@ public class JoinEvent implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
 
-        if (config.getBoolean("events.PlayerJoinQuitEvent.enabled", false)) {
+        if (!config.getBoolean("events.PlayerJoinQuitEvent.enabled", false)) {
+            return;
+        }
 
-            Player player = event.getPlayer();
+        Player player = event.getPlayer();
 
-            Map<String, String> eventData = new LinkedHashMap<>();
+        Map<String, String> eventData = new LinkedHashMap<>();
 
-            int level = config.getInt("events.PlayerJoinQuitEvent.level", 0);
-            if (level > 0 && level < 4) {
+        int level = config.getInt("events.PlayerJoinQuitEvent.level", 0);
+        if (level > 0 && level < 4) {
 
-                eventData.put("health",     String.valueOf(player.getHealth())      .toUpperCase());
-                eventData.put("hunger",     String.valueOf(player.getFoodLevel())   .toUpperCase());
+            eventData.put("health",     String.valueOf(player.getHealth())      .toUpperCase());
+            eventData.put("hunger",     String.valueOf(player.getFoodLevel())   .toUpperCase());
+
+            if (ES.debugMode()) {
+                ES.log().info("Health: <red>" + player.getHealth());
+                ES.log().info("Hunger: <green>" + player.getFoodLevel());
+            };
+
+            if (level > 1) {
+                eventData.put("exp",    String.valueOf(player.getExp())         .toUpperCase());
+                eventData.put("mode",   String.valueOf(player.getGameMode())    .toUpperCase());
+                eventData.put("op",     String.valueOf(player.isOp())           .toUpperCase());
 
                 if (ES.debugMode()) {
-                    ES.log().info("Health: <red>" + player.getHealth());
-                    ES.log().info("Hunger: <green>" + player.getFoodLevel());
-                };
-
-                if (level > 1) {
-                    eventData.put("exp",    String.valueOf(player.getExp())         .toUpperCase());
-                    eventData.put("mode",   String.valueOf(player.getGameMode())    .toUpperCase());
-                    eventData.put("op",     String.valueOf(player.isOp())           .toUpperCase());
-
-                    if (ES.debugMode()) {
-                        ES.log().info("Exp:  <aqua>" + player.getExp());
-                        ES.log().info("Mode: <green>" + player.getGameMode());
-                        ES.log().info("Op:   <green>" + player.isOp());
-                    }
+                    ES.log().info("Exp:  <aqua>" + player.getExp());
+                    ES.log().info("Mode: <green>" + player.getGameMode());
+                    ES.log().info("Op:   <green>" + player.isOp());
                 }
-
-                if (level > 2) {
-                    eventData.put("ip",     player.getAddress().getAddress().getHostAddress()     );
-                    eventData.put("port",   String.valueOf(player.getAddress().getPort())         );
-                    eventData.put("host",   player.getAddress().getHostName()       .toUpperCase());
-
-                    if (ES.debugMode()) {
-                        ES.log().info("Ip:   <aqua>" + player.getAddress().getAddress().getHostAddress());
-                        ES.log().info("Port: <green>" + player.getAddress().getPort());
-                        ES.log().info("Host: <green>" + player.getAddress().getHostName());
-                    }
-                }
-
             }
 
-            Event e = new Event("join", player, player.getLocation(), eventData);
+            if (level > 2) {
+                eventData.put("ip",     player.getAddress().getAddress().getHostAddress()     );
+                eventData.put("port",   String.valueOf(player.getAddress().getPort())         );
+                eventData.put("host",   player.getAddress().getHostName()       .toUpperCase());
 
-            try {
-                MonitorManager.saveEvent(e);
-            } catch (Exception ex) {
-                ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/join - " + ex.getMessage());
+                if (ES.debugMode()) {
+                    ES.log().info("Ip:   <aqua>" + player.getAddress().getAddress().getHostAddress());
+                    ES.log().info("Port: <green>" + player.getAddress().getPort());
+                    ES.log().info("Host: <green>" + player.getAddress().getHostName());
+                }
             }
 
+        }
+
+        Event e = new Event("join", player, player.getLocation(), eventData);
+
+        try {
+            MonitorManager.saveEvent(e);
+        } catch (Exception ex) {
+            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/join - " + ex.getMessage());
         }
     }
 
