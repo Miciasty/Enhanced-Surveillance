@@ -25,67 +25,69 @@ public class MoveEvent implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
 
-        if (ES.getInstance().getBukkitEventsFile().getBoolean("events.PlayerMoveEvent.enabled", false)) {
+        if (!config.getBoolean("events.PlayerMoveEvent.enabled", false)) {
+            return;
+        }
 
-            Player player = event.getPlayer();
+        Player player = event.getPlayer();
 
-            Location from = event.getFrom();
-            Location to = event.getTo();
+        Location from = event.getFrom();
+        Location to = event.getTo();
 
-            if (from.getX() == to.getX() && from.getY() == to.getY() && from.getZ() == to.getZ()) {
+        if (from.getX() == to.getX() && from.getY() == to.getY() && from.getZ() == to.getZ()) {
+            return;
+        }
+
+        ExtMove lastPosition = lastPositions.get(player);
+
+        if (lastPosition != null) {
+            if (lastPosition.getTo().distance(to) < MIN_DISTANCE) {
                 return;
-            }
-            ExtMove lastPosition = lastPositions.get(player);
-
-            if (lastPosition != null) {
-                if (lastPosition.getTo().distance(to) < MIN_DISTANCE) {
-                    return;
-                } else {
-                    lastPositions.put(player, new ExtMove(player, from, to));
-                }
             } else {
                 lastPositions.put(player, new ExtMove(player, from, to));
-                lastPosition = lastPositions.get(player);
+            }
+        } else {
+            lastPositions.put(player, new ExtMove(player, from, to));
+            lastPosition = lastPositions.get(player);
+        }
+
+        Map<String, String> eventData = new LinkedHashMap<>();
+
+        int level = config.getInt("events.PlayerMoveEvent.level", 0);
+        if (level > 0 && level < 4) {
+
+            if (!lastPosition.getTo().equals(player.getLocation())) {
+                eventData.put("distance",           String.valueOf(lastPosition.getTo().distance(to)));
+                if (ES.debugMode()) ES.log().info("Distance: <gold>" + lastPosition.getTo().distance(to));
             }
 
-            Map<String, String> eventData = new LinkedHashMap<>();
-
-            int level = config.getInt("events.PlayerMoveEvent.level", 0);
-            if (level > 0 && level < 4) {
-
-                if (!lastPosition.getTo().equals(player.getLocation())) {
-                    eventData.put("distance",           String.valueOf(lastPosition.getTo().distance(to)));
-                    if (ES.debugMode()) ES.log().info("Distance: <gold>" + lastPosition.getTo().distance(to));
+            if (level > 1) {
+                if (lastPosition.getTo().distance(to) > MIN_DISTANCE + 2) {
+                    eventData.put("teleported",     "TRUE");
+                    if (ES.debugMode()) ES.log().info("Teleported: <gold>TRUE");
                 }
 
-                if (level > 1) {
-                    if (lastPosition.getTo().distance(to) > MIN_DISTANCE + 2) {
-                        eventData.put("teleported",     "TRUE");
-                        if (ES.debugMode()) ES.log().info("Teleported: <gold>TRUE");
-                    }
-
-                    Vector direction = to.toVector().subtract(lastPosition.getTo().toVector()).normalize();
-                    eventData.put("direction",          direction.toString().toUpperCase());
-                    if (ES.debugMode()) ES.log().info("Direction: <gold>" + direction);
-                }
-
-                if (level > 2) {
-                    long timeElapsed = System.currentTimeMillis() - lastPosition.getTimestamp();
-                    double speed = lastPosition.getTo().distance(to) / (timeElapsed / 1000.0);
-
-                    eventData.put("speed",              String.valueOf(speed));
-                    if (ES.debugMode()) ES.log().info("Speed: <gold>" + speed);
-                }
-
+                Vector direction = to.toVector().subtract(lastPosition.getTo().toVector()).normalize();
+                eventData.put("direction",          direction.toString().toUpperCase());
+                if (ES.debugMode()) ES.log().info("Direction: <gold>" + direction);
             }
 
-            Event e = new Event("move", player, lastPosition.getTo(), eventData);
+            if (level > 2) {
+                long timeElapsed = System.currentTimeMillis() - lastPosition.getTimestamp();
+                double speed = lastPosition.getTo().distance(to) / (timeElapsed / 1000.0);
 
-            try {
-                MonitorManager.saveEvent(e);
-            } catch (Exception ex) {
-                ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/move - " + ex.getMessage());
+                eventData.put("speed",              String.valueOf(speed));
+                if (ES.debugMode()) ES.log().info("Speed: <gold>" + speed);
             }
+
+        }
+
+        Event e = new Event("move", player, lastPosition.getTo(), eventData);
+
+        try {
+            MonitorManager.saveEvent(e);
+        } catch (Exception ex) {
+            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/move - " + ex.getMessage());
         }
 
     }
