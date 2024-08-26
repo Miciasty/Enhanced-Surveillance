@@ -20,70 +20,70 @@ public class ChatEvent implements Listener {
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
 
-        if (config.getBoolean("events.AsyncPlayerChatEvent.enabled", false)) {
+        // early-return
+        if (!config.getBoolean("events.AsyncPlayerChatEvent.enabled", false)) {
+            return;
+        }
 
-            Player player  = event.getPlayer();
+        Player player  = event.getPlayer();
+        String message = event.getMessage();
 
-            Map<String, String> eventData = new LinkedHashMap<>();
+        Map<String, String> eventData = new LinkedHashMap<>();
 
-            String message = event.getMessage();
+        int level = config.getInt("events.AsyncPlayerChatEvent.level", 0);
+        if ( level > 0 && level < 3) {
 
-            int level = config.getInt("events.AsyncPlayerChatEvent.level", 0);
-            if ( level > 0 && level < 3) {
+            Set<Player> recipients = event.getRecipients();
 
-                Set<Player> recipients = event.getRecipients();
+            List<Double> distances = new ArrayList<>();
+            double totalDistance = 0;
 
-                List<Double> distances = new ArrayList<>();
-                double totalDistance = 0;
+            for (Player recipient : recipients) {
+                if (recipient != player) {
 
-                for (Player recipient : recipients) {
-                    if (recipient != player) {
+                    Location recipientLocation = recipient.getLocation();
+                    double distance = recipientLocation.distance(player.getLocation());
+                    totalDistance += distance;
+                    distances.add(distance);
 
-                        Location recipientLocation = recipient.getLocation();
-                        double distance = recipientLocation.distance(player.getLocation());
-                        totalDistance += distance;
-                        distances.add(distance);
+                }
+            }
 
+            eventData.put("avgDist", String.valueOf(totalDistance / (recipients.size() - 1)) );
+
+            if (level > 1) {
+
+                double minDistance = 0;
+                double maxDistance = 0;
+
+                for (Double distance : distances) {
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                    }
+                    if (distance > maxDistance) {
+                        maxDistance = distance;
                     }
                 }
 
-                eventData.put("avgDist", String.valueOf(totalDistance / (recipients.size() - 1)) );
-
-                if (level > 1) {
-
-                    double minDistance = 0;
-                    double maxDistance = 0;
-
-                    for (Double distance : distances) {
-                        if (distance < minDistance) {
-                            minDistance = distance;
-                        }
-                        if (distance > maxDistance) {
-                            maxDistance = distance;
-                        }
-                    }
-
-                    eventData.put("minDist", String.valueOf(minDistance));
-                    eventData.put("maxDist", String.valueOf(maxDistance));
-                }
-
-            } else if (level < 0 || level > 2) {
-                ES.getInstance().getEnhancedLogger().warning("<green>'events.PlayerChatEvent.level'</green> can only be set to a maximum of 2. The provided value is invalid, so the event will default to level 0.");
+                eventData.put("minDist", String.valueOf(minDistance));
+                eventData.put("maxDist", String.valueOf(maxDistance));
             }
 
+        } else if (level < 0 || level > 2) {
+            ES.getInstance().getEnhancedLogger().warning("<green>'events.PlayerChatEvent.level'</green> can only be set to a maximum of 2. The provided value is invalid, so the event will default to level 0.");
+        }
 
-            try {
 
-                ES.getInstance().saveEntity( new Message(player, message, event.getRecipients().size()) );
+        try {
 
-                Event e = new Event("chat", player, player.getLocation(), eventData);
+            ES.getInstance().saveEntity( new Message(player, message, event.getRecipients().size()) );
 
-                MonitorManager.saveEvent(e);
+            Event e = new Event("chat", player, player.getLocation(), eventData);
 
-            } catch (Exception ex) {
-                ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/chat - " + ex.getMessage());
-            }
+            MonitorManager.saveEvent(e);
 
+        } catch (Exception ex) {
+            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/chat - " + ex.getMessage());
         }
 
     }
