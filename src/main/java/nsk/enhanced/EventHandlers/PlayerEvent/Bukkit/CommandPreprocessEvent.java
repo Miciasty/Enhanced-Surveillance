@@ -23,33 +23,34 @@ public class CommandPreprocessEvent implements Listener {
     @EventHandler
     public void onCommandPreprocess(PlayerCommandPreprocessEvent event) {
 
-        if (config.getBoolean("events.PlayerCommandPreprocessEvent.enabled", false)) {
+        if (!config.getBoolean("events.PlayerCommandPreprocessEvent.enabled", false)) {
+            return;
+        }
 
-            Player player = event.getPlayer();
+        Player player = event.getPlayer();
+        String message = event.getMessage();
 
-            String message = event.getMessage();
+        Map<String, String> eventData = new LinkedHashMap<>();
 
-            Map<String, String> eventData = new LinkedHashMap<>();
+        /*
+        int level = config.getInt("events.PlayerCommandPreprocessEvent.level", 0);
+        if (level > 0 && level < 4) {
 
-            int level = config.getInt("events.PlayerCommandPreprocessEvent.level", 0);
-            if (level > 0 && level < 4) {
+            // Place for new features.
 
-                // Place for new features.
-
-            }
+        }
+        */
 
 
-            try {
+        try {
 
-                ES.getInstance().saveEntity( new Command(player, message) );
+            ES.getInstance().saveEntity( new Command(player, message) );
 
-                Event e = new Event("preCommand", player, player.getLocation(), eventData);
+            Event e = new Event("preCommand", player, player.getLocation(), eventData);
 
-                MonitorManager.saveEvent(e);
-            } catch (Exception ex) {
-                ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/preCommand - " + ex.getMessage());
-            }
-
+            MonitorManager.saveEvent(e);
+        } catch (Exception ex) {
+            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/preCommand - " + ex.getMessage());
         }
     }
 
