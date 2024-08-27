@@ -1,7 +1,9 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
+import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.ChatEvent.Command;
 import nsk.enhanced.System.Hibernate.Event;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,7 +18,7 @@ import java.util.Map;
 
 public class InteractEntityEvent implements Listener {
 
-    private static final FileConfiguration config = ES.getInstance().getBukkitEventsFile();
+    private static final FileConfiguration config = ServerConfiguration.getConfig();
 
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
@@ -39,19 +41,19 @@ public class InteractEntityEvent implements Listener {
 
             if (target.getType().getEntityClass() != null) {
                 eventData.put("type",   target.getType().getEntityClass().getSimpleName());
-                if (ES.debugMode()) ES.log().info("type: <gold>" + target.getType().getEntityClass().getSimpleName());
+                if (ES.debugMode()) EnhancedLogger.log().info("type: <gold>" + target.getType().getEntityClass().getSimpleName());
             }
 
             if (level > 1) {
 
                 if (target.getCustomName() != null) {
                     eventData.put("customName", target.getCustomName());
-                    if (ES.debugMode()) ES.log().info("health: <red>" + target.getCustomName());
+                    if (ES.debugMode()) EnhancedLogger.log().info("health: <red>" + target.getCustomName());
                 }
 
                 if (target instanceof LivingEntity) {
                     eventData.put("health",     String.valueOf( ((LivingEntity) target).getHealth()) );
-                    if (ES.debugMode()) ES.log().info("health: <red>" + ((LivingEntity) target).getHealth());
+                    if (ES.debugMode()) EnhancedLogger.log().info("health: <red>" + ((LivingEntity) target).getHealth());
                 }
             }
 
@@ -70,12 +72,12 @@ public class InteractEntityEvent implements Listener {
                         eventData.put("vwork",      String.valueOf( villager.isTrading() ));
 
                         if (ES.debugMode()) {
-                            ES.log().info("vprof: <green>" + villager.getProfession().toString().toUpperCase());
-                            ES.log().info("vrep: <green>" + villager.getReputation(player.getUniqueId()).toString());
-                            ES.log().info("vlvl: <green>" + villager.getVillagerLevel());
-                            ES.log().info("vexp: <green>" + villager.getVillagerExperience());
-                            ES.log().info("vrstc: <green>" + villager.getRestocksToday());
-                            ES.log().info("vwork: <green>" + villager.isTrading());
+                            EnhancedLogger.log().info("vprof: <green>" + villager.getProfession().toString().toUpperCase());
+                            EnhancedLogger.log().info("vrep: <green>" + villager.getReputation(player.getUniqueId()).toString());
+                            EnhancedLogger.log().info("vlvl: <green>" + villager.getVillagerLevel());
+                            EnhancedLogger.log().info("vexp: <green>" + villager.getVillagerExperience());
+                            EnhancedLogger.log().info("vrstc: <green>" + villager.getRestocksToday());
+                            EnhancedLogger.log().info("vwork: <green>" + villager.isTrading());
 
                         }
 
@@ -95,7 +97,7 @@ public class InteractEntityEvent implements Listener {
 
             MonitorManager.saveEvent(e);
         } catch (Exception ex) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/interactEntity - " + ex.getMessage());
+            EnhancedLogger.log().severe("Failed to save PlayerEvents/interactEntity - " + ex.getMessage());
         }
     }
 

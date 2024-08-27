@@ -1,7 +1,7 @@
 package nsk.enhanced.System.Hibernate;
 
 import nsk.enhanced.System.ES;
-import nsk.enhanced.System.MemoryService;
+import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Utils.Compression;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -165,7 +165,7 @@ public class Event {
 
                 this.eventData.put(entry.getKey(), details);
             } catch (Exception e) {
-                ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+                EnhancedLogger.log().severe(e.getMessage());
             }
         }
     }
@@ -176,7 +176,7 @@ public class Event {
             try {
                 decompressedData.put(entry.getKey(), Compression.decompress(entry.getValue().getEventValue()));
             } catch (Exception e) {
-                ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+                EnhancedLogger.log().severe(e.getMessage());
             }
         }
         return decompressedData;
@@ -201,7 +201,7 @@ public class Event {
 
             session.getTransaction().commit();
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to load events for "
+            EnhancedLogger.log().severe("Failed to load events for "
                     + ((character != null) ? character.getUuid() : "unknown")
                     + ": " + e.getMessage());
         }
@@ -225,7 +225,7 @@ public class Event {
 
             session.getTransaction().commit();
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to count events for "
+            EnhancedLogger.log().severe("Failed to count events for "
                     + ((character != null) ? character.getUuid() : "unknown")
                     + ": " + e.getMessage());
         }
@@ -256,7 +256,7 @@ public class Event {
 
             session.getTransaction().commit();
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to load events for "
+            EnhancedLogger.log().severe("Failed to load events for "
                     + ((character != null) ? character.getUuid() : "unknown")
                     + " with type " + type + ": " + e.getMessage());
         }
@@ -286,7 +286,7 @@ public class Event {
 
             session.getTransaction().commit();
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to count events for "
+            EnhancedLogger.log().severe("Failed to count events for "
                     + ((character != null) ? character.getUuid() : "unknown")
                     + " with type " + type + ": " + e.getMessage());
         }
@@ -321,7 +321,7 @@ public class Event {
 
             session.getTransaction().commit();
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to load events for "
+            EnhancedLogger.log().severe("Failed to load events for "
                     + ((character != null) ? character.getUuid() : "unknown")
                     + " with type " + type
                     + " at " + localDate + ": " + e.getMessage());
@@ -356,7 +356,7 @@ public class Event {
 
             session.getTransaction().commit();
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to count events for "
+            EnhancedLogger.log().severe("Failed to count events for "
                     + ((character != null) ? character.getUuid() : "unknown")
                     + " with type " + type
                     + " at " + localDate + ": " + e.getMessage());
@@ -410,7 +410,7 @@ public class Event {
             }
 
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to calculate total session time for character " + character.getName() + ": " + e.getMessage());
+            EnhancedLogger.log().severe("Failed to calculate total session time for character " + character.getName() + ": " + e.getMessage());
         }
 
         return totalSessionTime;
@@ -448,7 +448,7 @@ public class Event {
 
             session.getTransaction().commit();
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to load last event for "
+            EnhancedLogger.log().severe("Failed to load last event for "
                     + ((character != null) ? character.getUuid() : "unknown")
                     + " with type " + type + ": " + e.getMessage());
         }

@@ -1,7 +1,9 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
+import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.ChatEvent.Message;
 import nsk.enhanced.System.Hibernate.Event;
 import org.bukkit.Location;
@@ -15,7 +17,7 @@ import java.util.*;
 
 public class ChatEvent implements Listener {
 
-    private static final FileConfiguration config = ES.getInstance().getBukkitEventsFile();
+    private static final FileConfiguration config = ServerConfiguration.getConfig();
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
@@ -70,7 +72,7 @@ public class ChatEvent implements Listener {
             }
 
         } else if (level < 0 || level > 2) {
-            ES.getInstance().getEnhancedLogger().warning("<green>'events.PlayerChatEvent.level'</green> can only be set to a maximum of 2. The provided value is invalid, so the event will default to level 0.");
+            EnhancedLogger.log().warning("<green>'events.PlayerChatEvent.level'</green> can only be set to a maximum of 2. The provided value is invalid, so the event will default to level 0.");
         }
 
 
@@ -83,7 +85,7 @@ public class ChatEvent implements Listener {
             MonitorManager.saveEvent(e);
 
         } catch (Exception ex) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/chat - " + ex.getMessage());
+            EnhancedLogger.log().severe("Failed to save PlayerEvents/chat - " + ex.getMessage());
         }
 
     }

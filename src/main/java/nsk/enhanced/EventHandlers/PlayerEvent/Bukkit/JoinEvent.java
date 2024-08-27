@@ -1,7 +1,9 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
+import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -15,7 +17,7 @@ import java.util.Map;
 
 public class JoinEvent implements Listener {
 
-    private static final FileConfiguration config = ES.getInstance().getBukkitEventsFile();
+    private static final FileConfiguration config = ServerConfiguration.getConfig();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -35,8 +37,8 @@ public class JoinEvent implements Listener {
             eventData.put("hunger",     String.valueOf(player.getFoodLevel())   .toUpperCase());
 
             if (ES.debugMode()) {
-                ES.log().info("Health: <red>" + player.getHealth());
-                ES.log().info("Hunger: <green>" + player.getFoodLevel());
+                EnhancedLogger.log().info("Health: <red>" + player.getHealth());
+                EnhancedLogger.log().info("Hunger: <green>" + player.getFoodLevel());
             };
 
             if (level > 1) {
@@ -45,9 +47,9 @@ public class JoinEvent implements Listener {
                 eventData.put("op",     String.valueOf(player.isOp())           .toUpperCase());
 
                 if (ES.debugMode()) {
-                    ES.log().info("Exp:  <aqua>" + player.getExp());
-                    ES.log().info("Mode: <green>" + player.getGameMode());
-                    ES.log().info("Op:   <green>" + player.isOp());
+                    EnhancedLogger.log().info("Exp:  <aqua>" + player.getExp());
+                    EnhancedLogger.log().info("Mode: <green>" + player.getGameMode());
+                    EnhancedLogger.log().info("Op:   <green>" + player.isOp());
                 }
             }
 
@@ -57,9 +59,9 @@ public class JoinEvent implements Listener {
                 eventData.put("host",   player.getAddress().getHostName()       .toUpperCase());
 
                 if (ES.debugMode()) {
-                    ES.log().info("Ip:   <aqua>" + player.getAddress().getAddress().getHostAddress());
-                    ES.log().info("Port: <green>" + player.getAddress().getPort());
-                    ES.log().info("Host: <green>" + player.getAddress().getHostName());
+                    EnhancedLogger.log().info("Ip:   <aqua>" + player.getAddress().getAddress().getHostAddress());
+                    EnhancedLogger.log().info("Port: <green>" + player.getAddress().getPort());
+                    EnhancedLogger.log().info("Host: <green>" + player.getAddress().getHostName());
                 }
             }
 
@@ -70,7 +72,7 @@ public class JoinEvent implements Listener {
         try {
             MonitorManager.saveEvent(e);
         } catch (Exception ex) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/join - " + ex.getMessage());
+            EnhancedLogger.log().severe("Failed to save PlayerEvents/join - " + ex.getMessage());
         }
     }
 

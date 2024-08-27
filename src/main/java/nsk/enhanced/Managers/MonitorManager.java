@@ -2,6 +2,7 @@ package nsk.enhanced.Managers;
 
 import nsk.enhanced.EnhancedSurveillance;
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,7 +29,7 @@ public class MonitorManager {
             });
 
         } catch (Exception e) {
-            plugin.getEnhancedLogger().severe(e.getMessage());
+            EnhancedLogger.log().severe(e.getMessage());
         }
 
     }
@@ -85,7 +86,7 @@ public class MonitorManager {
             Files.write(eventfile.toPath(), modifiedLines);
 
         } catch (Exception e) {
-            plugin.getEnhancedLogger().severe(e.getMessage());
+            EnhancedLogger.log().severe(e.getMessage());
         }
     }
 

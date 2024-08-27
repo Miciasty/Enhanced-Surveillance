@@ -9,6 +9,8 @@ import java.util.logging.*;
 
 public class EnhancedLogger extends Logger {
 
+    private static EnhancedLogger logger;
+
     public EnhancedLogger(EnhancedSurveillance plugin) {
         super(plugin.getName(), null);
         setParent(Bukkit.getLogger());
@@ -22,6 +24,8 @@ public class EnhancedLogger extends Logger {
         EnhancedHandler enhancedHandler = new EnhancedHandler();
         enhancedHandler.setFormatter(new SimpleFormatter());
         addHandler(enhancedHandler);
+
+        EnhancedLogger.addLogger(this);
     }
 
     private class EnhancedHandler extends Handler {
@@ -88,4 +92,13 @@ public class EnhancedLogger extends Logger {
 
     }
 
+    // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
+
+    private static void addLogger(EnhancedLogger e) {
+        logger = e;
+    }
+
+    public static EnhancedLogger log() {
+        return logger;
+    }
 }

@@ -18,8 +18,4 @@ public class ES {
         return DEBUG;
     }
 
-    public static EnhancedLogger log() {
-        return ES.getInstance().getEnhancedLogger();
-    }
-
 }

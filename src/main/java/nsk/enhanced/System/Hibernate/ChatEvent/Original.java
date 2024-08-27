@@ -1,6 +1,7 @@
 package nsk.enhanced.System.Hibernate.ChatEvent;
 
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.EnhancedLogger;
 import org.hibernate.Session;
 
 import javax.persistence.*;
@@ -55,12 +56,12 @@ public class Original {
             try {
                 originalMessage = session.createQuery(query).getSingleResult();
             } catch (NoResultException e) {
-                ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+                EnhancedLogger.log().severe(e.getMessage());
             }
 
             session.getTransaction().commit();
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to load original message with id:" + id + ", " + e.getMessage());
+            EnhancedLogger.log().severe("Failed to load original message with id:" + id + ", " + e.getMessage());
         }
 
         return originalMessage;
@@ -81,17 +82,17 @@ public class Original {
             try {
                 originalMessage = session.createQuery(query).getSingleResult();
             } catch (NoResultException e) {
-                ES.getInstance().getEnhancedLogger().warning("No original message found!");
+                EnhancedLogger.log().warning("No original message found!");
 
                 originalMessage = new Original(message);
-                ES.getInstance().getEnhancedLogger().info("Saving new original message: " + message);
+                EnhancedLogger.log().info("Saving new original message: " + message);
 
                 ES.getInstance().saveEntity(originalMessage);
             }
 
             session.getTransaction().commit();
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to load original message " + e.getMessage());
+            EnhancedLogger.log().severe("Failed to load original message " + e.getMessage());
         }
 
         return originalMessage;
@@ -104,7 +105,7 @@ public class Original {
             return byteArrayToHex(hash);
 
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+            EnhancedLogger.log().severe(e.getMessage());
             return null;
         }
     }

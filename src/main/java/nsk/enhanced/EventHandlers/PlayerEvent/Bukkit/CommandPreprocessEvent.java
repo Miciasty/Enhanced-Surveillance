@@ -1,7 +1,9 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
+import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.ChatEvent.Command;
 import nsk.enhanced.System.Hibernate.ChatEvent.Message;
 import nsk.enhanced.System.Hibernate.Event;
@@ -18,7 +20,7 @@ import java.util.Map;
 
 public class CommandPreprocessEvent implements Listener {
 
-    private static final FileConfiguration config = ES.getInstance().getBukkitEventsFile();
+    private static final FileConfiguration config = ServerConfiguration.getConfig();
 
     @EventHandler
     public void onCommandPreprocess(PlayerCommandPreprocessEvent event) {
@@ -50,7 +52,7 @@ public class CommandPreprocessEvent implements Listener {
 
             MonitorManager.saveEvent(e);
         } catch (Exception ex) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/preCommand - " + ex.getMessage());
+            EnhancedLogger.log().severe("Failed to save PlayerEvents/preCommand - " + ex.getMessage());
         }
     }
 

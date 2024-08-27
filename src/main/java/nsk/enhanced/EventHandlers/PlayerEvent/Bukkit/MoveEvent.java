@@ -2,7 +2,9 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Extended.ExtMove;
 import nsk.enhanced.Managers.MonitorManager;
+import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,7 +19,7 @@ import java.util.Map;
 
 public class MoveEvent implements Listener {
 
-    private static final FileConfiguration config = ES.getInstance().getBukkitEventsFile();
+    private static final FileConfiguration config = ServerConfiguration.getConfig();
     private static final double MIN_DISTANCE = config.getInt("events.PlayerMoveEvent.distance", 15);
 
     private final Map<Player, ExtMove> lastPositions = new LinkedHashMap<>();
@@ -58,18 +60,18 @@ public class MoveEvent implements Listener {
 
             if (!lastPosition.getTo().equals(player.getLocation())) {
                 eventData.put("distance",           String.valueOf(lastPosition.getTo().distance(to)));
-                if (ES.debugMode()) ES.log().info("Distance: <gold>" + lastPosition.getTo().distance(to));
+                if (ES.debugMode()) EnhancedLogger.log().info("Distance: <gold>" + lastPosition.getTo().distance(to));
             }
 
             if (level > 1) {
                 if (lastPosition.getTo().distance(to) > MIN_DISTANCE + 2) {
                     eventData.put("teleported",     "TRUE");
-                    if (ES.debugMode()) ES.log().info("Teleported: <gold>TRUE");
+                    if (ES.debugMode()) EnhancedLogger.log().info("Teleported: <gold>TRUE");
                 }
 
                 Vector direction = to.toVector().subtract(lastPosition.getTo().toVector()).normalize();
                 eventData.put("direction",          direction.toString().toUpperCase());
-                if (ES.debugMode()) ES.log().info("Direction: <gold>" + direction);
+                if (ES.debugMode()) EnhancedLogger.log().info("Direction: <gold>" + direction);
             }
 
             if (level > 2) {
@@ -77,7 +79,7 @@ public class MoveEvent implements Listener {
                 double speed = lastPosition.getTo().distance(to) / (timeElapsed / 1000.0);
 
                 eventData.put("speed",              String.valueOf(speed));
-                if (ES.debugMode()) ES.log().info("Speed: <gold>" + speed);
+                if (ES.debugMode()) EnhancedLogger.log().info("Speed: <gold>" + speed);
             }
 
         }
@@ -87,7 +89,7 @@ public class MoveEvent implements Listener {
         try {
             MonitorManager.saveEvent(e);
         } catch (Exception ex) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/move - " + ex.getMessage());
+            EnhancedLogger.log().severe("Failed to save PlayerEvents/move - " + ex.getMessage());
         }
 
     }

@@ -1,6 +1,7 @@
 package nsk.enhanced.System.Hibernate;
 
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.EnhancedLogger;
 import org.bukkit.entity.Player;
 
 import javax.persistence.*;
@@ -126,7 +127,7 @@ public class Character {
 
         } catch (Exception e) {
             characters.remove(character);
-            ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+            EnhancedLogger.log().severe(e.getMessage());
         }
     }
 
@@ -137,7 +138,7 @@ public class Character {
 
         } catch (Exception e) {
             characters.add(character);
-            ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+            EnhancedLogger.log().severe(e.getMessage());
         }
     }
 

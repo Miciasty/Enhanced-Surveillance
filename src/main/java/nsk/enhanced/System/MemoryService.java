@@ -11,7 +11,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class MemoryService {
 
-    private static final EnhancedSurveillance plugin = ES.getInstance();
     private static final List<MemoryService> services = new ArrayList<>();
     private static int serviceCounter = 0;
 
@@ -70,17 +69,17 @@ public class MemoryService {
         double queueUtilization = getQueueUtilization();
 
         if (queueUtilization >= 95) {
-            plugin.getEnhancedLogger().severe("Queue " + id + " utilization is higher than <red>95%");
+            EnhancedLogger.log().severe("Queue " + id + " utilization is higher than <red>95%");
         } else if (queueUtilization >= 75) {
-            plugin.getEnhancedLogger().warning("Queue " + id + " utilization is higher than <red>75%");
+            EnhancedLogger.log().warning("Queue " + id + " utilization is higher than <red>75%");
         } else if (queueUtilization >= 50) {
-            plugin.getEnhancedLogger().warning("Queue " + id + " utilization is higher than <gold>50%");
+            EnhancedLogger.log().warning("Queue " + id + " utilization is higher than <gold>50%");
         } else if (queueUtilization >= 25) {
-            plugin.getEnhancedLogger().warning("Queue " + id + " utilization is higher than <green>25%");
+            EnhancedLogger.log().warning("Queue " + id + " utilization is higher than <green>25%");
         }
 
         if (threadUtilization > 50) {
-            plugin.getEnhancedLogger().info(String.format("Service: <gold>(%s)</gold>, Thread utilization: <aqua>%.2f%%</aqua>, Queue utilization: <aqua>%.2f%%</aqua>", id, threadUtilization, queueUtilization));
+            EnhancedLogger.log().info(String.format("Service: <gold>(%s)</gold>, Thread utilization: <aqua>%.2f%%</aqua>, Queue utilization: <aqua>%.2f%%</aqua>", id, threadUtilization, queueUtilization));
         }
 
     }
@@ -103,7 +102,7 @@ public class MemoryService {
             try {
                 leastLoadedService.logEvent(task);
             } catch (Exception e) {
-                ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+                EnhancedLogger.log().severe(e.getMessage());
             }
         } else {
             throw new IllegalStateException("No MemoryService services are initialized.");
@@ -124,17 +123,17 @@ public class MemoryService {
 
     public static void initializeServices(int count, int threadsPerService) {
 
-        plugin.getEnhancedLogger().info("Available threads: <gold>" + getAvailableThreads() + " - " + count * threadsPerService + "</gold> = <green>" + (getAvailableThreads() - (count * threadsPerService)) );
+        EnhancedLogger.log().info("Available threads: <gold>" + getAvailableThreads() + " - " + count * threadsPerService + "</gold> = <green>" + (getAvailableThreads() - (count * threadsPerService)) );
 
-        plugin.getEnhancedLogger().info("Initializing <aqua>" + count + "</aqua> services and <aqua>" + threadsPerService * count + "</aqua> threads.");
+        EnhancedLogger.log().info("Initializing <aqua>" + count + "</aqua> services and <aqua>" + threadsPerService * count + "</aqua> threads.");
 
         if (count <= 0) {
-            ES.getInstance().getEnhancedLogger().severe("Invalid number of threads: <gold>" + count);
+            EnhancedLogger.log().severe("Invalid number of threads: <gold>" + count);
             return;
         }
 
         if (threadsPerService <= 0) {
-            ES.getInstance().getEnhancedLogger().severe("You need to specify at least one thread per service.");
+            EnhancedLogger.log().severe("You need to specify at least one thread per service.");
             return;
         }
 
@@ -151,28 +150,28 @@ public class MemoryService {
                 try {
                     new MemoryService(threadsPerService);
                 } catch (Exception e) {
-                    ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+                    EnhancedLogger.log().severe(e.getMessage());
                 }
             }
-            ES.getInstance().getEnhancedLogger().fine("MemoryService initialized with: <yellow>" + count + "</yellow> services, each with <yellow>" + threadsPerService + "</yellow> threads.");
+            EnhancedLogger.log().fine("MemoryService initialized with: <yellow>" + count + "</yellow> services, each with <yellow>" + threadsPerService + "</yellow> threads.");
         } else {
-            ES.getInstance().getEnhancedLogger().severe("MemoryService initialization canceled. Insufficient threads available.");
+            EnhancedLogger.log().severe("MemoryService initialization canceled. Insufficient threads available.");
         }
     }
 
     public static void shutdownAllServices() {
 
-        plugin.getEnhancedLogger().warning("Shutting down all services.");
+        EnhancedLogger.log().warning("Shutting down all services.");
 
         for (MemoryService service : services) {
             try {
                 service.service.shutdown();
             } catch (Exception e) {
-                ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+                EnhancedLogger.log().severe(e.getMessage());
             }
         }
 
-        plugin.getEnhancedLogger().fine("Shutting down <gold>MemoryService</gold> is finished!");
+        EnhancedLogger.log().fine("Shutting down <gold>MemoryService</gold> is finished!");
     }
 
 }

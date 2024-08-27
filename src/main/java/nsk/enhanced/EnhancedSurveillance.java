@@ -1,7 +1,8 @@
 package nsk.enhanced;
 
-import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.*;
 import nsk.enhanced.Managers.MonitorManager;
+import nsk.enhanced.System.Configuration.EventsConfiguration;
+import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Character;
@@ -12,42 +13,22 @@ import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.Hibernate.WorldEntity;
 import nsk.enhanced.System.MemoryService;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.reflections.Reflections;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Modifier;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.logging.Level;
 
 public final class EnhancedSurveillance extends JavaPlugin {
 
     private EnhancedLogger enhancedLogger;
-
-    private File configFile;
-    private FileConfiguration config;
-
-    private File translationsFile;
-    private FileConfiguration translations;
-
-    private File bukkitEventsFile;
-    private FileConfiguration bukkitEvents;
-
-    private File paperEventsFile;
-    private FileConfiguration paperEvents;
 
     private SessionFactory sessionFactory;
 
@@ -59,17 +40,14 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
         MemoryService.initializeServices(1, 1);
 
-        loadConfiguration();
-        //loadTranslations();
-        loadBukkitEvents();
-        loadPaperEvents();
+        ServerConfiguration.load();
 
         configureHibernate();
 
         loadEntityFromDatabase(Character.class, Character.getCharacters());
         loadEntityFromDatabase(WorldEntity.class, WorldEntity.getWorlds());
 
-        loadBukkitPlayerEventListeners();
+        EventsConfiguration.load();
 
     }
 
@@ -86,7 +64,7 @@ public final class EnhancedSurveillance extends JavaPlugin {
             try {
                 MonitorManager.saveEvent(e);
             } catch (Exception ex) {
-                ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/quit - " + ex.getMessage());
+                enhancedLogger.severe("Failed to save PlayerEvents/quit - " + ex.getMessage());
             }
 
         }
@@ -96,142 +74,15 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
-    private void loadBukkitPlayerEventListeners() {
-        enhancedLogger.warning("Preparing to load Bukkit PlayerEvent listeners...");
 
-        /*try {getServer().getPluginManager().registerEvents(new JoinEvent(), this);} catch (Exception e) {
-            enhancedLogger.severe("JoinEvent listener is not loaded!");
-        }
-        try {getServer().getPluginManager().registerEvents(new QuitEvent(), this);} catch (Exception e) {
-            enhancedLogger.severe("QuitEvent listener is not loaded!");
-        }
-        try {getServer().getPluginManager().registerEvents(new MoveEvent(), this);} catch (Exception e) {enhancedLogger.severe("MoveEvent listener is not loaded!");
-        }
-        try {getServer().getPluginManager().registerEvents(new ChatEvent(), this);} catch (Exception e) {
-            enhancedLogger.severe("ChatEvent listener is not loaded!");
-        }
-        try {getServer().getPluginManager().registerEvents(new CommandPreprocessEvent(), this);} catch (Exception e) {
-            enhancedLogger.severe("CommandPreprocessEvent listener is not loaded!");
-        }
-        try {getServer().getPluginManager().registerEvents(new InteractEvent(), this);} catch (Exception e) {
-            enhancedLogger.severe("InteractEvent listener is not loaded!");
-        }
-        try {getServer().getPluginManager().registerEvents(new InteractEntityEvent(), this);} catch (Exception e) {
-            enhancedLogger.severe("InteractEntityEvent listener is not loaded!");
-        }*/
 
-        try {
-
-            Reflections reflections = new Reflections("nsk.enhanced.EventHandlers.PlayerEvent.Bukkit");
-            Set<Class<? extends Listener>> eventListeners = reflections.getSubTypesOf(Listener.class);
-
-            for (Class<? extends Listener> listener : eventListeners) {
-                if (!Modifier.isAbstract(listener.getModifiers())) {
-                    Listener instance = listener.getDeclaredConstructor().newInstance();
-                    try {
-                        getServer().getPluginManager().registerEvents(instance, this);
-                    } catch (Exception ex) {
-                        enhancedLogger.severe("Failed to load " + listener.getSimpleName() + " listener. - " + ex.getMessage());
-                    }
-                }
-            }
-
-        } catch (Exception e) {
-            enhancedLogger.severe("Failed to load Bukkit PlayerEvents - " + e.getMessage());
-        }
-
-    }
-
-    // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
-
-    private void loadConfiguration() {
-        enhancedLogger.warning("Loading configuration...");
-        configFile = new File(getDataFolder(), "config.yml");
-        if (!configFile.exists()) {
-            configFile.getParentFile().mkdirs();
-            saveResource("config.yml", false);
-        }
-
-        config = YamlConfiguration.loadConfiguration(configFile);
-
-        //boolean isEnabled = config.getBoolean("EnhancedOres.settings.enabled");
-        //enhancedLogger.info("Config enabled: " + isEnabled);
-    }
-    public FileConfiguration getConfigFile() {
-        return config;
-    }
-    private void saveConfigFile() {
-        try {
-            config.save(configFile);
-        } catch (IOException e) {
-            enhancedLogger.log(Level.SEVERE, "Failed to save config file", e);
-        }
-    }
-
-    private void loadBukkitEvents() {
-        enhancedLogger.warning("Loading bukkit events...");
-        bukkitEventsFile = new File(getDataFolder(), "events/player/bukkit-events.yml");
-        if (!bukkitEventsFile.exists()) {
-            bukkitEventsFile.getParentFile().mkdirs();
-            saveResource("events/player/bukkit-events.yml", false);
-        }
-
-        bukkitEvents = YamlConfiguration.loadConfiguration(bukkitEventsFile);
-    }
-    public FileConfiguration getBukkitEventsFile() {
-        return bukkitEvents;
-    }
-
-    private void loadPaperEvents() {
-        enhancedLogger.warning("Loading bukkit events...");
-        paperEventsFile = new File(getDataFolder(), "events/player/paper-events.yml");
-        if (!paperEventsFile.exists()) {
-            paperEventsFile.getParentFile().mkdirs();
-            saveResource("events/player/paper-events.yml", false);
-        }
-
-        paperEvents = YamlConfiguration.loadConfiguration(paperEventsFile);
-    }
-    public FileConfiguration getPaperEventsFile() {
-        return paperEvents;
-    }
-
-    private void loadTranslations() {
-        enhancedLogger.warning("Loading translations...");
-        translationsFile = new File(getDataFolder(), "translations.yml");
-        if (!translationsFile.exists()) {
-            translationsFile.getParentFile().mkdirs();
-            saveResource("translations.yml", false);
-        }
-
-        translations = YamlConfiguration.loadConfiguration(translationsFile);
-
-        //boolean isEnabled = translations.getBoolean("EnhancedOres.settings.enabled");
-        //enhancedLogger.info("Translations enabled: " + isEnabled);
-    }
-    public FileConfiguration getTranslationsFile() {
-        return translations;
-    }
-
-    // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
-
-    private void reloadConfiguration() {
-        try {
-            //loadTranslations();
-            loadConfiguration();
-            loadBukkitEvents();
-            loadPaperEvents();
-            enhancedLogger.fine("Reloaded configuration");
-
-        } catch (Exception e) {
-            enhancedLogger.severe("Failed to reload configuration. - " + e);
-        }
-    }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
     private void configureHibernate() {
         enhancedLogger.warning("Configuring Hibernate...");
+        FileConfiguration config = ServerConfiguration.getConfig();
+
         try {
             String dialect  = config.getString("EnhancedSurveillance.database.dialect");
 
@@ -280,10 +131,6 @@ public final class EnhancedSurveillance extends JavaPlugin {
     }
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
-
-    public EnhancedLogger getEnhancedLogger() {
-        return enhancedLogger;
-    }
 
     public SessionFactory getSessionFactory() {
         return sessionFactory;

@@ -1,6 +1,7 @@
 package nsk.enhanced.System.Hibernate;
 
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.EnhancedLogger;
 import org.bukkit.World;
 
 import javax.persistence.*;
@@ -86,7 +87,7 @@ public class WorldEntity {
 
         } catch (Exception e) {
             worlds.remove(worldEntity);
-            ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+            EnhancedLogger.log().severe(e.getMessage());
         }
     }
 
@@ -97,7 +98,7 @@ public class WorldEntity {
 
         } catch (Exception e) {
             worlds.remove(world);
-            ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+            EnhancedLogger.log().severe(e.getMessage());
         }
     }
 
@@ -111,7 +112,7 @@ public class WorldEntity {
 
         } catch (Exception e) {
             worlds.add(worldEntity);
-            ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+            EnhancedLogger.log().severe(e.getMessage());
         }    }
 
     public static void removeWorld(WorldEntity world) {
@@ -121,7 +122,7 @@ public class WorldEntity {
 
         } catch (Exception e) {
             worlds.add(world);
-            ES.getInstance().getEnhancedLogger().severe(e.getMessage());
+            EnhancedLogger.log().severe(e.getMessage());
         }
     }
 

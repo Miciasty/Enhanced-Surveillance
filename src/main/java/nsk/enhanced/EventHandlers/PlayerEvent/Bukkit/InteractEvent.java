@@ -1,7 +1,9 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
+import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.ES;
+import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Character;
 import nsk.enhanced.System.Hibernate.Event;
 import org.bukkit.Location;
@@ -21,7 +23,7 @@ import java.util.Map;
 
 public class InteractEvent implements Listener {
 
-    private static final FileConfiguration config = ES.getInstance().getBukkitEventsFile();
+    private static final FileConfiguration config = ServerConfiguration.getConfig();
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -41,25 +43,25 @@ public class InteractEvent implements Listener {
 
             if ( event.getHand() == EquipmentSlot.HAND ) {
                 eventData.put("action",             action.name().toUpperCase() );
-                if (ES.debugMode()) ES.log().info("Action: <gold>" + action.name().toUpperCase());
+                if (ES.debugMode()) EnhancedLogger.log().info("Action: <gold>" + action.name().toUpperCase());
 
                 if (level > 1) {
                     if (event.getItem() != null && !event.getItem().getType().equals(Material.AIR)) {
                         eventData.put("item",            event.getItem().toString().toUpperCase() );
 
-                        if (ES.debugMode()) ES.log().info("Item: <gold>" + event.getItem().toString().toUpperCase());
+                        if (ES.debugMode()) EnhancedLogger.log().info("Item: <gold>" + event.getItem().toString().toUpperCase());
                     }
                 }
 
             } else if ( event.getHand() == EquipmentSlot.OFF_HAND ) {
                 eventData.put("action",             action.name().toUpperCase() );
-                if (ES.debugMode()) ES.log().info("Offhand Action: <gold>" + action.name().toUpperCase());
+                if (ES.debugMode()) EnhancedLogger.log().info("Offhand Action: <gold>" + action.name().toUpperCase());
 
                 if (level > 1) {
                     if (event.getItem() != null && !event.getItem().getType().equals(Material.AIR)) {
                         eventData.put("item",            event.getItem().toString().toUpperCase() );
 
-                        if (ES.debugMode()) ES.log().info("Item: <gold>" + event.getItem().toString().toUpperCase());
+                        if (ES.debugMode()) EnhancedLogger.log().info("Item: <gold>" + event.getItem().toString().toUpperCase());
                     }
                 }
             } else {
@@ -71,7 +73,7 @@ public class InteractEvent implements Listener {
                 if (block != null) {
                     eventData.put("event_block",     block.getType().toString().toUpperCase() );
 
-                    if (ES.debugMode()) ES.log().info("Block: <gold>" + block.getType().toString().toUpperCase());
+                    if (ES.debugMode()) EnhancedLogger.log().info("Block: <gold>" + block.getType().toString().toUpperCase());
                 }
             }
 
@@ -80,7 +82,7 @@ public class InteractEvent implements Listener {
 
                     eventData.put("event_face",     event.getBlockFace().toString().toUpperCase() );
 
-                    if (ES.debugMode()) ES.log().info("BlockFace: <gold>" + event.getBlockFace().toString().toUpperCase());
+                    if (ES.debugMode()) EnhancedLogger.log().info("BlockFace: <gold>" + event.getBlockFace().toString().toUpperCase());
 
                     boolean rdst_nrb = false;
 
@@ -99,12 +101,12 @@ public class InteractEvent implements Listener {
 
                     eventData.put("rdst_nrb",       String.valueOf(rdst_nrb).toUpperCase());
 
-                    if (ES.debugMode()) ES.log().info("Redstone nearby: <gold>" + rdst_nrb);
+                    if (ES.debugMode()) EnhancedLogger.log().info("Redstone nearby: <gold>" + rdst_nrb);
                 }
             }
 
         } else if (level < 0 || level > 3) {
-            ES.getInstance().getEnhancedLogger().warning("<green>'events.PlayerChatEvent.level'</green> can only be set to a maximum of 2. The provided value is invalid, so the event will default to level 0.");
+            EnhancedLogger.log().warning("<green>'events.PlayerChatEvent.level'</green> can only be set to a maximum of 2. The provided value is invalid, so the event will default to level 0.");
         }
 
         Location location;
@@ -143,7 +145,7 @@ public class InteractEvent implements Listener {
             MonitorManager.saveEvent(e);
 
         } catch (Exception e) {
-            ES.getInstance().getEnhancedLogger().severe("Failed to save PlayerEvents/interact - " + e.getMessage());
+            EnhancedLogger.log().severe("Failed to save PlayerEvents/interact - " + e.getMessage());
         }
 
     }
