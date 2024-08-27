@@ -1,6 +1,7 @@
 package nsk.enhanced.Managers;
 
 import nsk.enhanced.EnhancedSurveillance;
+import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
@@ -24,7 +25,7 @@ public class MonitorManager {
 
             MemoryService.logEventAsync(() -> {
 
-                ES.getInstance().saveEntity(event);
+                DatabaseService.saveEntity(event);
 
             });
 

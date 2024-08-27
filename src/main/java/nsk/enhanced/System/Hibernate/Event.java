@@ -1,5 +1,6 @@
 package nsk.enhanced.System.Hibernate;
 
+import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Utils.Compression;
@@ -188,7 +189,7 @@ public class Event {
     public static List<Event> getEventsForCharacter(Character character) {
         List<Event> events = new ArrayList<>();
 
-        try (Session session = ES.getInstance().getSessionFactory().openSession()) {
+        try (Session session = DatabaseService.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -211,7 +212,7 @@ public class Event {
     public static long getEventsSizeForCharacter(Character character) {
         long size = 0;
 
-        try (Session session = ES.getInstance().getSessionFactory().openSession()) {
+        try (Session session = DatabaseService.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -236,7 +237,7 @@ public class Event {
     public static List<Event> getEventsForCharacter(Character character, String type) {
         List<Event> events = new ArrayList<>();
 
-        try (Session session = ES.getInstance().getSessionFactory().openSession()) {
+        try (Session session = DatabaseService.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -266,7 +267,7 @@ public class Event {
     public static long getEventsSizeForCharacter(Character character, String type) {
         long count = 0;
 
-        try (Session session = ES.getInstance().getSessionFactory().openSession()) {
+        try (Session session = DatabaseService.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -297,7 +298,7 @@ public class Event {
     public static List<Event> getEventsForCharacter(Character character, String type, LocalDate localDate) {
         List<Event> events = new ArrayList<>();
 
-        try (Session session = ES.getInstance().getSessionFactory().openSession()) {
+        try (Session session = DatabaseService.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -332,7 +333,7 @@ public class Event {
     public static long getEventsSizeForCharacter(Character character, String type, LocalDate localDate) {
         long count = 0;
 
-        try (Session session = ES.getInstance().getSessionFactory().openSession()) {
+        try (Session session = DatabaseService.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -368,7 +369,7 @@ public class Event {
     public static long getTotalSessionTimeForCharacter(Character character) {
         long totalSessionTime = 0;
 
-        try (Session session = ES.getInstance().getSessionFactory().openSession()) {
+        try (Session session = DatabaseService.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -420,7 +421,7 @@ public class Event {
 
         Event lastEvent = null;
 
-        try (Session session = ES.getInstance().getSessionFactory().openSession()) {
+        try (Session session = DatabaseService.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();

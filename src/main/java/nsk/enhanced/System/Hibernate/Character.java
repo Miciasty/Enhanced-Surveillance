@@ -1,5 +1,6 @@
 package nsk.enhanced.System.Hibernate;
 
+import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import org.bukkit.entity.Player;
@@ -78,7 +79,7 @@ public class Character {
 
         this.eventsAmount = totalEvents;
 
-        ES.getInstance().saveEntity(this);
+        DatabaseService.saveEntity(this);
     }
 
     // --- --- --- --- --- --- STATIC METHODS --- --- --- --- --- --- //
@@ -123,7 +124,7 @@ public class Character {
     public static void addCharacter(Character character) {
         try {
             characters.add(character);
-            ES.getInstance().saveEntity(character);
+            DatabaseService.saveEntity(character);
 
         } catch (Exception e) {
             characters.remove(character);
@@ -134,7 +135,7 @@ public class Character {
     public static void removeCharacter(Character character) {
         try {
             characters.remove(character);
-            ES.getInstance().deleteEntity(character);
+            DatabaseService.deleteEntity(character);
 
         } catch (Exception e) {
             characters.add(character);

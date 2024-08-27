@@ -1,5 +1,6 @@
 package nsk.enhanced.System.Hibernate;
 
+import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import org.bukkit.World;
@@ -83,7 +84,7 @@ public class WorldEntity {
 
         try {
             worlds.add(worldEntity);
-            ES.getInstance().saveEntity(worldEntity);
+            DatabaseService.saveEntity(worldEntity);
 
         } catch (Exception e) {
             worlds.remove(worldEntity);
@@ -94,7 +95,7 @@ public class WorldEntity {
     public static void addWorld(WorldEntity world) {
         try {
             worlds.add(world);
-            ES.getInstance().saveEntity(world);
+            DatabaseService.saveEntity(world);
 
         } catch (Exception e) {
             worlds.remove(world);
@@ -108,7 +109,7 @@ public class WorldEntity {
 
         try {
             worlds.remove(worldEntity);
-            ES.getInstance().deleteEntity(worldEntity);
+            DatabaseService.deleteEntity(worldEntity);
 
         } catch (Exception e) {
             worlds.add(worldEntity);
@@ -118,7 +119,7 @@ public class WorldEntity {
     public static void removeWorld(WorldEntity world) {
         try {
             worlds.remove(world);
-            ES.getInstance().deleteEntity(world);
+            DatabaseService.deleteEntity(world);
 
         } catch (Exception e) {
             worlds.add(world);

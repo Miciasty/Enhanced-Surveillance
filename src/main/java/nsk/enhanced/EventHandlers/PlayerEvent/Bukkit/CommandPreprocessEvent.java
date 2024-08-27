@@ -2,6 +2,7 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.Configuration.ServerConfiguration;
+import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.ChatEvent.Command;
@@ -46,7 +47,7 @@ public class CommandPreprocessEvent implements Listener {
 
         try {
 
-            ES.getInstance().saveEntity( new Command(player, message) );
+            DatabaseService.saveEntity( new Command(player, message) );
 
             Event e = new Event("preCommand", player, player.getLocation(), eventData);
 

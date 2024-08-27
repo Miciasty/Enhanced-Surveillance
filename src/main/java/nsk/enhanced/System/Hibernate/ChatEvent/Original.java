@@ -1,5 +1,6 @@
 package nsk.enhanced.System.Hibernate.ChatEvent;
 
+import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import org.hibernate.Session;
@@ -44,7 +45,7 @@ public class Original {
     public static Original getMessage(int id) {
         Original originalMessage = null;
 
-        try (Session session = ES.getInstance().getSessionFactory().openSession()) {
+        try (Session session = DatabaseService.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -70,7 +71,7 @@ public class Original {
     public static Original getMessage(String message) {
         Original originalMessage = null;
 
-        try (Session session = ES.getInstance().getSessionFactory().openSession()) {
+        try (Session session = DatabaseService.getSessionFactory().openSession()) {
             session.beginTransaction();
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -87,7 +88,7 @@ public class Original {
                 originalMessage = new Original(message);
                 EnhancedLogger.log().info("Saving new original message: " + message);
 
-                ES.getInstance().saveEntity(originalMessage);
+                DatabaseService.saveEntity(originalMessage);
             }
 
             session.getTransaction().commit();

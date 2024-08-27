@@ -2,6 +2,7 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.Configuration.ServerConfiguration;
+import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.ChatEvent.Message;
@@ -78,7 +79,7 @@ public class ChatEvent implements Listener {
 
         try {
 
-            ES.getInstance().saveEntity( new Message(player, message, event.getRecipients().size()) );
+            DatabaseService.saveEntity( new Message(player, message, event.getRecipients().size()) );
 
             Event e = new Event("chat", player, player.getLocation(), eventData);
 
