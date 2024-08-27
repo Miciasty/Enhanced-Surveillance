@@ -6,7 +6,7 @@
 - [x] PlayerChatEvent
 - [x] PlayerCommandPreprocessEvent
 - [x] PlayerInteractEvent
-- [ ] PlayerInteractEntityEvent
+- [x] PlayerInteractEntityEvent
 - [ ] PlayerToggleSneakEvent
 - [ ] PlayerToggleSprintEvent
 - [ ] PlayerToggleFlightEvent

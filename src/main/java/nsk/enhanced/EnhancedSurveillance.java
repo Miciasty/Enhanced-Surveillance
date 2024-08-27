@@ -14,18 +14,22 @@ import nsk.enhanced.System.MemoryService;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.reflections.Reflections;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
@@ -95,7 +99,7 @@ public final class EnhancedSurveillance extends JavaPlugin {
     private void loadBukkitPlayerEventListeners() {
         enhancedLogger.warning("Preparing to load Bukkit PlayerEvent listeners...");
 
-        try {getServer().getPluginManager().registerEvents(new JoinEvent(), this);} catch (Exception e) {
+        /*try {getServer().getPluginManager().registerEvents(new JoinEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("JoinEvent listener is not loaded!");
         }
         try {getServer().getPluginManager().registerEvents(new QuitEvent(), this);} catch (Exception e) {
@@ -114,6 +118,26 @@ public final class EnhancedSurveillance extends JavaPlugin {
         }
         try {getServer().getPluginManager().registerEvents(new InteractEntityEvent(), this);} catch (Exception e) {
             enhancedLogger.severe("InteractEntityEvent listener is not loaded!");
+        }*/
+
+        try {
+
+            Reflections reflections = new Reflections("nsk.enhanced.EventHandlers.PlayerEvent.Bukkit");
+            Set<Class<? extends Listener>> eventListeners = reflections.getSubTypesOf(Listener.class);
+
+            for (Class<? extends Listener> listener : eventListeners) {
+                if (!Modifier.isAbstract(listener.getModifiers())) {
+                    Listener instance = listener.getDeclaredConstructor().newInstance();
+                    try {
+                        getServer().getPluginManager().registerEvents(instance, this);
+                    } catch (Exception ex) {
+                        enhancedLogger.severe("Failed to load " + listener.getSimpleName() + " listener. - " + ex.getMessage());
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            enhancedLogger.severe("Failed to load Bukkit PlayerEvents - " + e.getMessage());
         }
 
     }

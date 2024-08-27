@@ -9,11 +9,8 @@ import java.util.logging.*;
 
 public class EnhancedLogger extends Logger {
 
-    private EnhancedSurveillance plugin;
-
     public EnhancedLogger(EnhancedSurveillance plugin) {
         super(plugin.getName(), null);
-        this.plugin = plugin;
         setParent(Bukkit.getLogger());
         setLevel(Level.ALL);
 
@@ -39,7 +36,7 @@ public class EnhancedLogger extends Logger {
 
             Component casual = MiniMessage.miniMessage().deserialize("<gradient:#1f8eb2:#2dccff>" + prefix +"</gradient> " + message);
 
-            if (level == Level.SEVERE) {
+            /*if (level == Level.SEVERE) {
                 Component severe = MiniMessage.miniMessage().deserialize("<gradient:#b24242:#ff5f5f>" + prefix +"</gradient> <#ffafaf>" + message);
                 Bukkit.getConsoleSender().sendMessage(severe);
             } else if (level == Level.WARNING) {
@@ -54,7 +51,33 @@ public class EnhancedLogger extends Logger {
             }
             else {
                 Bukkit.getConsoleSender().sendMessage(casual);
+            }*/
+
+            switch (level.toString().toUpperCase()) {
+                case "SEVERE":
+                    Component severe = MiniMessage.miniMessage().deserialize("<gradient:#b24242:#ff5f5f>" + prefix +"</gradient> <#ffafaf>" + message);
+                    Bukkit.getConsoleSender().sendMessage(severe);
+                    break;
+
+                case "WARNING":
+                    Component warning = MiniMessage.miniMessage().deserialize("<gradient:#b28724:#ffc234>" + prefix +"</gradient> <#ffe099>" + message);
+                    Bukkit.getConsoleSender().sendMessage(warning);
+                    break;
+
+                case "FINE":
+                    Component fine = MiniMessage.miniMessage().deserialize("<gradient:#3ca800:#56f000>" + prefix +"</gradient> <#aaf77f>" + message);
+                    Bukkit.getConsoleSender().sendMessage(fine);
+                    break;
+
+                case "CONFIG":
+                    Component dev = MiniMessage.miniMessage().deserialize("<gradient:#b28724:#ffc234>[NSK]</gradient><gradient:#1f8eb2:#2dccff> [Devmode] </gradient> <#ffe099>" + message);
+                    Bukkit.getConsoleSender().sendMessage(dev);
+                    break;
+
+                default:
+                    Bukkit.getConsoleSender().sendMessage(casual);
             }
+
         }
 
         @Override
