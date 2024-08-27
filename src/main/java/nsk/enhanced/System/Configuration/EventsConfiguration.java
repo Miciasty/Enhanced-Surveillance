@@ -64,16 +64,22 @@ public class EventsConfiguration {
             Reflections reflections = new Reflections("nsk.enhanced.EventHandlers.PlayerEvent.Bukkit");
             Set<Class<? extends Listener>> eventListeners = reflections.getSubTypesOf(Listener.class);
 
+            EnhancedLogger.log().info("Found " + eventListeners.size() + " Bukkit PlayerEvent listeners.");
+            int n = 0;
+
             for (Class<? extends Listener> listener : eventListeners) {
                 if (!Modifier.isAbstract(listener.getModifiers())) {
                     Listener instance = listener.getDeclaredConstructor().newInstance();
                     try {
                         plugin.getServer().getPluginManager().registerEvents(instance, plugin);
+                        n++;
                     } catch (Exception ex) {
                         enhancedLogger.severe("Failed to load " + listener.getSimpleName() + " listener. - " + ex.getMessage());
                     }
                 }
             }
+
+            EnhancedLogger.log().fine("Loaded " + n + " Bukkit PlayerEvent listeners.");
 
         } catch (Exception e) {
             enhancedLogger.severe("Failed to load Bukkit PlayerEvents - " + e.getMessage());

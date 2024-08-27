@@ -25,7 +25,7 @@ public class EnhancedLogger extends Logger {
         enhancedHandler.setFormatter(new SimpleFormatter());
         addHandler(enhancedHandler);
 
-        EnhancedLogger.addLogger(this);
+        addLogger(this);
     }
 
     private class EnhancedHandler extends Handler {
@@ -39,23 +39,6 @@ public class EnhancedLogger extends Logger {
             Level level = record.getLevel();
 
             Component casual = MiniMessage.miniMessage().deserialize("<gradient:#1f8eb2:#2dccff>" + prefix +"</gradient> " + message);
-
-            /*if (level == Level.SEVERE) {
-                Component severe = MiniMessage.miniMessage().deserialize("<gradient:#b24242:#ff5f5f>" + prefix +"</gradient> <#ffafaf>" + message);
-                Bukkit.getConsoleSender().sendMessage(severe);
-            } else if (level == Level.WARNING) {
-                Component warning = MiniMessage.miniMessage().deserialize("<gradient:#b28724:#ffc234>" + prefix +"</gradient> <#ffe099>" + message);
-                Bukkit.getConsoleSender().sendMessage(warning);
-            } else if (level == Level.FINE) {
-                Component fine = MiniMessage.miniMessage().deserialize("<gradient:#3ca800:#56f000>" + prefix +"</gradient> <#aaf77f>" + message);
-                Bukkit.getConsoleSender().sendMessage(fine);
-            } else if (level == Level.CONFIG) {
-                Component dev = MiniMessage.miniMessage().deserialize("<gradient:#b28724:#ffc234>[NSK]</gradient><gradient:#1f8eb2:#2dccff> [Devmode] </gradient> <#ffe099>" + message);
-                Bukkit.getConsoleSender().sendMessage(dev);
-            }
-            else {
-                Bukkit.getConsoleSender().sendMessage(casual);
-            }*/
 
             switch (level.toString().toUpperCase()) {
                 case "SEVERE":
@@ -73,6 +56,11 @@ public class EnhancedLogger extends Logger {
                     Bukkit.getConsoleSender().sendMessage(fine);
                     break;
 
+                case "INFO":
+                    Component info = MiniMessage.miniMessage().deserialize("<gradient:#1f8eb2:#2dccff>" + prefix +"</gradient> " + message);
+                    Bukkit.getConsoleSender().sendMessage(info);
+                    break;
+
                 case "CONFIG":
                     Component dev = MiniMessage.miniMessage().deserialize("<gradient:#b28724:#ffc234>[NSK]</gradient><gradient:#1f8eb2:#2dccff> [Devmode] </gradient> <#ffe099>" + message);
                     Bukkit.getConsoleSender().sendMessage(dev);
@@ -80,6 +68,7 @@ public class EnhancedLogger extends Logger {
 
                 default:
                     Bukkit.getConsoleSender().sendMessage(casual);
+                    break;
             }
 
         }
@@ -99,6 +88,7 @@ public class EnhancedLogger extends Logger {
     }
 
     public static EnhancedLogger log() {
+
         return logger;
     }
 }

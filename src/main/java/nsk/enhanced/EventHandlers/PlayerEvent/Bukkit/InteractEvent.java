@@ -1,6 +1,7 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.Managers.MonitorManager;
+import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 public class InteractEvent implements Listener {
 
-    private static final FileConfiguration config = ServerConfiguration.getConfig();
+    private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {

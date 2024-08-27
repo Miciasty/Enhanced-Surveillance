@@ -2,6 +2,7 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Extended.ExtMove;
 import nsk.enhanced.Managers.MonitorManager;
+import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 public class MoveEvent implements Listener {
 
-    private static final FileConfiguration config = ServerConfiguration.getConfig();
+    private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
     private static final double MIN_DISTANCE = config.getInt("events.PlayerMoveEvent.distance", 15);
 
     private final Map<Player, ExtMove> lastPositions = new LinkedHashMap<>();

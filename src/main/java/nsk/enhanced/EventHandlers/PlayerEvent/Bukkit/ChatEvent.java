@@ -1,9 +1,10 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import jdk.jfr.internal.settings.EnabledSetting;
 import nsk.enhanced.Managers.MonitorManager;
+import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.DatabaseService;
-import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.ChatEvent.Message;
 import nsk.enhanced.System.Hibernate.Event;
@@ -18,12 +19,11 @@ import java.util.*;
 
 public class ChatEvent implements Listener {
 
-    private static final FileConfiguration config = ServerConfiguration.getConfig();
+    private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
 
-        // early-return
         if (!config.getBoolean("events.AsyncPlayerChatEvent.enabled", false)) {
             return;
         }

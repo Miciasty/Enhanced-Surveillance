@@ -23,7 +23,6 @@ public final class EnhancedSurveillance extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
         ES.setInstance(this);
         enhancedLogger = new EnhancedLogger(this);
 
@@ -37,12 +36,10 @@ public final class EnhancedSurveillance extends JavaPlugin {
         DatabaseService.loadEntityFromDatabase(WorldEntity.class, WorldEntity.getWorlds());
 
         EventsConfiguration.load();
-
     }
 
     @Override
     public void onDisable() {
-
         for (Player player : getServer().getOnlinePlayers()) {
 
             Map<String, String> eventData = new LinkedHashMap<>();
@@ -61,8 +58,5 @@ public final class EnhancedSurveillance extends JavaPlugin {
         MemoryService.shutdownAllServices();
         DatabaseService.close();
     }
-
-    // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
-
 
 }
