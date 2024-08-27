@@ -1,5 +1,6 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import com.destroystokyo.paper.entity.villager.ReputationType;
 import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.Configuration.ServerConfiguration;
@@ -66,7 +67,7 @@ public class InteractEntityEvent implements Listener {
 
                     if ( villager.isAdult() ) {
                         eventData.put("vprof",      villager.getProfession().toString().toUpperCase());
-                        eventData.put("vrep",       villager.getReputation(player.getUniqueId()).toString());
+                        eventData.put("vrep",       String.valueOf( villager.getReputation(player.getUniqueId()).getReputation(ReputationType.TRADING)) );
                         eventData.put("vlvl",       String.valueOf( villager.getVillagerLevel() ));
                         eventData.put("vexp",       String.valueOf( villager.getVillagerExperience() ));
                         eventData.put("vrstc",      String.valueOf( villager.getRestocksToday() ));
@@ -74,12 +75,11 @@ public class InteractEntityEvent implements Listener {
 
                         if (ES.debugMode()) {
                             EnhancedLogger.log().info("vprof: <green>" + villager.getProfession().toString().toUpperCase());
-                            EnhancedLogger.log().info("vrep: <green>" + villager.getReputation(player.getUniqueId()).toString());
+                            EnhancedLogger.log().info("vrep: <aqua>" + villager.getReputation(player.getUniqueId()).getReputation(ReputationType.TRADING));
                             EnhancedLogger.log().info("vlvl: <green>" + villager.getVillagerLevel());
                             EnhancedLogger.log().info("vexp: <green>" + villager.getVillagerExperience());
-                            EnhancedLogger.log().info("vrstc: <green>" + villager.getRestocksToday());
-                            EnhancedLogger.log().info("vwork: <green>" + villager.isTrading());
-
+                            EnhancedLogger.log().info("vrstc: <blue>" + villager.getRestocksToday());
+                            EnhancedLogger.log().info("vwork: <blue>" + villager.isTrading());
                         }
 
 
