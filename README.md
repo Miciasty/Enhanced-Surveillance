@@ -28,7 +28,7 @@ To configure the Enhanced Surveillance plugin, edit the `config.yml` file locate
         dialect:    MySQL8Dialect
         address:    localhost
         port:       3306
-        database:   enhanced_ores
+        database:   enhanced_surveillance
         username:   root
         password:   ""
     ```
