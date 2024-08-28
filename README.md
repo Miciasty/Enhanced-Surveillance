@@ -60,8 +60,12 @@ To configure the Enhanced Surveillance plugin, edit the `config.yml` file locate
         services:       3
         threads:        1
     ```
+> [!TIP]
+> It's recommended to start with 1 service and 2-3 threads. As the number of players increases, consider adding a second service or increasing the thread count to handle the additional load effectively. Begin with a lower configuration and adjust based on actual performance and load monitoring.
 
-<br></br>
+
+###
+
 ### `bukkit/paper-events.yml`
 > [!WARNING]
 > It is highly recommended not to use levels higher than 0 or 1 unless absolutely necessary, such as for debugging or when there is a critical need to capture all details of an event.
