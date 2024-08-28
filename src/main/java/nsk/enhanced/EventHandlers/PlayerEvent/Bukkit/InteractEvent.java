@@ -1,16 +1,15 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
-import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
-import nsk.enhanced.System.Configuration.ServerConfiguration;
+import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Character;
 import nsk.enhanced.System.Hibernate.Event;
+import nsk.enhanced.System.MemoryService;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -143,7 +142,9 @@ public class InteractEvent implements Listener {
                 e = new Event("interact", player, eventData);
             }
 
-            MonitorManager.saveEvent(e);
+            MemoryService.logEventAsync(() -> {
+                DatabaseService.saveEntity(e);
+            });
 
         } catch (Exception e) {
             EnhancedLogger.log().severe("Failed to save PlayerEvents/interact - " + e.getMessage());

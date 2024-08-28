@@ -1,7 +1,5 @@
 package nsk.enhanced.System;
 
-import nsk.enhanced.EnhancedSurveillance;
-
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +37,10 @@ public class MemoryService {
             getServiceUtilization();
             eventCounter = 0;
         }
+    }
+
+    public void submit(Runnable task) {
+        service.submit(task);
     }
 
     public int getServiceID() {
@@ -94,6 +96,19 @@ public class MemoryService {
         int estimatedActiveThreads = activeThreadCount - availableProcessors;
 
         return Math.max(0, estimatedActiveThreads);
+    }
+
+    public static void execute(Runnable task) {
+        MemoryService leastLoadedService = getLeastLoadedService();
+        if (leastLoadedService != null) {
+            try {
+                leastLoadedService.submit(task);
+            } catch (Exception e) {
+                EnhancedLogger.log().severe(e.getMessage());
+            }
+        } else {
+            throw new IllegalStateException("No MemoryService services are initialized.");
+        }
     }
 
     public static void logEventAsync(Runnable task) {

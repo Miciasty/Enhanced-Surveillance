@@ -1,13 +1,11 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
-import jdk.jfr.internal.settings.EnabledSetting;
-import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
-import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.ChatEvent.Message;
 import nsk.enhanced.System.Hibernate.Event;
+import nsk.enhanced.System.MemoryService;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -83,7 +81,9 @@ public class ChatEvent implements Listener {
 
             Event e = new Event("chat", player, player.getLocation(), eventData);
 
-            MonitorManager.saveEvent(e);
+            MemoryService.logEventAsync(() -> {
+                DatabaseService.saveEntity(e);
+            });
 
         } catch (Exception ex) {
             EnhancedLogger.log().severe("Failed to save PlayerEvents/chat - " + ex.getMessage());

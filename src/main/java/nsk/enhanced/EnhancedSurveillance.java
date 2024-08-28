@@ -1,6 +1,5 @@
 package nsk.enhanced;
 
-import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.DatabaseService;
@@ -11,6 +10,7 @@ import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.Hibernate.WorldEntity;
 import nsk.enhanced.System.MemoryService;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,10 +25,14 @@ public final class EnhancedSurveillance extends JavaPlugin {
     public void onEnable() {
         ES.setInstance(this);
         enhancedLogger = new EnhancedLogger(this);
-
-        MemoryService.initializeServices(1, 1);
-
         ServerConfiguration.load();
+
+        FileConfiguration config = ServerConfiguration.getConfig();
+
+        int services = config.getInt("EnhancedSurveillance.memory-service.services", 1);
+        int threads = config.getInt("EnhancedSurveillance.memory-service.threads", 1);
+
+        MemoryService.initializeServices(services, threads);
 
         DatabaseService.configureHibernate();
 
@@ -48,7 +52,9 @@ public final class EnhancedSurveillance extends JavaPlugin {
             Event e = new Event("quit", player, player.getLocation(), eventData);
 
             try {
-                MonitorManager.saveEvent(e);
+                MemoryService.logEventAsync(() -> {
+                    DatabaseService.saveEntity(e);
+                });
             } catch (Exception ex) {
                 enhancedLogger.severe("Failed to save PlayerEvents/quit - " + ex.getMessage());
             }

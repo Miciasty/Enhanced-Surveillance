@@ -25,3 +25,19 @@ EnhancedSurveillance:
         show_sql:       false
         format_sql:     true
         sql_comments:   true
+
+    # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+    #   MemoryService configuration
+    #
+    #   Build-in-system designed to manage and execute asynchronous tasks efficiently.
+    #   It leverages a pool of threads to handle multiple concurrent tasks, ensuring that
+    #   the system remains responsive and can scale according to the demands placed upon it.
+    #
+    #   The more services and threads assigned, the more efficient operation.
+    # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- # ---- #
+
+    # Memory service
+
+    memory-service:
+        services:       1       # Amount of independent services
+        threads:        1       # Amount of threads per service

@@ -86,7 +86,7 @@ public class DatabaseService {
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
-    public static  <T> void saveEntity(T entity) {
+    public static <T> void saveEntity(T entity) {
         //EnhancedLogger.log().warning("Preparing to save entity: " + entity.getClass().getSimpleName());
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -99,7 +99,7 @@ public class DatabaseService {
             EnhancedLogger.log().severe("Saving entity failed - " + e.getMessage());
         }
     }
-    public static  <T> CompletableFuture<Void> saveEntityAsync(T entity) {
+    public static <T> CompletableFuture<Void> saveEntityAsync(T entity) {
 
         return CompletableFuture.runAsync(() -> {
             EnhancedLogger.log().warning("Saving entity: " + entity);
@@ -117,7 +117,7 @@ public class DatabaseService {
 
         });
     }
-    public static  <T> CompletableFuture<Void> saveAllEntitiesFromListAsync(List<T> entities) {
+    public static <T> CompletableFuture<Void> saveAllEntitiesFromListAsync(List<T> entities) {
 
         return CompletableFuture.runAsync(() -> {
             EnhancedLogger.log().warning("Saving entities from the list: " + entities);
@@ -137,7 +137,7 @@ public class DatabaseService {
             }
         });
     }
-    public static  <T> CompletableFuture<Boolean> saveAllEntitiesWithRetry(List<T> entities, int maxAttempts) {
+    public static <T> CompletableFuture<Boolean> saveAllEntitiesWithRetry(List<T> entities, int maxAttempts) {
 
         return saveAllEntitiesFromListAsync(entities).handle((result, ex) -> {
             if (ex == null) {
@@ -153,7 +153,7 @@ public class DatabaseService {
 
     }
 
-    public static  <T> void deleteEntity(T entity) {
+    public static <T> void deleteEntity(T entity) {
         EnhancedLogger.log().warning("Preparing to delete entity: " + entity.getClass().getSimpleName());
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -166,7 +166,7 @@ public class DatabaseService {
             EnhancedLogger.log().severe("Deleting entity failed - " + e.getMessage());
         }
     }
-    public static  <T> CompletableFuture<Void> deleteEntityAsync(T entity) {
+    public static <T> CompletableFuture<Void> deleteEntityAsync(T entity) {
 
         return CompletableFuture.runAsync(() -> {
             EnhancedLogger.log().warning("Preparing to delete entity: " + entity.getClass().getSimpleName());
@@ -183,7 +183,7 @@ public class DatabaseService {
             }
         });
     }
-    public static  <T> CompletableFuture<Void> deleteAllEntitiesFromListAsync(List<T> entities) {
+    public static <T> CompletableFuture<Void> deleteAllEntitiesFromListAsync(List<T> entities) {
 
         return CompletableFuture.runAsync(() -> {
             EnhancedLogger.log().warning("Preparing to delete entities from the list: " + entities);

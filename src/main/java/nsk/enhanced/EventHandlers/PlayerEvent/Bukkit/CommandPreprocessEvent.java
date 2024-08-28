@@ -1,21 +1,16 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
-import nsk.enhanced.Managers.MonitorManager;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
-import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.DatabaseService;
-import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.ChatEvent.Command;
-import nsk.enhanced.System.Hibernate.ChatEvent.Message;
 import nsk.enhanced.System.Hibernate.Event;
+import nsk.enhanced.System.MemoryService;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -52,7 +47,10 @@ public class CommandPreprocessEvent implements Listener {
 
             Event e = new Event("preCommand", player, player.getLocation(), eventData);
 
-            MonitorManager.saveEvent(e);
+            MemoryService.logEventAsync(() -> {
+                DatabaseService.saveEntity(e);
+            });
+
         } catch (Exception ex) {
             EnhancedLogger.log().severe("Failed to save PlayerEvents/preCommand - " + ex.getMessage());
         }
