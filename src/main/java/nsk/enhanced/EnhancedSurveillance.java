@@ -17,10 +17,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * EnhancedSurveillance is a main plugin class.
+ *
+ * @author Mateusz Aftanas (Miciasty)
+ */
 public final class EnhancedSurveillance extends JavaPlugin {
 
+    /**
+     * {@link EnhancedLogger} is a plugin's logger.
+     */
     private EnhancedLogger enhancedLogger;
 
+    /**
+     * onEnable() is called on server startup.
+     */
     @Override
     public void onEnable() {
         ES.setInstance(this);
@@ -42,6 +53,9 @@ public final class EnhancedSurveillance extends JavaPlugin {
         EventsConfiguration.load();
     }
 
+    /**
+     * onDisable() is called when plugin is disabling.
+     */
     @Override
     public void onDisable() {
         for (Player player : getServer().getOnlinePlayers()) {

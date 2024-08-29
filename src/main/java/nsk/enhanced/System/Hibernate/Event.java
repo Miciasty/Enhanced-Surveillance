@@ -24,6 +24,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * <p>
+ * The {@link Event} class represents an event occurring in the server, stored in the `surveillance_events` database table.
+ * This class is responsible for capturing and managing various types of events related to players, including their locations,
+ * worlds, and additional data.
+ * </p>
+ *
+ * <p>The Event class links together several other entities, including {@link Character}, {@link WorldEntity}, and {@link EventDetails},
+ * to provide a comprehensive record of player actions and state changes in the game.</p>
+ */
 @Entity
 @Table(name = "surveillance_events")
 public class Event {
@@ -67,8 +77,19 @@ public class Event {
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
+    /**
+     * Default constructor for JPA.
+     */
     public Event() {}
 
+    /**
+     * Constructs a new {@link Event} with the specified event type, player, and event data.
+     * The event is initialized with the player's current location.
+     *
+     * @param type the type of event (e.g., "join", "interact")
+     * @param player the player associated with the event
+     * @param eventData a map of event data to be associated with this event
+     */
     public Event(
 
             String  type,
@@ -97,6 +118,14 @@ public class Event {
 
     }
 
+    /**
+     * Constructs a new {@link Event} with the specified type, player, location, and event data.
+     *
+     * @param type the type of event (e.g., "join", "move")
+     * @param player the player associated with the event
+     * @param location the location where the event occurred
+     * @param eventData a map of event data to be associated with this event
+     */
     public Event(
 
             String  type,
@@ -128,24 +157,78 @@ public class Event {
 
     // --- --- --- --- --- --- Main --- --- --- --- --- --- //
 
+    /**
+     * Returns the ID of this {@link Event}.
+     *
+     * @return the ID of the event
+     */
     public int getID() { return ID; }
+
+    /**
+     * Returns the type of this {@link Event}.
+     *
+     * @return the type of event (e.g., "move", "quit")
+     */
     public String getType() { return type; }
 
+    /**
+     * Returns the timestamp when this {@link Event} occurred.
+     *
+     * @return the timestamp of the event
+     */
     public LocalDateTime getTimestamp() { return timestamp; }
 
+    /**
+     * Returns the {@link Character} associated with this {@link Event}.
+     *
+     * @return the {@link Character} associated with this event
+     */
     public Character getCharacter() { return character; }
+
+    /**
+     * Returns the {@link WorldEntity} where this {@link Event} occurred.
+     *
+     * @return the {@link WorldEntity} associated with this event
+     */
     public WorldEntity getWorldEntity() { return world; }
 
+    /**
+     * Returns the OfflinePlayer associated with this {@link Event}, based on the Character's UUID.
+     *
+     * @return the OfflinePlayer associated with this event
+     */
     public OfflinePlayer getPlayer() {
         return ES.getInstance().getServer().getOfflinePlayer( character.getUuid() );
     }
+
+    /**
+     * Returns the World where this {@link Event} occurred, based on the WorldEntity's name.
+     *
+     * @return the World associated with this event
+     */
     public World getWorld() {
         return ES.getInstance().getServer().getWorld(world.getWorld());
     }
 
+    /**
+     * Returns the map of event data associated with this {@link Event}.
+     *
+     * @return a map of event data keys and their associated {@link EventDetails}
+     */
     public Map<String, EventDetails> getEventData() { return eventData; }
 
+    /**
+     * Returns the yaw (horizontal rotation) value of this {@link Event}.
+     *
+     * @return the yaw value
+     */
     public float getYaw() { return yaw; }
+
+    /**
+     * Returns the pitch (vertical rotation) value of this {@link Event}.
+     *
+     * @return the pitch value
+     */
     public float getPitch() { return pitch; }
 
     private void setYaw(float yaw) {
@@ -158,6 +241,15 @@ public class Event {
 
     // --- --- --- --- --- --- Compression --- --- --- --- --- --- //
 
+    /**
+     * Compresses and sets the event data for this {@link Event}, associating each key-value pair
+     * in the provided map with the corresponding {@link EventDetails}.
+     *
+     * @param eventData a map of event data keys and their associated values
+     * @param location the location where the event occurred
+     *
+     * @see Compression#compress(String)
+     */
     private void setEventData(Map<String, String> eventData, Location location) {
         this.eventData = new HashMap<>();
         for (Map.Entry<String, String> entry : eventData.entrySet()) {
@@ -171,6 +263,13 @@ public class Event {
         }
     }
 
+    /**
+     * Returns a map of decompressed event data for this {@link Event}.
+     *
+     * @return a map of event data keys and their associated decompressed values
+     *
+     * @see Compression#decompress(byte[])
+     */
     public Map<String, String> getDecompressedEventData() {
         Map<String, String> decompressedData = new HashMap<>();
         for (Map.Entry<String, EventDetails> entry : eventData.entrySet()) {
@@ -185,6 +284,8 @@ public class Event {
 
 
     // --- --- --- --- --- --- STATIC METHODS --- --- --- --- --- --- //
+
+    // TO DO: Add rest of docs
 
     public static List<Event> getEventsForCharacter(Character character) {
         List<Event> events = new ArrayList<>();
