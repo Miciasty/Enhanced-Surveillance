@@ -15,10 +15,21 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The {@link JoinEvent} class listens for the {@link PlayerJoinEvent} in Minecraft and handles the event
+ * based on the configuration. It captures data about the player when they join the server,
+ * such as health, hunger, experience, and connection details.
+ */
 public class JoinEvent implements Listener {
 
     private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
+    /**
+     * Handles the {@link PlayerJoinEvent}. This method processes player join events by capturing relevant data
+     * depending on the configured detail level.
+     *
+     * @param event the {@link PlayerJoinEvent} triggered when a player joins the server
+     */
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
 

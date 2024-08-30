@@ -21,10 +21,21 @@ import org.bukkit.inventory.EquipmentSlot;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The {@link InteractEvent} class listens for the {@link PlayerInteractEvent} in Minecraft and handles the event
+ * based on the configuration. It captures data about player interactions, such as actions, items,
+ * blocks, and nearby redstone components.
+ */
 public class InteractEvent implements Listener {
 
     private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
+    /**
+     * Handles the {@link PlayerInteractEvent}. This method processes player interactions, capturing relevant data
+     * depending on the configured detail level.
+     *
+     * @param event the {@link PlayerInteractEvent} triggered when a player interacts with a block or item
+     */
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
 

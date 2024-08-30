@@ -18,13 +18,28 @@ import org.bukkit.util.Vector;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The {@link MoveEvent} class listens for the {@link PlayerMoveEvent} in Minecraft and handles the event
+ * based on the configuration. It captures data about significant player movements, such as
+ * distance traveled, direction, and speed.
+ */
 public class MoveEvent implements Listener {
 
     private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
     private static final double MIN_DISTANCE = config.getInt("events.PlayerMoveEvent.distance", 15);
 
+    /**
+     * Stores the last known significant position of each player, based on movement events.
+     * The key is the player, and the value is an instance of {@link ExtMove} containing movement details.
+     */
     private final Map<Player, ExtMove> lastPositions = new LinkedHashMap<>();
 
+    /**
+     * Handles the {@link PlayerMoveEvent}. This method processes player movement events by capturing
+     * significant movement data, depending on the configured detail level.
+     *
+     * @param event the {@link PlayerMoveEvent} triggered when a player moves
+     */
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
 

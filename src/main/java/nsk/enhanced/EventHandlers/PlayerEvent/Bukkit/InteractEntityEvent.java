@@ -16,10 +16,21 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The {@link InteractEntityEvent} class listens for the {@link PlayerInteractEntityEvent} in Minecraft
+ * and handles the event based on the configuration. It captures data about the entity
+ * that the player interacted with and logs the event.
+ */
 public class InteractEntityEvent implements Listener {
 
     private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
+    /**
+     * Handles the {@link PlayerInteractEntityEvent}. This method processes interactions between a player
+     * and an entity by capturing relevant data based on the configured detail level.
+     *
+     * @param event the {@link PlayerInteractEntityEvent} triggered when a player interacts with an entity
+     */
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 

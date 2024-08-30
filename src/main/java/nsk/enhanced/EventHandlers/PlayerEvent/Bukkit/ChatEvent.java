@@ -15,10 +15,21 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.*;
 
+/**
+ * The {@link ChatEvent} class listens for the {@link AsyncPlayerChatEvent} and handles the event based on the configuration.
+ * It logs chat events, calculates recipient distances, and stores the event data in the database.
+ */
 public class ChatEvent implements Listener {
 
     private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
+    /**
+     * Handles the {@link AsyncPlayerChatEvent}. This method processes chat events by logging details such as
+     * the average, minimum, and maximum distance between the player and the recipients of the chat message,
+     * depending on the configured level of detail.
+     *
+     * @param event the {@link AsyncPlayerChatEvent} triggered when a player sends a chat message
+     */
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
 

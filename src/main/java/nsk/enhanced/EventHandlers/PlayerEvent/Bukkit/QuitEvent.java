@@ -14,10 +14,21 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The {@link QuitEvent} class listens for the {@link PlayerQuitEvent} in Minecraft and handles the event
+ * based on the configuration. It captures data about the player when they leave the server,
+ * such as health, hunger, experience, and connection details.
+ */
 public class QuitEvent implements Listener {
 
     private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
+    /**
+     * Handles the {@link PlayerQuitEvent}. This method processes player quit events by capturing relevant data
+     * depending on the configured detail level.
+     *
+     * @param event the {@link PlayerQuitEvent} triggered when a player leaves the server
+     */
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
 

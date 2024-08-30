@@ -15,10 +15,21 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The {@link CommandPreprocessEvent} class listens for the {@link PlayerCommandPreprocessEvent} in Minecraft
+ * and handles the event based on the configuration. It logs command preprocessing events
+ * and stores the event data in the database.
+ */
 public class CommandPreprocessEvent implements Listener {
 
     private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
+    /**
+     * Handles the {@link PlayerCommandPreprocessEvent}. This method processes command preprocessing events
+     * by capturing the player who issued the command and the command itself, then logs these details.
+     *
+     * @param event the {@link PlayerCommandPreprocessEvent} triggered when a player issues a command
+     */
     @EventHandler
     public void onCommandPreprocess(PlayerCommandPreprocessEvent event) {
 
