@@ -7,10 +7,21 @@ import org.bukkit.Bukkit;
 
 import java.util.logging.*;
 
+/**
+ * The {@link EnhancedLogger} class extends the standard Java {@link Logger} to provide customized logging
+ * with colored output and a formatted message prefix. It is designed for use with a {@link Bukkit} plugin
+ * and integrates with the server's console logging.
+ */
 public class EnhancedLogger extends Logger {
 
     private static EnhancedLogger logger;
 
+    /**
+     * Constructs a new {@link EnhancedLogger} instance for the {@link EnhancedSurveillance} plugin.
+     * This logger is set to log all levels and customizes the output format with colors and prefixes.
+     *
+     * @param plugin the plugin instance for which this logger is created
+     */
     public EnhancedLogger(EnhancedSurveillance plugin) {
         super(plugin.getName(), null);
         setParent(Bukkit.getLogger());
@@ -28,6 +39,10 @@ public class EnhancedLogger extends Logger {
         addLogger(this);
     }
 
+    /**
+     * The {@link EnhancedLogger} class extends the {@link Handler} class to customize how log messages are published.
+     * It formats the log messages with colors and gradients based on the log level.
+     */
     private class EnhancedHandler extends Handler {
         @Override
         public void publish(LogRecord record) {
@@ -83,10 +98,21 @@ public class EnhancedLogger extends Logger {
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
+    /**
+     * Adds the logger instance to the static field for later retrieval.
+     *
+     * @param e the {@link EnhancedLogger} instance to be stored
+     */
     private static void addLogger(EnhancedLogger e) {
         logger = e;
     }
 
+    /**
+     * Returns the singleton instance of {@link EnhancedLogger}. This method is used to access
+     * the logger from other parts of the plugin.
+     *
+     * @return the singleton instance of {@link EnhancedLogger}
+     */
     public static EnhancedLogger log() {
 
         return logger;
