@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"nsk.enhanced"},{"l":"nsk.enhanced.EventHandlers.PlayerEvent.Bukkit"},{"l":"nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Extended"},{"l":"nsk.enhanced.System"},{"l":"nsk.enhanced.System.Configuration"},{"l":"nsk.enhanced.System.Hibernate"},{"l":"nsk.enhanced.System.Hibernate.ChatEvent"},{"l":"nsk.enhanced.System.Utils"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"nsk.enhanced.System"}];updateSearchResults();
