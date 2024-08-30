@@ -77,3 +77,15 @@ events:
     PlayerInteractEntityEvent:
         enabled:                    false
         level:                      0           # Levels:   0 / 1 / 2 / 3
+
+    PlayerToggleSneakEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1
+
+    PlayerToggleSprintEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1
+
+    PlayerToggleFlightEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1

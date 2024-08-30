@@ -7,6 +7,7 @@ import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Character;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
+import nsk.enhanced.System.Utils.Check;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -50,7 +51,7 @@ public class InteractEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.PlayerInteractEvent.level", 0);
-        if ( level > 0 && level < 4) {
+        if (Check.inRange(1, 3, true, level)) {
 
             if ( event.getHand() == EquipmentSlot.HAND ) {
                 eventData.put("action",             action.name().toUpperCase() );
@@ -116,8 +117,8 @@ public class InteractEvent implements Listener {
                 }
             }
 
-        } else if (level < 0 || level > 3) {
-            EnhancedLogger.log().warning("<green>'events.PlayerChatEvent.level'</green> can only be set to a maximum of 2. The provided value is invalid, so the event will default to level 0.");
+        } else if (Check.inRange(0, 3, false, level)) {
+            EnhancedLogger.log().warning("<green>'events.PlayerInteractEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 
         Location location;

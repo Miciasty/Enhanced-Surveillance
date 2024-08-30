@@ -6,6 +6,7 @@ import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
+import nsk.enhanced.System.Utils.Check;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,7 +43,7 @@ public class JoinEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.PlayerJoinQuitEvent.level", 0);
-        if (level > 0 && level < 4) {
+        if (Check.inRange(1, 3, true, level)) {
 
             eventData.put("health",     String.valueOf(player.getHealth())      .toUpperCase());
             eventData.put("hunger",     String.valueOf(player.getFoodLevel())   .toUpperCase());
@@ -76,6 +77,8 @@ public class JoinEvent implements Listener {
                 }
             }
 
+        } else if (Check.inRange(0, 3, false, level)) {
+            EnhancedLogger.log().warning("<green>'events.PlayerJoinQuitEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 
         Event e = new Event("join", player, player.getLocation(), eventData);

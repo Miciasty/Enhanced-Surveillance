@@ -7,7 +7,7 @@
 - [x] PlayerCommandPreprocessEvent
 - [x] PlayerInteractEvent
 - [x] PlayerInteractEntityEvent
-- [ ] PlayerToggleSneakEvent
+- [x] PlayerToggleSneakEvent
 - [ ] PlayerToggleSprintEvent
 - [ ] PlayerToggleFlightEvent
 - [ ] PlayerRespawnEvent

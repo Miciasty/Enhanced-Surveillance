@@ -7,6 +7,7 @@ import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
+import nsk.enhanced.System.Utils.Check;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -48,7 +49,7 @@ public class InteractEntityEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.PlayerInteractEntityEvent.level", 0);
-        if (level > 0 && level < 4) {
+        if (Check.inRange(1, 3, true, level)) {
 
             if (target.getType().getEntityClass() != null) {
                 eventData.put("type",   target.getType().getEntityClass().getSimpleName());
@@ -94,6 +95,8 @@ public class InteractEntityEvent implements Listener {
 
             }
 
+        } else if (Check.inRange(0, 3, false, level)) {
+            EnhancedLogger.log().warning("<green>'events.PlayerInteractEntityEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 
 

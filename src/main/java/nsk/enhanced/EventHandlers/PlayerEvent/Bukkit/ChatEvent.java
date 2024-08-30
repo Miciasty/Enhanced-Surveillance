@@ -6,6 +6,7 @@ import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.ChatEvent.Message;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
+import nsk.enhanced.System.Utils.Check;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -43,7 +44,7 @@ public class ChatEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.AsyncPlayerChatEvent.level", 0);
-        if ( level > 0 && level < 3) {
+        if (Check.inRange(1, 2, true, level)) {
 
             Set<Player> recipients = event.getRecipients();
 
@@ -81,8 +82,8 @@ public class ChatEvent implements Listener {
                 eventData.put("maxDist", String.valueOf(maxDistance));
             }
 
-        } else if (level < 0 || level > 2) {
-            EnhancedLogger.log().warning("<green>'events.PlayerChatEvent.level'</green> can only be set to a maximum of 2. The provided value is invalid, so the event will default to level 0.");
+        } else if (Check.inRange(0, 2, false, level)) {
+            EnhancedLogger.log().warning("<green>'events.AsyncPlayerChatEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 
 

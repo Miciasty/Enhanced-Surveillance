@@ -7,6 +7,7 @@ import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
+import nsk.enhanced.System.Utils.Check;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -72,7 +73,7 @@ public class MoveEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.PlayerMoveEvent.level", 0);
-        if (level > 0 && level < 4) {
+        if (Check.inRange(1, 3, true, level)) {
 
             if (!lastPosition.getTo().equals(player.getLocation())) {
                 eventData.put("distance",           String.valueOf(lastPosition.getTo().distance(to)));
@@ -98,6 +99,8 @@ public class MoveEvent implements Listener {
                 if (ES.debugMode()) EnhancedLogger.log().info("Speed: <gold>" + speed);
             }
 
+        } else if (Check.inRange(0, 3, false, level)) {
+            EnhancedLogger.log().warning("<green>'events.PlayerMoveEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 
         Event e = new Event("move", player, lastPosition.getTo(), eventData);
