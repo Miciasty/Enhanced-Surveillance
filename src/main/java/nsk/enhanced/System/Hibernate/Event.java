@@ -285,8 +285,13 @@ public class Event {
 
     // --- --- --- --- --- --- STATIC METHODS --- --- --- --- --- --- //
 
-    // TO DO: Add rest of docs
 
+    /**
+     * Retrieves a list of all events associated with the specified {@link Character}.
+     *
+     * @param character the {@link Character} whose events are to be retrieved
+     * @return a list of events associated with the specified {@link Character}
+     */
     public static List<Event> getEventsForCharacter(Character character) {
         List<Event> events = new ArrayList<>();
 
@@ -310,6 +315,13 @@ public class Event {
 
         return events;
     }
+
+    /**
+     * Retrieves a number of all events associated with the specified {@link Character}.
+     *
+     * @param character the {@link Character} whose events are to be retrieved
+     * @return a number of events associated with the specified {@link Character}
+     */
     public static long getEventsSizeForCharacter(Character character) {
         long size = 0;
 
@@ -335,6 +347,13 @@ public class Event {
         return size;
     }
 
+    /**
+     * Retrieves a list of all events with specified type associated with the specified {@link Character}.
+     *
+     * @param character the {@link Character} whose events are to be retrieved
+     * @param type the type of event (e.g., "move", "quit")
+     * @return a list of events associated with the specified {@link Character} and type
+     */
     public static List<Event> getEventsForCharacter(Character character, String type) {
         List<Event> events = new ArrayList<>();
 
@@ -365,6 +384,14 @@ public class Event {
 
         return events;
     }
+
+    /**
+     * Retrieves a number of all events with specified type associated with the specified {@link Character}.
+     *
+     * @param character the {@link Character} whose events are to be retrieved
+     * @param type the type of event (e.g., "move", "quit")
+     * @return a number of events associated with the specified {@link Character} and type
+     */
     public static long getEventsSizeForCharacter(Character character, String type) {
         long count = 0;
 
@@ -396,6 +423,15 @@ public class Event {
         return count;
     }
 
+    /**
+     * Retrieves a list of all events with specified type associated with the specified {@link Character}.
+     * At specified date.
+     *
+     * @param character the {@link Character} whose events are to be retrieved
+     * @param type the type of event (e.g., "move", "quit")
+     * @param localDate the date when event happened
+     * @return a list of events associated with the specified {@link Character} and type
+     */
     public static List<Event> getEventsForCharacter(Character character, String type, LocalDate localDate) {
         List<Event> events = new ArrayList<>();
 
@@ -431,6 +467,16 @@ public class Event {
 
         return events;
     }
+
+    /**
+     * Retrieves a number of all events with specified type associated with the specified {@link Character}.
+     * At specified date.
+     *
+     * @param character the {@link Character} whose events are to be retrieved
+     * @param type the type of event (e.g., "move", "quit")
+     * @param localDate the date when event happened
+     * @return a number of events associated with the specified {@link Character} and type
+     */
     public static long getEventsSizeForCharacter(Character character, String type, LocalDate localDate) {
         long count = 0;
 
@@ -467,6 +513,13 @@ public class Event {
         return count;
     }
 
+    /**
+     * Calculates the total session time for the specified {@link Character} by summing the durations
+     * between "join" and "quit" events.
+     *
+     * @param character the {@link Character} whose total session time is to be calculated
+     * @return the total session time <strong>in seconds</strong>
+     */
     public static long getTotalSessionTimeForCharacter(Character character) {
         long totalSessionTime = 0;
 
@@ -518,6 +571,13 @@ public class Event {
         return totalSessionTime;
     }
 
+    /**
+     * Retrieves the last event of a specified type associated with the given {@link Character}.
+     *
+     * @param character the {@link Character} whose last event is to be retrieved
+     * @param type the type of event to retrieve
+     * @return the last event of the specified type for the {@link Character}, or null if not found
+     */
     public static Event getLastEventByType(Character character, String type) {
 
         Event lastEvent = null;
