@@ -12,6 +12,15 @@ import java.io.File;
 import java.lang.reflect.Modifier;
 import java.util.Set;
 
+/**
+ * The {@link EventsConfiguration} class manages the loading and registration of event listeners
+ * and configurations for both Bukkit and Paper events. It loads the event configurations
+ * from <strong>bukkit-events.yml</strong> and <strong>paper-events.yml</strong> files and dynamically registers
+ * event listeners found in the specified package.
+ *
+ * @see nsk.enhanced.EventHandlers.PlayerEvent.Bukkit
+ * @see nsk.enhanced.EventHandlers.PlayerEvent.Paper
+ */
 public class EventsConfiguration {
 
     private static final EnhancedSurveillance plugin = ES.getInstance();
@@ -22,6 +31,13 @@ public class EventsConfiguration {
     private static FileConfiguration bukkitEvents;
     private static FileConfiguration paperEvents;
 
+    /**
+     * Loads the event configurations and registers the event listeners.
+     * This method loads the <strong>bukkit-events.yml</strong> and <strong>paper-events.yml</strong> files,
+     * and then registers all found PlayerEvent listeners.
+     *
+     * @see nsk.enhanced.EventHandlers.PlayerEvent
+     */
     public static void load() {
         try {
             loadBukkitEvents();
@@ -35,6 +51,12 @@ public class EventsConfiguration {
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
+    /**
+     * Loads and registers all Bukkit PlayerEvent listeners found in the specified package.
+     * The listeners are dynamically discovered and registered with the server's PluginManager.
+     *
+     * @see nsk.enhanced.EventHandlers.PlayerEvent.Bukkit
+     */
     private static void loadBukkitPlayerEventListeners() {
         enhancedLogger.warning("Preparing to load Bukkit PlayerEvent listeners...");
 
@@ -89,6 +111,10 @@ public class EventsConfiguration {
 
     // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- //
 
+    /**
+     * Loads the <strong>bukkit-events.yml</strong> file from the plugin's data folder.
+     * If the file does not exist, it is created from the plugin's resources.
+     */
     private static void loadBukkitEvents() {
         enhancedLogger.warning("Loading bukkit events...");
         File bukkitEventsFile = new File(plugin.getDataFolder(), "events/player/bukkit-events.yml");
@@ -99,10 +125,20 @@ public class EventsConfiguration {
 
         bukkitEvents = YamlConfiguration.loadConfiguration(bukkitEventsFile);
     }
+
+    /**
+     * Returns the loaded <strong>bukkit-events.yml</strong> configuration.
+     *
+     * @return the <strong>bukkit-events.yml</strong> {@link FileConfiguration} object
+     */
     public static FileConfiguration getBukkitEventsFile() {
         return bukkitEvents;
     }
 
+    /**
+     * Loads the <strong>paper-events.yml</strong> file from the plugin's data folder.
+     * If the file does not exist, it is created from the plugin's resources.
+     */
     private static void loadPaperEvents() {
         enhancedLogger.warning("Loading bukkit events...");
         File paperEventsFile = new File(plugin.getDataFolder(), "events/player/paper-events.yml");
@@ -113,6 +149,12 @@ public class EventsConfiguration {
 
         paperEvents = YamlConfiguration.loadConfiguration(paperEventsFile);
     }
+
+    /**
+     * Returns the loaded <strong>paper-events.yml</strong> configuration.
+     *
+     * @return the <strong>paper-events.yml</strong> {@link FileConfiguration} object
+     */
     public static FileConfiguration getPaperEventsFile() {
         return paperEvents;
     }
