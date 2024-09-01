@@ -3,9 +3,7 @@ package nsk.enhanced.System;
 import nsk.enhanced.EnhancedSurveillance;
 import nsk.enhanced.System.Configuration.ServerConfiguration;
 import nsk.enhanced.System.Hibernate.Character;
-import nsk.enhanced.System.Hibernate.ChatEvent.Command;
-import nsk.enhanced.System.Hibernate.ChatEvent.Message;
-import nsk.enhanced.System.Hibernate.ChatEvent.Original;
+import nsk.enhanced.System.Hibernate.MessageHandler.*;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.Hibernate.WorldEntity;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -70,6 +68,8 @@ public class DatabaseService {
             cfg.addAnnotatedClass(Original.class);
             cfg.addAnnotatedClass(Message.class);
             cfg.addAnnotatedClass(Command.class);
+            cfg.addAnnotatedClass(Death.class);
+            cfg.addAnnotatedClass(Kick.class);
 
             if (cfg.buildSessionFactory() != null) {
                 sessionFactory = cfg.buildSessionFactory();

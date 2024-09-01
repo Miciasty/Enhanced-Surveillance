@@ -16,10 +16,21 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The {@link TeleportEvent} class listens for the {@link PlayerTeleportEvent} in Minecraft and handles the event
+ * based on the configuration. It captures data when a player teleports, such as the cause of the teleportation
+ * and the locations involved.
+ */
 public class TeleportEvent implements Listener {
 
     private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
+    /**
+     * Handles the {@link PlayerTeleportEvent}. This method processes the event when a player teleports,
+     * capturing relevant data based on the configured detail level.
+     *
+     * @param event the {@link PlayerTeleportEvent} triggered when a player teleports
+     */
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
 

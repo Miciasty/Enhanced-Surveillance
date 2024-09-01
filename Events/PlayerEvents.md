@@ -12,13 +12,13 @@
 - [x] PlayerToggleFlightEvent
 - [x] PlayerRespawnEvent
 - [x] PlayerTeleportEvent
-- [ ] PlayerDropItemEvent
-- [ ] PlayerPickupItemEvent
-- [ ] PlayerDeathEvent
-- [ ] PlayerKickEvent
-- [ ] PlayerLoginEvent
-- [ ] PlayerBedEnterEvent
-- [ ] PlayerBedLeaveEvent
+- [x] PlayerDropItemEvent
+- [x] PlayerPickupItemEvent
+- [x] PlayerDeathEvent
+- [x] PlayerKickEvent
+- [x] PlayerLoginEvent
+- [-] PlayerBedEnterEvent
+- [-] PlayerBedLeaveEvent
 - [ ] PlayerItemConsumeEvent
 - [ ] PlayerItemBreakEvent
 - [ ] PlayerItemDamageEvent

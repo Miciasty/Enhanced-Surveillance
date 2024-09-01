@@ -16,10 +16,21 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The {@link RespawnEvent} class listens for the {@link PlayerRespawnEvent} in Minecraft and handles the event
+ * based on the configuration. It captures data when a player respawns, such as the respawn location,
+ * the reason for respawning, and whether the respawn was triggered by an anchor or a bed.
+ */
 public class RespawnEvent implements Listener {
 
     private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
+    /**
+     * Handles the {@link PlayerRespawnEvent}. This method processes the event when a player respawns,
+     * capturing relevant data based on the configured detail level.
+     *
+     * @param event the {@link PlayerRespawnEvent} triggered when a player respawns
+     */
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
 

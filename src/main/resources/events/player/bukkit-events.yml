@@ -105,3 +105,15 @@ events:
     PlayerPickupItemEvent:
         enabled:                    false
         level:                      0           # Levels:   0 / 1 / 2
+
+    PlayerDeathEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1 / 2 / 3
+
+    PlayerKickEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1
+
+    PlayerLoginEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1 / 2

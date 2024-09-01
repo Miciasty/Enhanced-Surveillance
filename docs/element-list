@@ -4,5 +4,5 @@ nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Extended
 nsk.enhanced.System
 nsk.enhanced.System.Configuration
 nsk.enhanced.System.Hibernate
-nsk.enhanced.System.Hibernate.ChatEvent
+nsk.enhanced.System.Hibernate.MessageHandler
 nsk.enhanced.System.Utils

@@ -1,7 +1,6 @@
-package nsk.enhanced.System.Hibernate.ChatEvent;
+package nsk.enhanced.System.Hibernate.MessageHandler;
 
 import nsk.enhanced.System.DatabaseService;
-import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import org.hibernate.Session;
 

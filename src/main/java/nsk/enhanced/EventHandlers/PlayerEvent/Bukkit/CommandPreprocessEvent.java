@@ -3,7 +3,7 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
-import nsk.enhanced.System.Hibernate.ChatEvent.Command;
+import nsk.enhanced.System.Hibernate.MessageHandler.Command;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
 import org.bukkit.configuration.file.FileConfiguration;

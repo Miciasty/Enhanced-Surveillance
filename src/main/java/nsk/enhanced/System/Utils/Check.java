@@ -16,12 +16,12 @@ public class Check {
      *    boolean result = !Check.inRange(0, 3, 5)   // true;
      * </pre>
      *
-     * @param a the minimum value of the range (inclusive)
-     * @param b the maximum value of the range (inclusive)
+     * @param min the minimum value of the range (inclusive)
+     * @param max the maximum value of the range (inclusive)
      * @param value the value to check
-     * @return true if the value within the range <strong>[a, b]</strong>, false otherwise
+     * @return true if the value within the range <strong>[min, max]</strong>, false otherwise
      */
-    public static boolean inRange(double a, double b, double value) {
-        return a <= value && value <= b;
+    public static boolean inRange(double min, double max, double value) {
+        return min <= value && value <= max;
     }
 }

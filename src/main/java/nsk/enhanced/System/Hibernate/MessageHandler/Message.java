@@ -1,4 +1,4 @@
-package nsk.enhanced.System.Hibernate.ChatEvent;
+package nsk.enhanced.System.Hibernate.MessageHandler;
 
 import nsk.enhanced.System.Hibernate.Character;
 import org.bukkit.entity.Player;
