@@ -1,6 +1,5 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
-import io.papermc.paper.event.player.PlayerPickItemEvent;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;

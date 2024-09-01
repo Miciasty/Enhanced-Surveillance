@@ -8,6 +8,7 @@ import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
 import nsk.enhanced.System.Utils.Check;
+import nsk.enhanced.System.Utils.Tools;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -76,8 +77,11 @@ public class MoveEvent implements Listener {
         if (Check.inRange(1, 3, level)) {
 
             if (!lastPosition.getTo().equals(player.getLocation())) {
-                eventData.put("distance",           String.valueOf(lastPosition.getTo().distance(to)));
-                EnhancedLogger.log().config("Distance: <gold>" + lastPosition.getTo().distance(to));
+
+                double value = Tools.roundTo(lastPosition.getTo().distance(to), 3);
+
+                eventData.put("distance",           String.valueOf(value));
+                EnhancedLogger.log().config("Distance: <gold>" + value);
             }
 
             if (level > 1) {
@@ -87,13 +91,18 @@ public class MoveEvent implements Listener {
                 }
 
                 Vector direction = to.toVector().subtract(lastPosition.getTo().toVector()).normalize();
-                eventData.put("direction",          direction.toString().toUpperCase());
-                EnhancedLogger.log().config("Direction: <gold>" + direction);
+                double x = Tools.roundTo(direction.getX(), 3);
+                double y = Tools.roundTo(direction.getY(), 3);
+                double z = Tools.roundTo(direction.getZ(), 3);
+
+                String d = x + "," + y + "," + z;
+                eventData.put("direction",          d);
+                EnhancedLogger.log().config("Direction: <gold>" + d);
             }
 
             if (level > 2) {
                 long timeElapsed = System.currentTimeMillis() - lastPosition.getTimestamp();
-                double speed = lastPosition.getTo().distance(to) / (timeElapsed / 1000.0);
+                double speed = Tools.roundTo(lastPosition.getTo().distance(to) / (timeElapsed / 1000.0), 3);
 
                 eventData.put("speed",              String.valueOf(speed));
                 EnhancedLogger.log().config("Speed: <gold>" + speed);

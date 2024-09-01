@@ -13,6 +13,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -39,10 +40,14 @@ public class InteractEntityEvent implements Listener {
             return;
         }
 
+        if (event.getHand() != EquipmentSlot.HAND) {
+            return;
+        }
+
         Player player = event.getPlayer();
         Entity target = event.getRightClicked();
 
-        if (target instanceof Player || target instanceof Monster) {
+        if (target instanceof Player) {
             return;
         }
 
@@ -60,13 +65,14 @@ public class InteractEntityEvent implements Listener {
 
                 if (target.getCustomName() != null) {
                     eventData.put("customName", target.getCustomName());
-                    EnhancedLogger.log().config("health: <red>" + target.getCustomName());
+                    EnhancedLogger.log().config("customName: <red>" + target.getCustomName());
                 }
 
                 if (target instanceof LivingEntity) {
                     eventData.put("health",     String.valueOf( ((LivingEntity) target).getHealth()) );
-                    EnhancedLogger.log().config("health: <red>" + ((LivingEntity) target).getHealth());
+                    EnhancedLogger.log().config("health: <green>" + ((LivingEntity) target).getHealth() + " / " + ((LivingEntity) target).getMaxHealth());
                 }
+
             }
 
             if (level > 2 && target instanceof Villager) {

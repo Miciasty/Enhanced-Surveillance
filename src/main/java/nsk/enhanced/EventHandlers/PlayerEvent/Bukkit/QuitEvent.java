@@ -6,6 +6,7 @@ import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
 import nsk.enhanced.System.Utils.Check;
+import nsk.enhanced.System.Utils.Tools;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,35 +43,25 @@ public class QuitEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.PlayerJoinQuitEvent.level", 0);
-        if (Check.inRange(1, 3, level)) {
+        if (Check.inRange(1, 2, level)) {
 
-            eventData.put("health",     String.valueOf(player.getHealth())      .toUpperCase());
+            eventData.put("health",     String.valueOf(Tools.roundTo(player.getHealth(), 2))      .toUpperCase());
             eventData.put("hunger",     String.valueOf(player.getFoodLevel())   .toUpperCase());
 
-            EnhancedLogger.log().config("health: <red>" + player.getHealth() + "</red>");
+            EnhancedLogger.log().config("health: <red>" + Tools.roundTo(player.getHealth(), 2) + "</red>");
             EnhancedLogger.log().config("hunger: <red>" + player.getFoodLevel() + "</red>");
 
             if (level > 1) {
-                eventData.put("exp",    String.valueOf(player.getExp())         .toUpperCase());
+                eventData.put("exp",    String.valueOf(Tools.roundTo(player.getExp(), 2))         .toUpperCase());
                 eventData.put("mode",   String.valueOf(player.getGameMode())    .toUpperCase());
                 eventData.put("op",     String.valueOf(player.isOp())           .toUpperCase());
 
-                EnhancedLogger.log().config("exp: <red>" + player.getExp() + "</red>");
+                EnhancedLogger.log().config("exp: <red>" + Tools.roundTo(player.getExp(), 2) + "</red>");
                 EnhancedLogger.log().config("mode: <red>" + player.getGameMode() + "</red>");
                 EnhancedLogger.log().config("op: <red>" + player.isOp() + "</red>");
             }
 
-            if (level > 2) {
-                eventData.put("ip",     player.getAddress().getAddress().getHostAddress()     );
-                eventData.put("port",   String.valueOf(player.getAddress().getPort())         );
-                eventData.put("host",   player.getAddress().getHostName()       .toUpperCase());
-
-                EnhancedLogger.log().config("ip: <red>" + player.getAddress().getAddress().getHostAddress() + "</red>");
-                EnhancedLogger.log().config("port: <red>" + player.getAddress().getPort() + "</red>");
-                EnhancedLogger.log().config("host: <red>" + player.getAddress().getHostName() + "</red>");
-            }
-
-        } else if (!Check.inRange(0, 3, level)) {
+        } else if (!Check.inRange(0, 2, level)) {
             EnhancedLogger.log().warning("<green>'events.PlayerJoinQuitEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 

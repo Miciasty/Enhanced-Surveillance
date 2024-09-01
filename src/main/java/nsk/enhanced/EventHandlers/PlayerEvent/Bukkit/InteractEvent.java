@@ -48,14 +48,27 @@ public class InteractEvent implements Listener {
         Block block = event.getClickedBlock();
         Action action = event.getAction();
 
+        if (action == Action.LEFT_CLICK_AIR || action == Action.RIGHT_CLICK_AIR) {
+            return;
+        }
+
+        Material mainHand = player.getInventory().getItemInMainHand().getType();
+        Material offHand = player.getInventory().getItemInOffHand().getType();
+
+        EnhancedLogger.log().info("Hand: <aqua>" + event.getHand());
+        if (action == Action.RIGHT_CLICK_BLOCK) {
+            if (!shouldContinue(mainHand, offHand, event.getHand())) return;
+        }
+
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.PlayerInteractEvent.level", 0);
         if (Check.inRange(1, 3, level)) {
 
             if ( event.getHand() == EquipmentSlot.HAND ) {
+
                 eventData.put("action",             action.name().toUpperCase() );
-                EnhancedLogger.log().config("Action: <gold>" + action.name().toUpperCase());
+                EnhancedLogger.log().config("action: <gold>" + action.name().toUpperCase());
 
                 if (level > 1) {
                     if (event.getItem() != null && !event.getItem().getType().equals(Material.AIR)) {
@@ -65,19 +78,23 @@ public class InteractEvent implements Listener {
                     }
                 }
 
-            } else if ( event.getHand() == EquipmentSlot.OFF_HAND ) {
+            }
+
+            if ( event.getHand() == EquipmentSlot.OFF_HAND ) {
+
+                if (event.getItem() == null || event.getItem().getType().equals(Material.AIR)) {
+                    return;
+                }
+
                 eventData.put("action",             action.name().toUpperCase() );
                 EnhancedLogger.log().config("Offhand Action: <gold>" + action.name().toUpperCase());
 
                 if (level > 1) {
-                    if (event.getItem() != null && !event.getItem().getType().equals(Material.AIR)) {
-                        eventData.put("item",            event.getItem().toString().toUpperCase() );
 
-                        EnhancedLogger.log().config("Item: <gold>" + event.getItem().toString().toUpperCase());
-                    }
+                    eventData.put("item",            event.getItem().toString().toUpperCase() );
+                    EnhancedLogger.log().config("Item: <gold>" + event.getItem().toString().toUpperCase());
+
                 }
-            } else {
-                return;
             }
 
             if (level > 1) {
@@ -161,6 +178,27 @@ public class InteractEvent implements Listener {
         } catch (Exception e) {
             EnhancedLogger.log().severe("Failed to save PlayerEvents/interact - " + e.getMessage());
         }
+
+    }
+
+    private static boolean shouldContinue(Material mainHand, Material offHand, EquipmentSlot hand) {
+
+        boolean mainUse = Check.isPlaceableUsable(mainHand);
+        boolean offUse = Check.isPlaceableUsable(offHand);
+
+        if (hand == EquipmentSlot.HAND) {
+
+            if (offUse) {
+                return mainUse;
+            }
+            return true;
+        }
+
+        if (hand == EquipmentSlot.OFF_HAND) {
+            return !mainUse && offUse;
+        }
+
+        return false;
 
     }
 }
