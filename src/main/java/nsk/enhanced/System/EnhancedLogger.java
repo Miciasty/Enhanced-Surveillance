@@ -3,6 +3,7 @@ package nsk.enhanced.System;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import nsk.enhanced.EnhancedSurveillance;
+import nsk.enhanced.System.Utils.DevTools;
 import org.bukkit.Bukkit;
 
 import java.util.logging.*;
@@ -77,6 +78,8 @@ public class EnhancedLogger extends Logger {
                     break;
 
                 case "CONFIG":
+                    if (!DevTools.isActive()) return;
+
                     Component dev = MiniMessage.miniMessage().deserialize("<gradient:#b28724:#ffc234>[NSK]</gradient><gradient:#1f8eb2:#2dccff> [Devmode] </gradient> <#ffe099>" + message);
                     Bukkit.getConsoleSender().sendMessage(dev);
                     break;
@@ -114,7 +117,6 @@ public class EnhancedLogger extends Logger {
      * @return the singleton instance of {@link EnhancedLogger}
      */
     public static EnhancedLogger log() {
-
         return logger;
     }
 }

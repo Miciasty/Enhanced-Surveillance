@@ -41,3 +41,8 @@ EnhancedSurveillance:
     memory-service:
         services:       1       # Amount of independent services
         threads:        1       # Amount of threads per service
+
+    # Dev Tools
+
+    DevTools:
+        enabled:        false

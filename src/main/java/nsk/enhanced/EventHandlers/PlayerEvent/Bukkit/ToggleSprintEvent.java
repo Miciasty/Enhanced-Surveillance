@@ -47,11 +47,13 @@ public class ToggleSprintEvent implements Listener {
 
             if (isSprinting) {
                 eventData.put("sprinting", "TRUE");
+                EnhancedLogger.log().config("sprinting: <red>TRUE</red>");
             } else {
                 eventData.put("sprinting", "FALSE");
+                EnhancedLogger.log().config("sprinting: <red>FALSE</red>");
             }
 
-        } else if (Check.inRange(0, 1, false, level)) {
+        } else if (!Check.inRange(0, 1, level)) {
             EnhancedLogger.log().warning("<green>'events.PlayerToggleSprintEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 

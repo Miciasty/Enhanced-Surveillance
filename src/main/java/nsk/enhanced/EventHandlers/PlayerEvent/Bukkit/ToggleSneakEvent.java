@@ -46,11 +46,13 @@ public class ToggleSneakEvent implements Listener {
 
             if (isSneaking) {
                 eventData.put("sneaking", "TRUE");
+                EnhancedLogger.log().config("sneaking: <red>TRUE</red>");
             } else {
                 eventData.put("sneaking", "FALSE");
+                EnhancedLogger.log().config("sneaking: <red>FALSE</red>");
             }
 
-        } else if (Check.inRange(0, 1, false, level)) {
+        } else if (!Check.inRange(0, 1, level)) {
             EnhancedLogger.log().warning("<green>'events.PlayerToggleSneakEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 

@@ -51,29 +51,29 @@ public class InteractEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.PlayerInteractEvent.level", 0);
-        if (Check.inRange(1, 3, true, level)) {
+        if (Check.inRange(1, 3, level)) {
 
             if ( event.getHand() == EquipmentSlot.HAND ) {
                 eventData.put("action",             action.name().toUpperCase() );
-                if (ES.debugMode()) EnhancedLogger.log().info("Action: <gold>" + action.name().toUpperCase());
+                EnhancedLogger.log().config("Action: <gold>" + action.name().toUpperCase());
 
                 if (level > 1) {
                     if (event.getItem() != null && !event.getItem().getType().equals(Material.AIR)) {
                         eventData.put("item",            event.getItem().toString().toUpperCase() );
 
-                        if (ES.debugMode()) EnhancedLogger.log().info("Item: <gold>" + event.getItem().toString().toUpperCase());
+                        EnhancedLogger.log().config("Item: <gold>" + event.getItem().toString().toUpperCase());
                     }
                 }
 
             } else if ( event.getHand() == EquipmentSlot.OFF_HAND ) {
                 eventData.put("action",             action.name().toUpperCase() );
-                if (ES.debugMode()) EnhancedLogger.log().info("Offhand Action: <gold>" + action.name().toUpperCase());
+                EnhancedLogger.log().config("Offhand Action: <gold>" + action.name().toUpperCase());
 
                 if (level > 1) {
                     if (event.getItem() != null && !event.getItem().getType().equals(Material.AIR)) {
                         eventData.put("item",            event.getItem().toString().toUpperCase() );
 
-                        if (ES.debugMode()) EnhancedLogger.log().info("Item: <gold>" + event.getItem().toString().toUpperCase());
+                        EnhancedLogger.log().config("Item: <gold>" + event.getItem().toString().toUpperCase());
                     }
                 }
             } else {
@@ -85,7 +85,7 @@ public class InteractEvent implements Listener {
                 if (block != null) {
                     eventData.put("event_block",     block.getType().toString().toUpperCase() );
 
-                    if (ES.debugMode()) EnhancedLogger.log().info("Block: <gold>" + block.getType().toString().toUpperCase());
+                    EnhancedLogger.log().config("Block: <gold>" + block.getType().toString().toUpperCase());
                 }
             }
 
@@ -94,7 +94,7 @@ public class InteractEvent implements Listener {
 
                     eventData.put("event_face",     event.getBlockFace().toString().toUpperCase() );
 
-                    if (ES.debugMode()) EnhancedLogger.log().info("BlockFace: <gold>" + event.getBlockFace().toString().toUpperCase());
+                    EnhancedLogger.log().config("BlockFace: <gold>" + event.getBlockFace().toString().toUpperCase());
 
                     boolean rdst_nrb = false;
 
@@ -113,11 +113,11 @@ public class InteractEvent implements Listener {
 
                     eventData.put("rdst_nrb",       String.valueOf(rdst_nrb).toUpperCase());
 
-                    if (ES.debugMode()) EnhancedLogger.log().info("Redstone nearby: <gold>" + rdst_nrb);
+                    EnhancedLogger.log().config("Redstone nearby: <gold>" + rdst_nrb);
                 }
             }
 
-        } else if (Check.inRange(0, 3, false, level)) {
+        } else if (!Check.inRange(0, 3, level)) {
             EnhancedLogger.log().warning("<green>'events.PlayerInteractEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 

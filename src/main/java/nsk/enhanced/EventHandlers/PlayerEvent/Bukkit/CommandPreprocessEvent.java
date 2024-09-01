@@ -54,11 +54,11 @@ public class CommandPreprocessEvent implements Listener {
 
         try {
 
-            DatabaseService.saveEntity( new Command(player, message) );
-
+            Command c = new Command(player, message);
             Event e = new Event("preCommand", player, player.getLocation(), eventData);
 
             MemoryService.logEventAsync(() -> {
+                DatabaseService.saveEntity(c);
                 DatabaseService.saveEntity(e);
             });
 

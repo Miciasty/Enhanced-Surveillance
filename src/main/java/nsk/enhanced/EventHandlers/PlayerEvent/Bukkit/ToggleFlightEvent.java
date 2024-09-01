@@ -47,11 +47,13 @@ public class ToggleFlightEvent implements Listener {
 
             if (isFlying) {
                 eventData.put("flying", "TRUE");
+                EnhancedLogger.log().config("flying: <red>TRUE</red>");
             } else {
                 eventData.put("flying", "FALSE");
+                EnhancedLogger.log().config("flying: <red>FALSE</red>");
             }
 
-        } else if (Check.inRange(0, 1, false, level)) {
+        } else if (!Check.inRange(0, 1, level)) {
             EnhancedLogger.log().warning("<green>'events.PlayerToggleFlightEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 

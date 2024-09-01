@@ -8,10 +8,10 @@
 - [x] PlayerInteractEvent
 - [x] PlayerInteractEntityEvent
 - [x] PlayerToggleSneakEvent
-- [ ] PlayerToggleSprintEvent
-- [ ] PlayerToggleFlightEvent
-- [ ] PlayerRespawnEvent
-- [ ] PlayerTeleportEvent
+- [x] PlayerToggleSprintEvent
+- [x] PlayerToggleFlightEvent
+- [x] PlayerRespawnEvent
+- [x] PlayerTeleportEvent
 - [ ] PlayerDropItemEvent
 - [ ] PlayerPickupItemEvent
 - [ ] PlayerDeathEvent
@@ -112,4 +112,4 @@
 - [ ] PlayerTradeEvent
 - [ ] PlayerUntrackEntityEvent
 - [ ] PrePlayerAttackEntityEvent
-- [ ] PlayerSpawnLocationEvent
+- [ ] PlayerSpawnLocationEvent]

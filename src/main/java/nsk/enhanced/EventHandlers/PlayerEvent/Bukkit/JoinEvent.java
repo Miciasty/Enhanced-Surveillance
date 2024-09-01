@@ -43,26 +43,24 @@ public class JoinEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.PlayerJoinQuitEvent.level", 0);
-        if (Check.inRange(1, 3, true, level)) {
+        if (Check.inRange(1, 3, level)) {
 
             eventData.put("health",     String.valueOf(player.getHealth())      .toUpperCase());
             eventData.put("hunger",     String.valueOf(player.getFoodLevel())   .toUpperCase());
 
-            if (ES.debugMode()) {
-                EnhancedLogger.log().info("Health: <red>" + player.getHealth());
-                EnhancedLogger.log().info("Hunger: <green>" + player.getFoodLevel());
-            };
+            EnhancedLogger.log().config("Health: <red>" + player.getHealth());
+            EnhancedLogger.log().config("Hunger: <green>" + player.getFoodLevel());
+
 
             if (level > 1) {
                 eventData.put("exp",    String.valueOf(player.getExp())         .toUpperCase());
                 eventData.put("mode",   String.valueOf(player.getGameMode())    .toUpperCase());
                 eventData.put("op",     String.valueOf(player.isOp())           .toUpperCase());
 
-                if (ES.debugMode()) {
-                    EnhancedLogger.log().info("Exp:  <aqua>" + player.getExp());
-                    EnhancedLogger.log().info("Mode: <green>" + player.getGameMode());
-                    EnhancedLogger.log().info("Op:   <green>" + player.isOp());
-                }
+                EnhancedLogger.log().config("Exp:  <aqua>" + player.getExp());
+                EnhancedLogger.log().config("Mode: <green>" + player.getGameMode());
+                EnhancedLogger.log().config("Op:   <green>" + player.isOp());
+
             }
 
             if (level > 2) {
@@ -70,14 +68,14 @@ public class JoinEvent implements Listener {
                 eventData.put("port",   String.valueOf(player.getAddress().getPort())         );
                 eventData.put("host",   player.getAddress().getHostName()       .toUpperCase());
 
-                if (ES.debugMode()) {
-                    EnhancedLogger.log().info("Ip:   <aqua>" + player.getAddress().getAddress().getHostAddress());
-                    EnhancedLogger.log().info("Port: <green>" + player.getAddress().getPort());
-                    EnhancedLogger.log().info("Host: <green>" + player.getAddress().getHostName());
-                }
+
+                EnhancedLogger.log().config("Ip:   <aqua>" + player.getAddress().getAddress().getHostAddress());
+                EnhancedLogger.log().config("Port: <green>" + player.getAddress().getPort());
+                EnhancedLogger.log().config("Host: <green>" + player.getAddress().getHostName());
+
             }
 
-        } else if (Check.inRange(0, 3, false, level)) {
+        } else if (!Check.inRange(0, 3, level)) {
             EnhancedLogger.log().warning("<green>'events.PlayerJoinQuitEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 

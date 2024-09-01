@@ -49,23 +49,23 @@ public class InteractEntityEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.PlayerInteractEntityEvent.level", 0);
-        if (Check.inRange(1, 3, true, level)) {
+        if (Check.inRange(1, 3, level)) {
 
             if (target.getType().getEntityClass() != null) {
                 eventData.put("type",   target.getType().getEntityClass().getSimpleName());
-                if (ES.debugMode()) EnhancedLogger.log().info("type: <gold>" + target.getType().getEntityClass().getSimpleName());
+                EnhancedLogger.log().config("type: <gold>" + target.getType().getEntityClass().getSimpleName());
             }
 
             if (level > 1) {
 
                 if (target.getCustomName() != null) {
                     eventData.put("customName", target.getCustomName());
-                    if (ES.debugMode()) EnhancedLogger.log().info("health: <red>" + target.getCustomName());
+                    EnhancedLogger.log().config("health: <red>" + target.getCustomName());
                 }
 
                 if (target instanceof LivingEntity) {
                     eventData.put("health",     String.valueOf( ((LivingEntity) target).getHealth()) );
-                    if (ES.debugMode()) EnhancedLogger.log().info("health: <red>" + ((LivingEntity) target).getHealth());
+                    EnhancedLogger.log().config("health: <red>" + ((LivingEntity) target).getHealth());
                 }
             }
 
@@ -81,21 +81,18 @@ public class InteractEntityEvent implements Listener {
                     eventData.put("vrstc",      String.valueOf( villager.getRestocksToday() ));
                     eventData.put("vwork",      String.valueOf( villager.isTrading() ));
 
-                    if (ES.debugMode()) {
-                        EnhancedLogger.log().info("vprof: <green>" + villager.getProfession().toString().toUpperCase());
-                        EnhancedLogger.log().info("vrep: <aqua>" + villager.getReputation(player.getUniqueId()).getReputation(ReputationType.TRADING));
-                        EnhancedLogger.log().info("vlvl: <green>" + villager.getVillagerLevel());
-                        EnhancedLogger.log().info("vexp: <green>" + villager.getVillagerExperience());
-                        EnhancedLogger.log().info("vrstc: <blue>" + villager.getRestocksToday());
-                        EnhancedLogger.log().info("vwork: <blue>" + villager.isTrading());
-                    }
-
+                    EnhancedLogger.log().config("vprof: <green>" + villager.getProfession().toString().toUpperCase());
+                    EnhancedLogger.log().config("vrep: <aqua>" + villager.getReputation(player.getUniqueId()).getReputation(ReputationType.TRADING));
+                    EnhancedLogger.log().config("vlvl: <green>" + villager.getVillagerLevel());
+                    EnhancedLogger.log().config("vexp: <green>" + villager.getVillagerExperience());
+                    EnhancedLogger.log().config("vrstc: <blue>" + villager.getRestocksToday());
+                    EnhancedLogger.log().config("vwork: <blue>" + villager.isTrading());
 
                 }
 
             }
 
-        } else if (Check.inRange(0, 3, false, level)) {
+        } else if (!Check.inRange(0, 3, level)) {
             EnhancedLogger.log().warning("<green>'events.PlayerInteractEntityEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 

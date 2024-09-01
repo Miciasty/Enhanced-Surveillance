@@ -73,22 +73,22 @@ public class MoveEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.PlayerMoveEvent.level", 0);
-        if (Check.inRange(1, 3, true, level)) {
+        if (Check.inRange(1, 3, level)) {
 
             if (!lastPosition.getTo().equals(player.getLocation())) {
                 eventData.put("distance",           String.valueOf(lastPosition.getTo().distance(to)));
-                if (ES.debugMode()) EnhancedLogger.log().info("Distance: <gold>" + lastPosition.getTo().distance(to));
+                EnhancedLogger.log().config("Distance: <gold>" + lastPosition.getTo().distance(to));
             }
 
             if (level > 1) {
                 if (lastPosition.getTo().distance(to) > MIN_DISTANCE + 2) {
                     eventData.put("teleported",     "TRUE");
-                    if (ES.debugMode()) EnhancedLogger.log().info("Teleported: <gold>TRUE");
+                    EnhancedLogger.log().config("Teleported: <gold>TRUE");
                 }
 
                 Vector direction = to.toVector().subtract(lastPosition.getTo().toVector()).normalize();
                 eventData.put("direction",          direction.toString().toUpperCase());
-                if (ES.debugMode()) EnhancedLogger.log().info("Direction: <gold>" + direction);
+                EnhancedLogger.log().config("Direction: <gold>" + direction);
             }
 
             if (level > 2) {
@@ -96,10 +96,10 @@ public class MoveEvent implements Listener {
                 double speed = lastPosition.getTo().distance(to) / (timeElapsed / 1000.0);
 
                 eventData.put("speed",              String.valueOf(speed));
-                if (ES.debugMode()) EnhancedLogger.log().info("Speed: <gold>" + speed);
+                EnhancedLogger.log().config("Speed: <gold>" + speed);
             }
 
-        } else if (Check.inRange(0, 3, false, level)) {
+        } else if (!Check.inRange(0, 3, level)) {
             EnhancedLogger.log().warning("<green>'events.PlayerMoveEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 

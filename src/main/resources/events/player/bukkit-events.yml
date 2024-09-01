@@ -89,3 +89,19 @@ events:
     PlayerToggleFlightEvent:
         enabled:                    false
         level:                      0           # Levels:   0 / 1
+
+    PlayerRespawnEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1 / 2
+
+    PlayerTeleportEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1 / 2
+
+    PlayerDropItemEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1 / 2
+
+    PlayerPickupItemEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1 / 2

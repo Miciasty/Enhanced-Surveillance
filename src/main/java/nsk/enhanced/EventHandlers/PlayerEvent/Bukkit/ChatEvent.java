@@ -44,7 +44,7 @@ public class ChatEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.AsyncPlayerChatEvent.level", 0);
-        if (Check.inRange(1, 2, true, level)) {
+        if (Check.inRange(1, 2, level)) {
 
             Set<Player> recipients = event.getRecipients();
 
@@ -63,6 +63,7 @@ public class ChatEvent implements Listener {
             }
 
             eventData.put("avgDist", String.valueOf(totalDistance / (recipients.size() - 1)) );
+            EnhancedLogger.log().config("avgDist: <red>" + (totalDistance / (recipients.size() - 1)) + "</red>");
 
             if (level > 1) {
 
@@ -80,20 +81,23 @@ public class ChatEvent implements Listener {
 
                 eventData.put("minDist", String.valueOf(minDistance));
                 eventData.put("maxDist", String.valueOf(maxDistance));
+
+                EnhancedLogger.log().config("minDist: <red>" + minDistance + "</red>");
+                EnhancedLogger.log().config("maxDist: <red>" + maxDistance + "</red>");
             }
 
-        } else if (Check.inRange(0, 2, false, level)) {
+        } else if (!Check.inRange(0, 2, level)) {
             EnhancedLogger.log().warning("<green>'events.AsyncPlayerChatEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 
 
         try {
 
-            DatabaseService.saveEntity( new Message(player, message, event.getRecipients().size()) );
-
+            Message m = new Message(player, message, event.getRecipients().size());
             Event e = new Event("chat", player, player.getLocation(), eventData);
 
             MemoryService.logEventAsync(() -> {
+                DatabaseService.saveEntity(m);
                 DatabaseService.saveEntity(e);
             });
 
