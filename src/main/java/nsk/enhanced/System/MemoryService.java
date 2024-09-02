@@ -65,7 +65,7 @@ public class MemoryService {
         service.submit(task);
         eventCounter++;
 
-        if (eventCounter >= 20) {
+        if (eventCounter >= 25) {
             getServiceUtilization();
             eventCounter = 0;
         }
@@ -132,25 +132,41 @@ public class MemoryService {
     }
 
     /**
-     * Logs the current utilization of the service's threads and task queue.
+     * Logs the current utilization of the service's task queue.
      * Provides warnings if queue utilization exceeds certain thresholds.
      */
     public void getServiceUtilization() {
-        double threadUtilization = getThreadUtilization();
         double queueUtilization = getQueueUtilization();
 
         if (queueUtilization >= 95) {
-            EnhancedLogger.log().severe("Queue " + id + " utilization is higher than <red>95%");
+            EnhancedLogger.log().severe( "Queue of <aqua>{" + id + "} service</aqua> utilization is higher than <gold>95%");
+            checkServiceOverload();
+        } else if (queueUtilization >= 90) {
+            EnhancedLogger.log().warning("Queue of <aqua>{" + id + "} service</aqua> utilization is higher than <red>90%");
+            checkServiceOverload();
         } else if (queueUtilization >= 75) {
-            EnhancedLogger.log().warning("Queue " + id + " utilization is higher than <red>75%");
+            EnhancedLogger.log().warning("Queue of <gold>{" + id + "} service</gold> utilization is higher than <red>75%");
         } else if (queueUtilization >= 50) {
-            EnhancedLogger.log().warning("Queue " + id + " utilization is higher than <gold>50%");
+            EnhancedLogger.log().warning("Queue of <yellow>{" + id + "} service</yellow> utilization is higher than <yellow>50%");
         } else if (queueUtilization >= 25) {
-            EnhancedLogger.log().warning("Queue " + id + " utilization is higher than <green>25%");
+            EnhancedLogger.log().warning("Queue of <green>{" + id + "} service</green> utilization is higher than <green>25%");
         }
 
-        if (threadUtilization > 50) {
-            EnhancedLogger.log().info(String.format("Service: <gold>(%s)</gold>, Thread utilization: <aqua>%.2f%%</aqua>, Queue utilization: <aqua>%.2f%%</aqua>", id, threadUtilization, queueUtilization));
+    }
+
+    private void checkServiceOverload() {
+        int count = services.size();
+        int overloadedServices = 0;
+
+        for (MemoryService service : MemoryService.services) {
+            if (service.getQueueUtilization() >= 75) {
+                EnhancedLogger.log().info("Service number: <green>{" + service.getServiceID() + "}</green>, utilization: <red>" + service.getQueueUtilization());
+                overloadedServices++;
+            }
+        }
+
+        if (overloadedServices >= count / 2) {
+            EnhancedLogger.log().warning("<aqua>Recommendation:</aqua> More than <red>50%</red> of services have queue utilization above <red>75%</red>. <green>Consider adding a new service or increasing threads per service.</green>");
         }
 
     }
