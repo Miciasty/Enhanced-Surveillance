@@ -1,8 +1,6 @@
 package nsk.enhanced.System.Utils;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * The {@link Check} class provides a collection of static utility methods performing boolean checks.
@@ -43,7 +41,7 @@ public class Check {
      * @param hand the {@link Material} to check
      * @return {@code true} if the material is placeable, edible, or interactable; {@code false} otherwise
      */
-    public static boolean isPlaceableUsable(Material hand) {
+    public static boolean isPlaceableOrUsable(Material hand) {
 
         if (hand == Material.AIR) return false;
 

@@ -60,27 +60,6 @@ public class EventsConfiguration {
     private static void loadBukkitPlayerEventListeners() {
         enhancedLogger.warning("Preparing to load Bukkit PlayerEvent listeners...");
 
-        /*try {getServer().getPluginManager().registerEvents(new JoinEvent(), this);} catch (Exception e) {
-            enhancedLogger.severe("JoinEvent listener is not loaded!");
-        }
-        try {getServer().getPluginManager().registerEvents(new QuitEvent(), this);} catch (Exception e) {
-            enhancedLogger.severe("QuitEvent listener is not loaded!");
-        }
-        try {getServer().getPluginManager().registerEvents(new MoveEvent(), this);} catch (Exception e) {enhancedLogger.severe("MoveEvent listener is not loaded!");
-        }
-        try {getServer().getPluginManager().registerEvents(new ChatEvent(), this);} catch (Exception e) {
-            enhancedLogger.severe("ChatEvent listener is not loaded!");
-        }
-        try {getServer().getPluginManager().registerEvents(new CommandPreprocessEvent(), this);} catch (Exception e) {
-            enhancedLogger.severe("CommandPreprocessEvent listener is not loaded!");
-        }
-        try {getServer().getPluginManager().registerEvents(new InteractEvent(), this);} catch (Exception e) {
-            enhancedLogger.severe("InteractEvent listener is not loaded!");
-        }
-        try {getServer().getPluginManager().registerEvents(new InteractEntityEvent(), this);} catch (Exception e) {
-            enhancedLogger.severe("InteractEntityEvent listener is not loaded!");
-        }*/
-
         try {
 
             Reflections reflections = new Reflections("nsk.enhanced.EventHandlers.PlayerEvent.Bukkit");

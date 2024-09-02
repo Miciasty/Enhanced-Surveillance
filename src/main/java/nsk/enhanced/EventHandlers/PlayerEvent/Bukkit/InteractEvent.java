@@ -2,7 +2,6 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
-import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Character;
 import nsk.enhanced.System.Hibernate.Event;
@@ -183,8 +182,8 @@ public class InteractEvent implements Listener {
 
     private static boolean shouldContinue(Material mainHand, Material offHand, EquipmentSlot hand) {
 
-        boolean mainUse = Check.isPlaceableUsable(mainHand);
-        boolean offUse = Check.isPlaceableUsable(offHand);
+        boolean mainUse = Check.isPlaceableOrUsable(mainHand);
+        boolean offUse = Check.isPlaceableOrUsable(offHand);
 
         if (hand == EquipmentSlot.HAND) {
 
