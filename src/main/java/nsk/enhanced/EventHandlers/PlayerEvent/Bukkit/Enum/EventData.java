@@ -11,6 +11,8 @@ public enum EventData {
     DURABILITY,
     DIRECTION,
     DISTANCE,
+    DAMAGE,
+    ORIGINAL_DAMAGE,
     TELEPORTED,
     SPEED,
     ENTITY,

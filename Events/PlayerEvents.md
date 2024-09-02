@@ -19,9 +19,9 @@
 - [x] PlayerLoginEvent
 - [x] PlayerBedEnterEvent
 - [x] PlayerBedLeaveEvent
-- [ ] PlayerItemConsumeEvent
-- [ ] PlayerItemBreakEvent
-- [ ] PlayerItemDamageEvent
+- [x] PlayerItemConsumeEvent
+- [x] PlayerItemBreakEvent
+- [x] PlayerItemDamageEvent
 - [ ] PlayerEditBookEvent
 - [ ] PlayerFishEvent
 - [ ] PlayerExpChangeEvent

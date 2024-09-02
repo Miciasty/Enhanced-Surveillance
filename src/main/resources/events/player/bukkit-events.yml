@@ -125,3 +125,15 @@ events:
     PlayerBedLeaveEvent:
         enabled:                    false
         level:                      0           # Levels:   0 / 1
+
+    PlayerItemConsumeEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1 / 2
+
+    PlayerItemBreakEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1
+
+    PlayerItemDamageEvent:
+        enabled:                    false
+        level:                      0           # Levels:   0 / 1 / 2
