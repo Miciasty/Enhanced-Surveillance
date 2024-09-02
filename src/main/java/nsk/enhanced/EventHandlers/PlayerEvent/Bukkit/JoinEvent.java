@@ -1,5 +1,6 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.ES;
@@ -46,21 +47,21 @@ public class JoinEvent implements Listener {
         int level = config.getInt("events.PlayerJoinQuitEvent.level", 0);
         if (Check.inRange(1, 2, level)) {
 
-            eventData.put("health",     String.valueOf(Tools.roundTo(player.getHealth(), 2))      .toUpperCase());
-            eventData.put("hunger",     String.valueOf(player.getFoodLevel())   .toUpperCase());
+            eventData.put(EventData.HEALTH.name(),          String.valueOf(Tools.roundTo(player.getHealth(), 2))      .toUpperCase());
+            eventData.put(EventData.HUNGER.name(),          String.valueOf(player.getFoodLevel())   .toUpperCase());
 
-            EnhancedLogger.log().config("Health: <red>" + player.getHealth());
-            EnhancedLogger.log().config("Hunger: <green>" + player.getFoodLevel());
+            EnhancedLogger.log().config(EventData.HEALTH.name() + ": <red>" + player.getHealth());
+            EnhancedLogger.log().config(EventData.HUNGER.name() + ": <green>" + player.getFoodLevel());
 
 
             if (level > 1) {
-                eventData.put("exp",    String.valueOf(Tools.roundTo(player.getExp(), 2))         .toUpperCase());
-                eventData.put("mode",   String.valueOf(player.getGameMode())    .toUpperCase());
-                eventData.put("op",     String.valueOf(player.isOp())           .toUpperCase());
+                eventData.put(EventData.EXP.name(),         String.valueOf(Tools.roundTo(player.getExp(), 2))         .toUpperCase());
+                eventData.put(EventData.GAMEMODE.name(),    player.getGameMode().name()             .toUpperCase());
+                eventData.put(EventData.OP.name(),          String.valueOf(player.isOp())           .toUpperCase());
 
-                EnhancedLogger.log().config("Exp:  <aqua>" + player.getExp());
-                EnhancedLogger.log().config("Mode: <green>" + player.getGameMode());
-                EnhancedLogger.log().config("Op:   <green>" + player.isOp());
+                EnhancedLogger.log().config(EventData.EXP.name() + ":  <aqua>" + player.getExp());
+                EnhancedLogger.log().config(EventData.GAMEMODE.name() + ": <green>" + player.getGameMode().name());
+                EnhancedLogger.log().config(EventData.OP.name() + ":   <green>" + player.isOp());
 
             }
 

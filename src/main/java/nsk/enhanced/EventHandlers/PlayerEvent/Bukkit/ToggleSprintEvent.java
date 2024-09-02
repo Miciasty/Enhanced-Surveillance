@@ -1,5 +1,6 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
@@ -46,11 +47,11 @@ public class ToggleSprintEvent implements Listener {
         if ( level == 1 ) {
 
             if (isSprinting) {
-                eventData.put("sprinting", "TRUE");
-                EnhancedLogger.log().config("sprinting: <red>TRUE</red>");
+                eventData.put(EventData.SPRINT.name(), "TRUE");
+                EnhancedLogger.log().config(EventData.SPRINT.name() + ": <red>TRUE</red>");
             } else {
-                eventData.put("sprinting", "FALSE");
-                EnhancedLogger.log().config("sprinting: <red>FALSE</red>");
+                eventData.put(EventData.SPRINT.name(), "FALSE");
+                EnhancedLogger.log().config(EventData.SPRINT.name() + ": <red>FALSE</red>");
             }
 
         } else if (!Check.inRange(0, 1, level)) {

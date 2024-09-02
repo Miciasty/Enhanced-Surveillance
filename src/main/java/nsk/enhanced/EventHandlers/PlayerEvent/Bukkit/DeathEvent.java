@@ -1,5 +1,6 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
@@ -50,31 +51,30 @@ public class DeathEvent implements Listener {
 
             DamageSource damageSource = event.getDamageSource();
 
-            eventData.put("type",               damageSource.getDamageType().toString());
-            eventData.put("droppedExp",         String.valueOf( event.getDroppedExp() ));
+            eventData.put(EventData.TYPE.name(),            damageSource.getDamageType().toString());
+            eventData.put(EventData.EXP.name(),             String.valueOf( event.getDroppedExp() ));
 
-            EnhancedLogger.log().config("type: <red>" + damageSource.getDamageType() + "</red>");
-            EnhancedLogger.log().config("droppedExp: <red>" + event.getDroppedExp() + "</red>");
+            EnhancedLogger.log().config(EventData.TYPE.name() + ": <red>" + damageSource.getDamageType() + "</red>");
+            EnhancedLogger.log().config(EventData.EXP.name() + ": <red>" + event.getDroppedExp() + "</red>");
 
             if (level > 1) {
                 if (damageSource.getCausingEntity() != null) {
-                    eventData.put("entity",         damageSource.getCausingEntity().getClass().getSimpleName().toUpperCase());
+                    eventData.put(EventData.ENTITY.name(),         damageSource.getCausingEntity().getClass().getSimpleName().toUpperCase());
 
-                    EnhancedLogger.log().config("entity: <green>" + damageSource.getCausingEntity().getClass().getSimpleName().toUpperCase() + "</green>");
+                    EnhancedLogger.log().config(EventData.ENTITY.name() + ": <green>" + damageSource.getCausingEntity().getClass().getSimpleName().toUpperCase() + "</green>");
                 }
 
                 /*...*/
             }
 
             if (level > 2) {
-                eventData.put("keepInventory",      String.valueOf( event.getKeepInventory() ).toUpperCase());
-                eventData.put("keepLevel",          String.valueOf( event.getKeepLevel() ).toUpperCase());
+                eventData.put(EventData.KEEP_INVENTORY.name(),      String.valueOf( event.getKeepInventory() ).toUpperCase());
+                eventData.put(EventData.KEEP_LEVEL.name(),          String.valueOf( event.getKeepLevel() ).toUpperCase());
+                eventData.put(EventData.REVIVE_HEALTH.name(),       String.valueOf( Tools.roundTo(event.getReviveHealth(), 2) ));
 
-                eventData.put("reviveHealth",       String.valueOf( Tools.roundTo(event.getReviveHealth(), 2) ));
-
-                EnhancedLogger.log().config("keepInventory: <red>" + event.getKeepInventory() + "</red>");
-                EnhancedLogger.log().config("keepLevel: <red>" + event.getKeepLevel() + "</red>");
-                EnhancedLogger.log().config("reviveHealth: <green>" + Tools.roundTo(event.getReviveHealth(), 2) + "</green>");
+                EnhancedLogger.log().config(EventData.KEEP_INVENTORY.name() + ": <red>" + event.getKeepInventory() + "</red>");
+                EnhancedLogger.log().config(EventData.KEEP_LEVEL.name() + ": <red>" + event.getKeepLevel() + "</red>");
+                EnhancedLogger.log().config(EventData.REVIVE_HEALTH.name() + ": <green>" + Tools.roundTo(event.getReviveHealth(), 2) + "</green>");
             }
 
         } else if (!Check.inRange(0, 3, level)) {

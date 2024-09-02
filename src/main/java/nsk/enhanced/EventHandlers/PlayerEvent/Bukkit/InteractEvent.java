@@ -1,5 +1,6 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
@@ -66,14 +67,14 @@ public class InteractEvent implements Listener {
 
             if ( event.getHand() == EquipmentSlot.HAND ) {
 
-                eventData.put("action",             action.name().toUpperCase() );
-                EnhancedLogger.log().config("action: <gold>" + action.name().toUpperCase());
+                eventData.put(EventData.ACTION.name(),             action.name().toUpperCase() );
+                EnhancedLogger.log().config(EventData.ACTION.name() + " <gold>" + action.name().toUpperCase());
 
                 if (level > 1) {
                     if (event.getItem() != null && !event.getItem().getType().equals(Material.AIR)) {
-                        eventData.put("item",            event.getItem().toString().toUpperCase() );
+                        eventData.put(EventData.ITEM.name(),            event.getItem().toString().toUpperCase() );
 
-                        EnhancedLogger.log().config("Item: <gold>" + event.getItem().toString().toUpperCase());
+                        EnhancedLogger.log().config(EventData.ITEM.name() + ": <gold>" + event.getItem().toString().toUpperCase());
                     }
                 }
 
@@ -85,13 +86,13 @@ public class InteractEvent implements Listener {
                     return;
                 }
 
-                eventData.put("action",             action.name().toUpperCase() );
-                EnhancedLogger.log().config("Offhand Action: <gold>" + action.name().toUpperCase());
+                eventData.put(EventData.ACTION.name(),             action.name().toUpperCase() );
+                EnhancedLogger.log().config(EventData.ACTION.name() + " Offhand: <gold>" + action.name().toUpperCase());
 
                 if (level > 1) {
 
-                    eventData.put("item",            event.getItem().toString().toUpperCase() );
-                    EnhancedLogger.log().config("Item: <gold>" + event.getItem().toString().toUpperCase());
+                    eventData.put(EventData.ITEM.name(),            event.getItem().toString().toUpperCase() );
+                    EnhancedLogger.log().config(EventData.ITEM.name() + ": <gold>" + event.getItem().toString().toUpperCase());
 
                 }
             }
@@ -99,18 +100,18 @@ public class InteractEvent implements Listener {
             if (level > 1) {
 
                 if (block != null) {
-                    eventData.put("event_block",     block.getType().toString().toUpperCase() );
+                    eventData.put(EventData.BLOCK.name(),     block.getType().name().toUpperCase() );
 
-                    EnhancedLogger.log().config("Block: <gold>" + block.getType().toString().toUpperCase());
+                    EnhancedLogger.log().config(EventData.BLOCK.name() + ": <gold>" + block.getType().name().toUpperCase());
                 }
             }
 
             if (level > 2) {
                 if (block != null) {
 
-                    eventData.put("event_face",     event.getBlockFace().toString().toUpperCase() );
+                    eventData.put(EventData.FACE.name(),     event.getBlockFace().name().toUpperCase() );
 
-                    EnhancedLogger.log().config("BlockFace: <gold>" + event.getBlockFace().toString().toUpperCase());
+                    EnhancedLogger.log().config(EventData.FACE.name() + ": <gold>" + event.getBlockFace().name().toUpperCase());
 
                     boolean rdst_nrb = false;
 
@@ -127,9 +128,9 @@ public class InteractEvent implements Listener {
                         if (rdst_nrb) break;
                     }
 
-                    eventData.put("rdst_nrb",       String.valueOf(rdst_nrb).toUpperCase());
+                    eventData.put(EventData.REDSTONE.name(),       String.valueOf(rdst_nrb).toUpperCase());
 
-                    EnhancedLogger.log().config("Redstone nearby: <gold>" + rdst_nrb);
+                    EnhancedLogger.log().config(EventData.REDSTONE.name() + " nearby: <gold>" + rdst_nrb);
                 }
             }
 
@@ -153,11 +154,11 @@ public class InteractEvent implements Listener {
 
                 Map<String, String> lastEventData = lastEvent.getDecompressedEventData();
 
-                if (lastEventData != null && "LEFT_CLICK_BLOCK".equals(lastEventData.get("action")) && "LEFT_CLICK_AIR".equals(action.name()) ) {
+                if (lastEventData != null && "LEFT_CLICK_BLOCK".equals(lastEventData.get(EventData.ACTION.name())) && "LEFT_CLICK_AIR".equals(action.name()) ) {
                     return;
                 }
 
-                if (lastEventData != null && "RIGHT_CLICK_BLOCK".equals(lastEventData.get("action")) && "RIGHT_CLICK_AIR".equals(action.name()) ) {
+                if (lastEventData != null && "RIGHT_CLICK_BLOCK".equals(lastEventData.get(EventData.ACTION.name())) && "RIGHT_CLICK_AIR".equals(action.name()) ) {
                     return;
                 }
             }

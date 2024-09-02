@@ -1,6 +1,8 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import com.destroystokyo.paper.entity.villager.ReputationType;
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.VillagerData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.ES;
@@ -57,20 +59,20 @@ public class InteractEntityEvent implements Listener {
         if (Check.inRange(1, 3, level)) {
 
             if (target.getType().getEntityClass() != null) {
-                eventData.put("type",   target.getType().getEntityClass().getSimpleName());
-                EnhancedLogger.log().config("type: <gold>" + target.getType().getEntityClass().getSimpleName());
+                eventData.put(EventData.TYPE.name(),   target.getType().getEntityClass().getSimpleName());
+                EnhancedLogger.log().config(EventData.TYPE.name() + ": <gold>" + target.getType().getEntityClass().getSimpleName());
             }
 
             if (level > 1) {
 
                 if (target.getCustomName() != null) {
-                    eventData.put("customName", target.getCustomName());
-                    EnhancedLogger.log().config("customName: <red>" + target.getCustomName());
+                    eventData.put(EventData.CNAME.name(), target.getCustomName());
+                    EnhancedLogger.log().config(EventData.CNAME.name() + ": <red>" + target.getCustomName());
                 }
 
                 if (target instanceof LivingEntity) {
-                    eventData.put("health",     String.valueOf( ((LivingEntity) target).getHealth()) );
-                    EnhancedLogger.log().config("health: <green>" + ((LivingEntity) target).getHealth() + " / " + ((LivingEntity) target).getMaxHealth());
+                    eventData.put(EventData.HEALTH.name(),     String.valueOf( ((LivingEntity) target).getHealth()) );
+                    EnhancedLogger.log().config(EventData.HEALTH.name() + ": <green>" + ((LivingEntity) target).getHealth() + " / " + ((LivingEntity) target).getMaxHealth());
                 }
 
             }
@@ -80,19 +82,19 @@ public class InteractEntityEvent implements Listener {
                 Villager villager = (Villager) target;
 
                 if ( villager.isAdult() ) {
-                    eventData.put("vprof",      villager.getProfession().toString().toUpperCase());
-                    eventData.put("vrep",       String.valueOf( villager.getReputation(player.getUniqueId()).getReputation(ReputationType.TRADING)) );
-                    eventData.put("vlvl",       String.valueOf( villager.getVillagerLevel() ));
-                    eventData.put("vexp",       String.valueOf( villager.getVillagerExperience() ));
-                    eventData.put("vrstc",      String.valueOf( villager.getRestocksToday() ));
-                    eventData.put("vwork",      String.valueOf( villager.isTrading() ));
+                    eventData.put(VillagerData.V_PROF.name(),      villager.getProfession().name().toUpperCase());
+                    eventData.put(VillagerData.V_REP.name(),       String.valueOf( villager.getReputation(player.getUniqueId()).getReputation(ReputationType.TRADING)) );
+                    eventData.put(VillagerData.V_LVL.name(),       String.valueOf( villager.getVillagerLevel() ));
+                    eventData.put(VillagerData.V_EXP.name(),       String.valueOf( villager.getVillagerExperience() ));
+                    eventData.put(VillagerData.V_RSTC.name(),      String.valueOf( villager.getRestocksToday() ));
+                    eventData.put(VillagerData.V_WORK.name(),      String.valueOf( villager.isTrading() ));
 
-                    EnhancedLogger.log().config("vprof: <green>" + villager.getProfession().toString().toUpperCase());
-                    EnhancedLogger.log().config("vrep: <aqua>" + villager.getReputation(player.getUniqueId()).getReputation(ReputationType.TRADING));
-                    EnhancedLogger.log().config("vlvl: <green>" + villager.getVillagerLevel());
-                    EnhancedLogger.log().config("vexp: <green>" + villager.getVillagerExperience());
-                    EnhancedLogger.log().config("vrstc: <blue>" + villager.getRestocksToday());
-                    EnhancedLogger.log().config("vwork: <blue>" + villager.isTrading());
+                    EnhancedLogger.log().config(VillagerData.V_PROF.name() + ": <green>" + villager.getProfession().toString().toUpperCase());
+                    EnhancedLogger.log().config(VillagerData.V_REP.name()  + ": <aqua>" + villager.getReputation(player.getUniqueId()).getReputation(ReputationType.TRADING));
+                    EnhancedLogger.log().config(VillagerData.V_LVL.name()  + ": <green>" + villager.getVillagerLevel());
+                    EnhancedLogger.log().config(VillagerData.V_EXP.name()  + ": <green>" + villager.getVillagerExperience());
+                    EnhancedLogger.log().config(VillagerData.V_RSTC.name() + ": <blue>" + villager.getRestocksToday());
+                    EnhancedLogger.log().config(VillagerData.V_WORK.name() + ": <blue>" + villager.isTrading());
 
                 }
 

@@ -1,5 +1,7 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.HostData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
@@ -45,18 +47,18 @@ public class LoginEvent implements Listener {
         int level = config.getInt("events.PlayerLoginEvent.level", 0);
         if (Check.inRange(1, 2, level)) {
 
-            eventData.put("result",     event.getResult().toString()                .toUpperCase());
+            eventData.put(EventData.RESULT.name(),              event.getResult().toString()                .toUpperCase());
 
-            EnhancedLogger.log().config("result: <green>" + event.getResult() + "</green>");
+            EnhancedLogger.log().config(EventData.RESULT.name()         + ": <green>" + event.getResult() + "</green>");
 
             if (level > 1) {
-                eventData.put("ip",         event.getRealAddress().getHostAddress()                   );
-                eventData.put("host",       event.getRealAddress().getHostName()        .toUpperCase());
-                eventData.put("hostname",   event.getHostname()                         .toUpperCase());
+                eventData.put(HostData.IP.name(),               event.getRealAddress().getHostAddress()                   );
+                eventData.put(HostData.REALHOST.name(),         event.getRealAddress().getHostName()        .toUpperCase());
+                eventData.put(HostData.HOSTNAME.name(),         event.getHostname()                         .toUpperCase());
 
-                EnhancedLogger.log().config("ip: <aqua>" + event.getRealAddress().getHostAddress() + "</aqua>");
-                EnhancedLogger.log().config("host: <green>" + event.getRealAddress().getHostName() + "</green>");
-                EnhancedLogger.log().config("hostname: <red>" + event.getHostname() + "</red>");
+                EnhancedLogger.log().config(HostData.IP.name()          + ": <aqua>" + event.getRealAddress().getHostAddress() + "</aqua>");
+                EnhancedLogger.log().config(HostData.REALHOST.name()    + ": <green>" + event.getRealAddress().getHostName() + "</green>");
+                EnhancedLogger.log().config(HostData.HOSTNAME.name()    + ": <red>" + event.getHostname() + "</red>");
             }
 
         } else if (!Check.inRange(0, 2, level)) {

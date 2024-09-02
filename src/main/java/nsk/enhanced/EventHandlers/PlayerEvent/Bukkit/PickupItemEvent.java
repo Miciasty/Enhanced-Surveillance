@@ -1,6 +1,7 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import io.papermc.paper.event.player.PlayerPickItemEvent;
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
@@ -50,24 +51,24 @@ public class PickupItemEvent implements Listener {
             Item item = event.getItem();
             ItemStack itemStack = item.getItemStack();
 
-            eventData.put("itemName",           itemStack.getType().name());
-            eventData.put("amount",             String.valueOf(itemStack.getAmount()).toUpperCase());
+            eventData.put(EventData.ITEM.name(),                    itemStack.getType().name());
+            eventData.put(EventData.AMOUNT.name(),                  String.valueOf(itemStack.getAmount()).toUpperCase());
 
-            EnhancedLogger.log().config("itemName: <red>" + itemStack.getType().name() + "</red>");
-            EnhancedLogger.log().config("amount: <green>" + itemStack.getAmount() + "</green>");
+            EnhancedLogger.log().config(EventData.ITEM.name()               + ": <red>" + itemStack.getType().name() + "</red>");
+            EnhancedLogger.log().config(EventData.AMOUNT.name()             + ": <green>" + itemStack.getAmount() + "</green>");
 
             if (level > 1) {
-                eventData.put("mobPickup",          String.valueOf(item.canMobPickup()).toUpperCase() );
-                eventData.put("playerPickup",       String.valueOf(item.canPlayerPickup()).toUpperCase() );
+                eventData.put(EventData.MOB_PICKUP.name(),          String.valueOf(item.canMobPickup()).toUpperCase() );
+                eventData.put(EventData.PLAYER_PICKUP.name(),       String.valueOf(item.canPlayerPickup()).toUpperCase() );
 
-                EnhancedLogger.log().config("mobPickup: <red>" + item.canMobPickup() + "</red>");
-                EnhancedLogger.log().config("playerPickup: <red>" + item.canPlayerPickup() + "</red>");
+                EnhancedLogger.log().config(EventData.MOB_PICKUP.name()     + ": <red>" + item.canMobPickup() + "</red>");
+                EnhancedLogger.log().config(EventData.PLAYER_PICKUP.name()  + ": <red>" + item.canPlayerPickup() + "</red>");
             }
 
             if (level > 2) {
-                eventData.put("itemDamage",         String.valueOf(itemStack.getDurability()).toUpperCase());
+                eventData.put(EventData.DURABILITY.name(),          String.valueOf(itemStack.getDurability()).toUpperCase());
 
-                EnhancedLogger.log().config("itemDamage: <red>" + itemStack.getDurability() + "</red>");
+                EnhancedLogger.log().config(EventData.DURABILITY.name()     + ": <red>" + itemStack.getDurability() + "</red>");
             }
 
         } else if (!Check.inRange(0, 3, level)) {

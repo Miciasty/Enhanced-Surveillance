@@ -1,11 +1,13 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
 import nsk.enhanced.System.Utils.Check;
+import nsk.enhanced.System.Utils.Tools;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -43,16 +45,25 @@ public class TeleportEvent implements Listener {
         Map<String, String> eventData = new LinkedHashMap<>();
 
         int level = config.getInt("events.PlayerTeleportEvent.level", 0);
-        if (level == 1) {
+        if (Check.inRange(1, 2, level)) {
 
             String cause = event.getCause().toString();
 
-            eventData.put("cause", cause);
-            EnhancedLogger.log().config("cause: <red>" + cause + "</red>");
+            eventData.put(EventData.CAUSE.name(), cause);
+            EnhancedLogger.log().config(EventData.CAUSE.name()          + ": <red>" + cause + "</red>");
 
-            EnhancedLogger.log().config("getFrom: <aqua>" + event.getFrom() + "</aqua>");
-            EnhancedLogger.log().config("getTo: <aqua>" + event.getTo() + "</aqua>");
+            if (level > 1) {
 
+                double value = Tools.roundTo(event.getFrom().distance(event.getFrom()), 3);
+
+                eventData.put(EventData.DISTANCE.name(),                    String.valueOf(value));
+                EnhancedLogger.log().config(EventData.DISTANCE.name()   + ": <gold>" + value);
+
+                EnhancedLogger.log().config(EventData.FROM.name()       + ": <aqua>" + Tools.getSimplifiedLocation(event.getFrom()) + "</aqua>");
+                EnhancedLogger.log().config(EventData.TO.name()         + ": <aqua>" + Tools.getSimplifiedLocation(event.getTo()) + "</aqua>");
+
+
+            }
 
         } else if (!Check.inRange(0, 2, level)) {
             EnhancedLogger.log().warning("<green>'events.PlayerTeleportEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");

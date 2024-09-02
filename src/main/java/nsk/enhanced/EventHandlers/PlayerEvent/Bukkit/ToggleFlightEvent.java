@@ -1,5 +1,6 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
@@ -46,11 +47,11 @@ public class ToggleFlightEvent implements Listener {
         if ( level == 1 ) {
 
             if (isFlying) {
-                eventData.put("flying", "TRUE");
-                EnhancedLogger.log().config("flying: <red>TRUE</red>");
+                eventData.put(EventData.FLIGHT.name(), "TRUE");
+                EnhancedLogger.log().config(EventData.FLIGHT.name() + ": <red>TRUE</red>");
             } else {
-                eventData.put("flying", "FALSE");
-                EnhancedLogger.log().config("flying: <red>FALSE</red>");
+                eventData.put(EventData.FLIGHT.name(), "FALSE");
+                EnhancedLogger.log().config(EventData.FLIGHT.name() + ": <red>FALSE</red>");
             }
 
         } else if (!Check.inRange(0, 1, level)) {

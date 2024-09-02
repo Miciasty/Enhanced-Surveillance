@@ -1,5 +1,6 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
@@ -45,11 +46,11 @@ public class ToggleSneakEvent implements Listener {
         if ( level == 1 ) {
 
             if (isSneaking) {
-                eventData.put("sneaking", "TRUE");
-                EnhancedLogger.log().config("sneaking: <red>TRUE</red>");
+                eventData.put(EventData.SNEAK.name(), "TRUE");
+                EnhancedLogger.log().config(EventData.SNEAK.name() + ": <red>TRUE</red>");
             } else {
-                eventData.put("sneaking", "FALSE");
-                EnhancedLogger.log().config("sneaking: <red>FALSE</red>");
+                eventData.put(EventData.SNEAK.name(), "FALSE");
+                EnhancedLogger.log().config(EventData.SNEAK.name() + ": <red>FALSE</red>");
             }
 
         } else if (!Check.inRange(0, 1, level)) {

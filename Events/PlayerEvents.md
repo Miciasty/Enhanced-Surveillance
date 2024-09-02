@@ -17,8 +17,8 @@
 - [x] PlayerDeathEvent
 - [x] PlayerKickEvent
 - [x] PlayerLoginEvent
-- [-] PlayerBedEnterEvent
-- [-] PlayerBedLeaveEvent
+- [x] PlayerBedEnterEvent
+- [x] PlayerBedLeaveEvent
 - [ ] PlayerItemConsumeEvent
 - [ ] PlayerItemBreakEvent
 - [ ] PlayerItemDamageEvent

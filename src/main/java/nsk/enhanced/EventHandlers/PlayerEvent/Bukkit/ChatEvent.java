@@ -1,5 +1,6 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
@@ -62,8 +63,8 @@ public class ChatEvent implements Listener {
                 }
             }
 
-            eventData.put("avgDist", String.valueOf(totalDistance / (recipients.size() - 1)) );
-            EnhancedLogger.log().config("avgDist: <red>" + (totalDistance / (recipients.size() - 1)) + "</red>");
+            eventData.put(EventData.AVERAGE.name(), String.valueOf(totalDistance / (recipients.size() - 1)) );
+            EnhancedLogger.log().config(EventData.AVERAGE.name() + ": <red>" + (totalDistance / (recipients.size() - 1)) + "</red>");
 
             if (level > 1) {
 
@@ -79,11 +80,11 @@ public class ChatEvent implements Listener {
                     }
                 }
 
-                eventData.put("minDist", String.valueOf(minDistance));
-                eventData.put("maxDist", String.valueOf(maxDistance));
+                eventData.put(EventData.MINIMUM.name(), String.valueOf(minDistance));
+                eventData.put(EventData.MAXIMUM.name(), String.valueOf(maxDistance));
 
-                EnhancedLogger.log().config("minDist: <red>" + minDistance + "</red>");
-                EnhancedLogger.log().config("maxDist: <red>" + maxDistance + "</red>");
+                EnhancedLogger.log().config(EventData.MINIMUM.name() + ": <red>" + minDistance + "</red>");
+                EnhancedLogger.log().config(EventData.MAXIMUM.name() + ": <red>" + maxDistance + "</red>");
             }
 
         } else if (!Check.inRange(0, 2, level)) {

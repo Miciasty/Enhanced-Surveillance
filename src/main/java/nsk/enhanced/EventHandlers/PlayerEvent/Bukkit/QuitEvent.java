@@ -1,5 +1,6 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
@@ -45,20 +46,20 @@ public class QuitEvent implements Listener {
         int level = config.getInt("events.PlayerJoinQuitEvent.level", 0);
         if (Check.inRange(1, 2, level)) {
 
-            eventData.put("health",     String.valueOf(Tools.roundTo(player.getHealth(), 2))      .toUpperCase());
-            eventData.put("hunger",     String.valueOf(player.getFoodLevel())   .toUpperCase());
+            eventData.put(EventData.HEALTH.name(),          String.valueOf(Tools.roundTo(player.getHealth(), 2))      .toUpperCase());
+            eventData.put(EventData.HUNGER.name(),          String.valueOf(player.getFoodLevel())   .toUpperCase());
 
-            EnhancedLogger.log().config("health: <red>" + Tools.roundTo(player.getHealth(), 2) + "</red>");
-            EnhancedLogger.log().config("hunger: <red>" + player.getFoodLevel() + "</red>");
+            EnhancedLogger.log().config(EventData.HEALTH.name()         + ": <red>" + Tools.roundTo(player.getHealth(), 2) + "</red>");
+            EnhancedLogger.log().config(EventData.HUNGER.name()         + ": <red>" + player.getFoodLevel() + "</red>");
 
             if (level > 1) {
-                eventData.put("exp",    String.valueOf(Tools.roundTo(player.getExp(), 2))         .toUpperCase());
-                eventData.put("mode",   String.valueOf(player.getGameMode())    .toUpperCase());
-                eventData.put("op",     String.valueOf(player.isOp())           .toUpperCase());
+                eventData.put(EventData.EXP.name(),         String.valueOf(Tools.roundTo(player.getExp(), 2))         .toUpperCase());
+                eventData.put(EventData.GAMEMODE.name(),    player.getGameMode().name()             .toUpperCase());
+                eventData.put(EventData.OP.name(),          String.valueOf(player.isOp())           .toUpperCase());
 
-                EnhancedLogger.log().config("exp: <red>" + Tools.roundTo(player.getExp(), 2) + "</red>");
-                EnhancedLogger.log().config("mode: <red>" + player.getGameMode() + "</red>");
-                EnhancedLogger.log().config("op: <red>" + player.isOp() + "</red>");
+                EnhancedLogger.log().config(EventData.EXP.name()        + ": <red>" + Tools.roundTo(player.getExp(), 2) + "</red>");
+                EnhancedLogger.log().config(EventData.GAMEMODE.name()   + ": <red>" + player.getGameMode().name() + "</red>");
+                EnhancedLogger.log().config(EventData.OP.name()         + ": <red>" + player.isOp() + "</red>");
             }
 
         } else if (!Check.inRange(0, 2, level)) {

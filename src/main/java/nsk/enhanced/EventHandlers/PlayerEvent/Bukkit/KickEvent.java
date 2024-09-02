@@ -1,6 +1,7 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import io.papermc.paper.event.player.PlayerPickItemEvent;
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
@@ -46,7 +47,9 @@ public class KickEvent implements Listener {
         int level = config.getInt("events.PlayerKickEvent.level", 0);
         if (level == 1) {
 
-            eventData.put("cause",          event.getCause().toString());
+            eventData.put(EventData.CAUSE.name(),          event.getCause().name());
+
+            EnhancedLogger.log().config(EventData.CAUSE.name() + ": <red>" + event.getCause().name() + "</red>");
 
         } else if (!Check.inRange(0, 1, level)) {
             EnhancedLogger.log().warning("<green>'events.PlayerKickEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");

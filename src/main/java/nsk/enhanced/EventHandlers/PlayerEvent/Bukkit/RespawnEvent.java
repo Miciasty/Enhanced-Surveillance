@@ -1,5 +1,6 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
+import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
@@ -48,21 +49,21 @@ public class RespawnEvent implements Listener {
             String flag;
 
             if (event.isAnchorSpawn()) {
-                flag = "anchor";
+                flag = EventData.ANCHOR.name();
             } else if (event.isBedSpawn()) {
-                flag = "bed";
+                flag = EventData.BED.name();
             } else {
                 flag = null;
             }
 
-            eventData.put("flag", flag);
-            EnhancedLogger.log().config("flag: <red>" + flag + "</red>");
+            eventData.put(EventData.FLAG.name(), flag);
+            EnhancedLogger.log().config(EventData.FLAG.name() + ": <red>" + flag + "</red>");
 
             if (level > 1) {
-                String reason = event.getRespawnReason().toString();
+                String cause = event.getRespawnReason().name();
 
-                eventData.put("reason", reason);
-                EnhancedLogger.log().config("reason: <green>" + reason + "</green>");
+                eventData.put(EventData.CAUSE.name(), cause);
+                EnhancedLogger.log().config(EventData.CAUSE.name() + ": <green>" + cause + "</green>");
             }
 
         } else if (!Check.inRange(0, 2, level)) {
