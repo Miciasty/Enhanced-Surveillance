@@ -154,11 +154,31 @@ public class MemoryService {
 
     }
 
+    /**
+     * <p>
+     * Checks the utilization of all {@link MemoryService} instances and logs a recommendation
+     * if more than 50% of the services have a queue utilization of 75% or higher.
+     * </p>
+     *
+     * <p>
+     * This method iterates over all active {@link MemoryService} instances, checks their queue utilization,
+     * and logs the utilization details of services that exceed the 75% threshold. If more than half of the
+     * services are overloaded, a warning is logged, recommending the addition of new services or increasing
+     * the number of threads per service.
+     * </p>
+     * <p>
+     * Example log messages:
+     * <ul>
+     *     <li><i>Service number: {ID}, utilization: 80.0%</i></li>
+     *     <li><i>Recommendation: More than 50% of services have queue utilization above 75%. Consider adding a new service or increasing threads per service.</i></li>
+     * </ul>
+     * </p>
+     */
     private void checkServiceOverload() {
         int count = services.size();
         int overloadedServices = 0;
 
-        for (MemoryService service : MemoryService.services) {
+        for (MemoryService service : services) {
             if (service.getQueueUtilization() >= 75) {
                 EnhancedLogger.log().info("Service number: <green>{" + service.getServiceID() + "}</green>, utilization: <red>" + service.getQueueUtilization());
                 overloadedServices++;
@@ -168,7 +188,6 @@ public class MemoryService {
         if (overloadedServices >= count / 2) {
             EnhancedLogger.log().warning("<aqua>Recommendation:</aqua> More than <red>50%</red> of services have queue utilization above <red>75%</red>. <green>Consider adding a new service or increasing threads per service.</green>");
         }
-
     }
 
     // --- --- --- --- --- --- STATIC METHODS --- --- --- --- --- --- //

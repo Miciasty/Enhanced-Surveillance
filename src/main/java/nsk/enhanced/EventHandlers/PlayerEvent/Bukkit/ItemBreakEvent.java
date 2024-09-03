@@ -16,10 +16,20 @@ import org.bukkit.event.player.PlayerItemBreakEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The {@link ItemBreakEvent} class listens for the {@link PlayerItemBreakEvent} in Minecraft and handles the event
+ * based on the configuration. It captures data about the item that was broken by the player and logs the event accordingly.
+ */
 public class ItemBreakEvent implements Listener {
 
     private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
+    /**
+     * Handles the {@link PlayerItemBreakEvent}. This method processes the event where a player's item breaks,
+     * capturing relevant data depending on the configured detail level.
+     *
+     * @param event the {@link PlayerItemBreakEvent} triggered when a player's item breaks
+     */
     @EventHandler
     public void onPlayerItemBreak(PlayerItemBreakEvent event) {
 

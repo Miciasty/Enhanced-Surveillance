@@ -17,10 +17,21 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The {@link ItemDamageEvent} class listens for the {@link PlayerItemDamageEvent} in Minecraft and handles the event
+ * based on the configuration. It captures data about the damage dealt to the item, including the original damage value,
+ * and logs the event accordingly.
+ */
 public class ItemDamageEvent implements Listener {
 
     private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
+    /**
+     * Handles the {@link PlayerItemDamageEvent}. This method processes the event where a player's item takes damage,
+     * capturing relevant data depending on the configured detail level.
+     *
+     * @param event the {@link PlayerItemDamageEvent} triggered when a player's item takes damage
+     */
     @EventHandler
     public void onPlayerItemDamage(PlayerItemDamageEvent event) {
 

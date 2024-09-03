@@ -16,10 +16,21 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * The {@link ItemConsumeEvent} class listens for the {@link PlayerItemConsumeEvent} in Minecraft and handles the event
+ * based on the configuration. It captures data about the item consumed by the player, including any replacement item,
+ * and logs the event accordingly.
+ */
 public class ItemConsumeEvent implements Listener {
 
     private static final FileConfiguration config = EventsConfiguration.getBukkitEventsFile();
 
+    /**
+     * Handles the {@link PlayerItemConsumeEvent}. This method processes player item consumption,
+     * capturing relevant data depending on the configured detail level.
+     *
+     * @param event the {@link PlayerItemConsumeEvent} triggered when a player consumes an item
+     */
     @EventHandler
     public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
 
