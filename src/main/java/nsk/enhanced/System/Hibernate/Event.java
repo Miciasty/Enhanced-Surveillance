@@ -3,7 +3,9 @@ package nsk.enhanced.System.Hibernate;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
+import nsk.enhanced.System.Hibernate.Base.Minecraft.Coordinates;
 import nsk.enhanced.System.Utils.Compression;
+import nsk.enhanced.System.Utils.Tools;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -46,6 +48,8 @@ public class Event {
     @JoinColumn(name = "character_id", nullable = false)
     private Character character;
 
+    // TO DO: Change to Enum
+
     @Column(nullable = true)
     private String type;
 
@@ -56,11 +60,14 @@ public class Event {
     @JoinColumn(name = "world_id", nullable = false)
     private WorldEntity world;
 
-    @Column(nullable = false)
-    private int x, y, z;
+    @ManyToOne
+    @JoinColumn(name = "coordinates_id", nullable = false)
+    private Coordinates coordinates;
 
     @Column(nullable = false)
-    private float yaw, pitch;
+    private double yaw, pitch;
+
+    // TO DO: Change key to Enum
 
     @ElementCollection
     @CollectionTable(name = "surveillance_details", joinColumns = @JoinColumn(name = "event_id"))
@@ -106,11 +113,10 @@ public class Event {
 
         setEventData(eventData, new Location(player.getWorld(), 0, 0, 0, 0, 0));
 
-        this.x = player.getLocation().getBlockX();
-        this.y = player.getLocation().getBlockY();
-        this.z = player.getLocation().getBlockZ();
-        setYaw(player.getLocation().getYaw());
-        setPitch(player.getLocation().getPitch());
+        this.coordinates = Coordinates.getCoordinatesByLocation( player.getLocation() );
+
+        setYaw( Tools.roundTo(player.getLocation().getYaw(), 3) );
+        setPitch( Tools.roundTo(player.getLocation().getPitch(), 3) );
 
         if (type.equals("join") || type.equals("quit")) {
             character.updateStatistics();
@@ -143,11 +149,10 @@ public class Event {
 
         setEventData(eventData, location);
 
-        this.x = location.getBlockX();
-        this.y = location.getBlockY();
-        this.z = location.getBlockZ();
-        setYaw(location.getYaw());
-        setPitch(location.getPitch());
+        this.coordinates = Coordinates.getCoordinatesByLocation( location );
+
+        setYaw( Tools.roundTo(player.getLocation().getYaw(), 3) );
+        setPitch( Tools.roundTo(player.getLocation().getPitch(), 3) );
 
         if (type.equals("join") || type.equals("quit")) {
             character.updateStatistics();
@@ -193,6 +198,13 @@ public class Event {
     public WorldEntity getWorldEntity() { return world; }
 
     /**
+     * Returns the {@link Coordinates} where this {@link Event} occurred.
+     *
+     * @return the {@link Coordinates} associated with this event
+     */
+    public Coordinates getCoordinates() { return coordinates; }
+
+    /**
      * Returns the OfflinePlayer associated with this {@link Event}, based on the Character's UUID.
      *
      * @return the OfflinePlayer associated with this event
@@ -222,20 +234,20 @@ public class Event {
      *
      * @return the yaw value
      */
-    public float getYaw() { return yaw; }
+    public double getYaw() { return yaw; }
 
     /**
      * Returns the pitch (vertical rotation) value of this {@link Event}.
      *
      * @return the pitch value
      */
-    public float getPitch() { return pitch; }
+    public double getPitch() { return pitch; }
 
-    private void setYaw(float yaw) {
+    private void setYaw(double yaw) {
         this.yaw = Math.round(yaw * 1000) / 1000f;
     }
 
-    private void setPitch(float pitch) {
+    private void setPitch(double pitch) {
         this.pitch = Math.round(pitch * 1000) / 1000f;
     }
 

@@ -1,6 +1,8 @@
-package nsk.enhanced.System.Hibernate.MessageHandler;
+package nsk.enhanced.System.Hibernate.Base.Messages.Event;
 
+import nsk.enhanced.System.Hibernate.Base.Messages.Original;
 import nsk.enhanced.System.Hibernate.Character;
+import nsk.enhanced.System.Hibernate.Event;
 import org.bukkit.entity.Player;
 
 import javax.persistence.*;
@@ -20,15 +22,12 @@ public class Kick {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "character_id", nullable = false)
-    private Character character;
+    @JoinColumn(name = "event_id", nullable = false)
+    private Event event;
 
     @ManyToOne
     @JoinColumn(name = "message_id", nullable = false)
     private Original message;
-
-    @Column(nullable = true)
-    private LocalDateTime timestamp;
 
     /**
      * Default constructor for JPA.
@@ -39,15 +38,12 @@ public class Kick {
      * Constructs a new {@link Kick} instance associated with the specified player and message.
      * The kick event is initialized with the current timestamp.
      *
-     * @param player the player who was kicked
+     * @param event the {@link Event} associated with the kick
      * @param message the message that contains the kick details
      */
-    public Kick(Player player, String message) {
-
-        this.character  = Character.getCharacter(player);
+    public Kick(Event event, String message) {
+        this.event      = event;
         this.message    = Original.getMessage(message);
-        this.timestamp  = LocalDateTime.now();
-
     }
 
     // --- --- --- --- --- --- Main --- --- --- --- --- --- //
@@ -62,12 +58,12 @@ public class Kick {
     }
 
     /**
-     * Returns the {@link Character} associated with this {@link Kick}.
+     * Returns the {@link Event} associated with this {@link Kick}.
      *
-     * @return the {@link Character} who was kicked
+     * @return the {@link Event} involved in the kick
      */
-    public Character getCharacter() {
-        return character;
+    public Event getEvent() {
+        return event;
     }
 
     /**
@@ -79,14 +75,6 @@ public class Kick {
         return message;
     }
 
-    /**
-     * Returns the timestamp when this {@link Kick} event occurred.
-     *
-     * @return the timestamp of the kick event
-     */
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
 
 
 }

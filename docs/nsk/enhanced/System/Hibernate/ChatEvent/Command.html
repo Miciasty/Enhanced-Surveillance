@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2024-08-30">
-<meta name="description" content="declaration: package: nsk.enhanced.System.Hibernate.MessageHandler, class: Command">
+<meta name="description" content="declaration: package: nsk.enhanced.System.Hibernate.Message, class: Command">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -83,20 +83,20 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">nsk.enhanced.System.Hibernate.MessageHandler</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">nsk.enhanced.System.Hibernate.Message</a></div>
 <h1 title="Class Command" class="title">Class Command</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">nsk.enhanced.System.Hibernate.MessageHandler.Command</div>
+<div class="inheritance">nsk.enhanced.System.Hibernate.Base.Messages.Event.Command</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="annotations">@Entity
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">Command</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">The <a href="Command.html" title="class in nsk.enhanced.System.Hibernate.MessageHandler"><code>Command</code></a> class represents a command issued by a player on the server,
+<div class="block">The <a href="Command.html" title="class in nsk.enhanced.System.Hibernate.Message"><code>Command</code></a> class represents a command issued by a player on the server,
  stored in the `surveillance_commands` database table.
- This class links a command to the player's <a href="../Character.html" title="class in nsk.enhanced.System.Hibernate"><code>Character</code></a> who issued it and the original message <a href="Original.html" title="class in nsk.enhanced.System.Hibernate.MessageHandler"><code>Original</code></a>
+ This class links a command to the player's <a href="../Character.html" title="class in nsk.enhanced.System.Hibernate"><code>Character</code></a> who issued it and the original message <a href="Original.html" title="class in nsk.enhanced.System.Hibernate.Message"><code>Original</code></a>
  that contains the command details. This class also stores the timestamp when the command was issued.</div>
 </section>
 <section class="summary">
@@ -116,7 +116,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color"><code>private int</code></div>
 <div class="col-second odd-row-color"><code><a href="#id" class="member-name-link">id</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>private <a href="Original.html" title="class in nsk.enhanced.System.Hibernate.MessageHandler">Original</a></code></div>
+<div class="col-first even-row-color"><code>private <a href="Original.html" title="class in nsk.enhanced.System.Hibernate.Message">Original</a></code></div>
 <div class="col-second even-row-color"><code><a href="#message" class="member-name-link">message</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>private <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/LocalDateTime.html" title="class or interface in java.time" class="external-link">LocalDateTime</a></code></div>
@@ -140,7 +140,7 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.bukkit.entity.Player,java.lang.String)" class="member-name-link">Command</a><wbr>(org.bukkit.entity.Player&nbsp;player,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</code></div>
 <div class="col-last odd-row-color">
-<div class="block">Constructs a new <a href="Command.html" title="class in nsk.enhanced.System.Hibernate.MessageHandler"><code>Command</code></a> instance associated with the specified player and message.</div>
+<div class="block">Constructs a new <a href="Command.html" title="class in nsk.enhanced.System.Hibernate.Message"><code>Command</code></a> instance associated with the specified player and message.</div>
 </div>
 </div>
 </section>
@@ -166,10 +166,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the ID of this Command.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Original.html" title="class in nsk.enhanced.System.Hibernate.MessageHandler">Original</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Original.html" title="class in nsk.enhanced.System.Hibernate.Message">Original</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMessage()" class="member-name-link">getMessage</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the <a href="Original.html" title="class in nsk.enhanced.System.Hibernate.MessageHandler"><code>Original</code></a> message associated with this Command.</div>
+<div class="block">Returns the <a href="Original.html" title="class in nsk.enhanced.System.Hibernate.Message"><code>Original</code></a> message associated with this Command.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/time/LocalDateTime.html" title="class or interface in java.time" class="external-link">LocalDateTime</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTimestamp()" class="member-name-link">getTimestamp</a>()</code></div>
@@ -208,7 +208,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="message">
 <h3>message</h3>
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="Original.html" title="class in nsk.enhanced.System.Hibernate.MessageHandler">Original</a></span>&nbsp;<span class="element-name">message</span></div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="Original.html" title="class in nsk.enhanced.System.Hibernate.Message">Original</a></span>&nbsp;<span class="element-name">message</span></div>
 </section>
 </li>
 <li>
@@ -237,7 +237,7 @@ loadScripts(document, 'script');</script>
 <h3>Command</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Command</span><wbr><span class="parameters">(org.bukkit.entity.Player&nbsp;player,
  <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;message)</span></div>
-<div class="block">Constructs a new <a href="Command.html" title="class in nsk.enhanced.System.Hibernate.MessageHandler"><code>Command</code></a> instance associated with the specified player and message.
+<div class="block">Constructs a new <a href="Command.html" title="class in nsk.enhanced.System.Hibernate.Message"><code>Command</code></a> instance associated with the specified player and message.
  The command is initialized with the current timestamp.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -279,11 +279,11 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getMessage()">
 <h3>getMessage</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Original.html" title="class in nsk.enhanced.System.Hibernate.MessageHandler">Original</a></span>&nbsp;<span class="element-name">getMessage</span>()</div>
-<div class="block">Returns the <a href="Original.html" title="class in nsk.enhanced.System.Hibernate.MessageHandler"><code>Original</code></a> message associated with this Command.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Original.html" title="class in nsk.enhanced.System.Hibernate.Message">Original</a></span>&nbsp;<span class="element-name">getMessage</span>()</div>
+<div class="block">Returns the <a href="Original.html" title="class in nsk.enhanced.System.Hibernate.Message"><code>Original</code></a> message associated with this Command.</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>the <a href="Original.html" title="class in nsk.enhanced.System.Hibernate.MessageHandler"><code>Original</code></a> message that contains the command details</dd>
+<dd>the <a href="Original.html" title="class in nsk.enhanced.System.Hibernate.Message"><code>Original</code></a> message that contains the command details</dd>
 </dl>
 </section>
 </li>

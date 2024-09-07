@@ -2,8 +2,17 @@ package nsk.enhanced.System;
 
 import nsk.enhanced.EnhancedSurveillance;
 import nsk.enhanced.System.Configuration.ServerConfiguration;
+import nsk.enhanced.System.Hibernate.Base.Messages.*;
+import nsk.enhanced.System.Hibernate.Base.Messages.Event.Command;
+import nsk.enhanced.System.Hibernate.Base.Messages.Event.Death;
+import nsk.enhanced.System.Hibernate.Base.Messages.Event.Kick;
+import nsk.enhanced.System.Hibernate.Base.Messages.Event.Message;
+import nsk.enhanced.System.Hibernate.Base.Minecraft.Coordinates;
+import nsk.enhanced.System.Hibernate.Base.Minecraft.Creature;
+import nsk.enhanced.System.Hibernate.Base.Minecraft.Event.CreatureInteraction;
+import nsk.enhanced.System.Hibernate.Base.Minecraft.Event.MaterialInteraction;
+import nsk.enhanced.System.Hibernate.Base.Minecraft.Material;
 import nsk.enhanced.System.Hibernate.Character;
-import nsk.enhanced.System.Hibernate.MessageHandler.*;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.Hibernate.WorldEntity;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -70,6 +79,12 @@ public class DatabaseService {
             cfg.addAnnotatedClass(Command.class);
             cfg.addAnnotatedClass(Death.class);
             cfg.addAnnotatedClass(Kick.class);
+
+            cfg.addAnnotatedClass(Coordinates.class);
+            cfg.addAnnotatedClass(Creature.class);
+            cfg.addAnnotatedClass(Material.class);
+            cfg.addAnnotatedClass(CreatureInteraction.class);
+            cfg.addAnnotatedClass(MaterialInteraction.class);
 
             if (cfg.buildSessionFactory() != null) {
                 sessionFactory = cfg.buildSessionFactory();

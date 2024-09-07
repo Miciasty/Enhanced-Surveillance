@@ -1,12 +1,12 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
 import com.destroystokyo.paper.entity.villager.ReputationType;
-import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
+import nsk.enhanced.EventHandlers.EventData;
 import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.VillagerData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
-import nsk.enhanced.System.ES;
 import nsk.enhanced.System.EnhancedLogger;
+import nsk.enhanced.System.Hibernate.Base.Minecraft.Creature;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
 import nsk.enhanced.System.Utils.Check;
@@ -55,18 +55,25 @@ public class InteractEntityEvent implements Listener {
 
         Map<String, String> eventData = new LinkedHashMap<>();
 
+        Creature entity = null;
+
         int level = config.getInt("events.PlayerInteractEntityEvent.level", 0);
         if (Check.inRange(1, 3, level)) {
 
             if (target.getType().getEntityClass() != null) {
-                eventData.put(EventData.TYPE.name(),   target.getType().getEntityClass().getSimpleName());
+
+                entity = new Creature( target.getType().getEntityClass().getSimpleName() );
+
+                //eventData.put(EventData.TYPE.name(),   target.getType().getEntityClass().getSimpleName());
                 EnhancedLogger.log().config(EventData.TYPE.name() + ": <gold>" + target.getType().getEntityClass().getSimpleName());
             }
 
             if (level > 1) {
 
                 if (target.getCustomName() != null) {
-                    eventData.put(EventData.CNAME.name(), target.getCustomName());
+
+                    entity = new Creature( target.getCustomName() );
+                    //eventData.put(EventData.CNAME.name(), target.getCustomName());
                     EnhancedLogger.log().config(EventData.CNAME.name() + ": <red>" + target.getCustomName());
                 }
 
@@ -100,8 +107,10 @@ public class InteractEntityEvent implements Listener {
 
             }
 
-        } else if (!Check.inRange(0, 3, level)) {
-            EnhancedLogger.log().warning("<green>'events.PlayerInteractEntityEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
+        } else {
+            if (!Check.inRange(0, 3, level)) {
+                EnhancedLogger.log().warning("<green>'events.PlayerInteractEntityEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
+            }
         }
 
 
@@ -109,9 +118,20 @@ public class InteractEntityEvent implements Listener {
 
             Event e = new Event("interactEntity", player, target.getLocation(), eventData);
 
-            MemoryService.logEventAsync(() -> {
-                DatabaseService.saveEntity(e);
-            });
+            if (entity == null) {
+                MemoryService.logEventAsync(() -> {
+                    DatabaseService.saveEntity(e);
+                });
+            } else {
+                Creature ent = entity;      // No idea why but without IntelliJ IDEA tells me something is wrong here...
+
+                MemoryService.logEventAsync(() -> {
+                    DatabaseService.saveEntity(e);
+                    DatabaseService.saveEntity(ent);
+                });
+            }
+
+
 
         } catch (Exception ex) {
             EnhancedLogger.log().severe("Failed to save PlayerEvents/interactEntity - " + ex.getMessage());

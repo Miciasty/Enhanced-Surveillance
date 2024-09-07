@@ -1,12 +1,12 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
-import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
+import nsk.enhanced.EventHandlers.EventData;
 import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.HostData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
-import nsk.enhanced.System.Hibernate.MessageHandler.Kick;
+import nsk.enhanced.System.Hibernate.Base.Messages.Event.Kick;
 import nsk.enhanced.System.MemoryService;
 import nsk.enhanced.System.Utils.Check;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -74,7 +74,7 @@ public class LoginEvent implements Listener {
                 });
             } else {
 
-                Kick  k = new Kick(player, event.kickMessage().toString());
+                Kick  k = new Kick(e, event.kickMessage().toString());
 
                 MemoryService.logEventAsync(() -> {
                     DatabaseService.saveEntity(k);

@@ -1,10 +1,10 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
-import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
+import nsk.enhanced.EventHandlers.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
-import nsk.enhanced.System.Hibernate.MessageHandler.Message;
+import nsk.enhanced.System.Hibernate.Base.Messages.Event.Message;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
 import nsk.enhanced.System.Utils.Check;
@@ -94,12 +94,12 @@ public class ChatEvent implements Listener {
 
         try {
 
-            Message m = new Message(player, message, event.getRecipients().size());
-            Event e = new Event("chat", player, player.getLocation(), eventData);
+            Event e = new Event("chat", player, eventData);
+            Message m = new Message(e, message, event.getRecipients().size());
 
             MemoryService.logEventAsync(() -> {
-                DatabaseService.saveEntity(m);
                 DatabaseService.saveEntity(e);
+                DatabaseService.saveEntity(m);
             });
 
         } catch (Exception ex) {

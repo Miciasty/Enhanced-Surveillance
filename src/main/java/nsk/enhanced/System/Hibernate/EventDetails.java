@@ -1,9 +1,13 @@
 package nsk.enhanced.System.Hibernate;
 
+import nsk.enhanced.System.Hibernate.Base.Minecraft.Coordinates;
+import nsk.enhanced.System.Hibernate.Base.Minecraft.Event.CreatureInteraction;
 import org.bukkit.Location;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * <p>
@@ -27,8 +31,9 @@ public class EventDetails {
     @Column(name = "event_value", columnDefinition = "TINYBLOB")
     private byte[] eventValue;
 
-    @Column(nullable = false)
-    private int x, y, z;
+    @ManyToOne
+    @JoinColumn(name = "coordinates_id", nullable = false)
+    private Coordinates coordinates;
 
     @Column(nullable = false)
     private float pitch, yaw;
@@ -46,9 +51,7 @@ public class EventDetails {
      */
     public EventDetails(byte[] eventValue, Location location) {
         this.eventValue = eventValue;
-        this.x = location.getBlockX();
-        this.y = location.getBlockY();
-        this.z = location.getBlockZ();
+        this.coordinates    = Coordinates.getCoordinatesByLocation(location);
         this.pitch = location.getPitch();
         this.yaw = location.getYaw();
     }
@@ -61,25 +64,13 @@ public class EventDetails {
     public byte[] getEventValue() { return eventValue; }
 
     /**
-     * Returns the X coordinate of the event location.
+     * Returns the {@link Coordinates} of the event location.
      *
-     * @return the X coordinate
+     * @return the {@link Coordinates} of the location
      */
-    public int getX() { return x; }
-
-    /**
-     * Returns the Y coordinate of the event location.
-     *
-     * @return the Y coordinate
-     */
-    public int getY() { return y; }
-
-    /**
-     * Returns the Z coordinate of the event location.
-     *
-     * @return the Z coordinate
-     */
-    public int getZ() { return z; }
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
 
     /**
      * Returns the pitch (vertical rotation) of the event location.
@@ -101,18 +92,5 @@ public class EventDetails {
      * @param eventValue the new event value as a byte array
      */
     public void setEventValue(byte[] eventValue) { this.eventValue = eventValue; }
-
-    /**
-     * Sets the location coordinates and orientation (pitch and yaw) of the event.
-     *
-     * @param location the new {@link Location} object containing the coordinates and orientation
-     */
-    public void setLocation(Location location) {
-        this.x = location.getBlockX();
-        this.y = location.getBlockY();
-        this.z = location.getBlockZ();
-        this.pitch = location.getPitch();
-        this.yaw = location.getYaw();
-    }
 
 }

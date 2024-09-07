@@ -1,6 +1,6 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
-import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
+import nsk.enhanced.EventHandlers.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;

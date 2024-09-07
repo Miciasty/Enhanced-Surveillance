@@ -1,4 +1,4 @@
-package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum;
+package nsk.enhanced.EventHandlers;
 
 public enum EventData {
 

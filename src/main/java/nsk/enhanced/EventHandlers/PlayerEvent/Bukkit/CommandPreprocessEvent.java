@@ -3,7 +3,7 @@ package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
-import nsk.enhanced.System.Hibernate.MessageHandler.Command;
+import nsk.enhanced.System.Hibernate.Base.Messages.Event.Command;
 import nsk.enhanced.System.Hibernate.Event;
 import nsk.enhanced.System.MemoryService;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -54,12 +54,12 @@ public class CommandPreprocessEvent implements Listener {
 
         try {
 
-            Command c = new Command(player, message);
-            Event e = new Event("preCommand", player, player.getLocation(), eventData);
+            Event e = new Event("preCommand", player, eventData);
+            Command c = new Command(e, message);
 
             MemoryService.logEventAsync(() -> {
-                DatabaseService.saveEntity(c);
                 DatabaseService.saveEntity(e);
+                DatabaseService.saveEntity(c);
             });
 
         } catch (Exception ex) {

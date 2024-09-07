@@ -1,7 +1,9 @@
-package nsk.enhanced.System.Hibernate.MessageHandler;
+package nsk.enhanced.System.Hibernate.Base.Messages;
 
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
+import nsk.enhanced.System.Hibernate.Base.Messages.Event.Command;
+import nsk.enhanced.System.Hibernate.Base.Messages.Event.Message;
 import org.hibernate.Session;
 
 import javax.persistence.*;
@@ -94,7 +96,7 @@ public class Original {
         }
 
         return originalMessage;
-        }
+    }
 
     /**
      * Retrieves an {@link Original} class by its content from the database.

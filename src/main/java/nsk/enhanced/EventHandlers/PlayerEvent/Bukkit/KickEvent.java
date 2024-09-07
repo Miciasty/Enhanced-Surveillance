@@ -1,12 +1,11 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
-import io.papermc.paper.event.player.PlayerPickItemEvent;
-import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
+import nsk.enhanced.EventHandlers.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
-import nsk.enhanced.System.Hibernate.MessageHandler.Kick;
+import nsk.enhanced.System.Hibernate.Base.Messages.Event.Kick;
 import nsk.enhanced.System.MemoryService;
 import nsk.enhanced.System.Utils.Check;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -55,8 +54,8 @@ public class KickEvent implements Listener {
             EnhancedLogger.log().warning("<green>'events.PlayerKickEvent.level'</green> - Due to the provided invalid level value <red>[" + level + "]</red>, the event has defaulted to level <green>[0]</green>.");
         }
 
-        Kick  k = new Kick(player, event.getReason());
         Event e = new Event("kick", player, eventData);
+        Kick  k = new Kick(e, event.getReason());
 
         try {
             MemoryService.logEventAsync(() -> {

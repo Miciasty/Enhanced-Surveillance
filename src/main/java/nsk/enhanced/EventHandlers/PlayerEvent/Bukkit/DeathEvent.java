@@ -1,11 +1,11 @@
 package nsk.enhanced.EventHandlers.PlayerEvent.Bukkit;
 
-import nsk.enhanced.EventHandlers.PlayerEvent.Bukkit.Enum.EventData;
+import nsk.enhanced.EventHandlers.EventData;
 import nsk.enhanced.System.Configuration.EventsConfiguration;
 import nsk.enhanced.System.DatabaseService;
 import nsk.enhanced.System.EnhancedLogger;
 import nsk.enhanced.System.Hibernate.Event;
-import nsk.enhanced.System.Hibernate.MessageHandler.Death;
+import nsk.enhanced.System.Hibernate.Base.Messages.Event.Death;
 import nsk.enhanced.System.MemoryService;
 import nsk.enhanced.System.Utils.Check;
 import nsk.enhanced.System.Utils.Tools;
@@ -89,11 +89,11 @@ public class DeathEvent implements Listener {
         try {
 
             if (event.deathMessage() != null) {
-                Death d = new Death(player, event.deathMessage().toString());
+                Death d = new Death(e, event.deathMessage().toString());
 
                 MemoryService.logEventAsync(() -> {
-                    DatabaseService.saveEntity(d);
                     DatabaseService.saveEntity(e);
+                    DatabaseService.saveEntity(d);
                 });
             } else {
                 MemoryService.logEventAsync(() -> {
